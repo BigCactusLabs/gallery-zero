@@ -66,4 +66,4 @@ open "rothko/Rothko — Black and Orange.terminal"
 
 ## Forthcoming Exhibitions
 
-New artist series are underway.
+New artist series are underway. The gallery accepts loans.
