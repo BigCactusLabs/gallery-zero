@@ -61,9 +61,9 @@ Double-click any `.terminal` file. It will appear in **Terminal → Preferences 
 Or, from the command line:
 
 ```sh
-open "Rothko — Black and Orange.terminal"
+open "rothko/Rothko — Black and Orange.terminal"
 ```
 
 ## Forthcoming Exhibitions
 
-New artist series are in preparation. The gallery accepts loans.
+New artist series are underway.
