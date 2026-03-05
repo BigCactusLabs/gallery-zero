@@ -48,6 +48,20 @@ Colors that shouldn't be in the same room together. After the Antipodal portrait
 
 ---
 
+## The Monet Collection
+
+Seven profiles after Claude Monet (1840–1926). Plein air and lily ponds, reconsidered as phosphor on glass.
+
+### Brume
+
+<img src=".github/swatches/brume.svg" width="360" alt="Brume palette" />
+
+The painting that named a movement, before the sun burned through. After *Impression, Sunrise*, 1872.
+
+[Enter the Monet gallery.](monet/)
+
+---
+
 ## Acquisitions
 
 Double-click any `.terminal` file. It will appear in **Terminal → Preferences → Profiles**. Select it. Set it as default if you like.
@@ -58,6 +72,7 @@ Or, from the command line:
 open "rothko/Rothko — Seagram Murals.terminal"
 open "de-amaral/De Amaral — Alquimia.terminal"
 open "condo/Condo — Antipodal.terminal"
+open "monet/Monet — Brume.terminal"
 ```
 
 ## Forthcoming Exhibitions
