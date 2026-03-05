@@ -242,8 +242,8 @@
 	<true/>
 	<key>UseBrightBold</key>
 	<true/>
-t<key>UseOptionAsMetaKey</key>
-t<true/>
+	<key>UseOptionAsMetaKey</key>
+	<true/>
 	<key>columnCount</key>
 	<integer>120</integer>
 	<key>name</key>
