@@ -244,6 +244,8 @@
 	<true/>
 	<key>UseOptionAsMetaKey</key>
 	<true/>
+	<key>useOptionAsMetaKey</key>
+	<true/>
 	<key>columnCount</key>
 	<integer>120</integer>
 	<key>name</key>
