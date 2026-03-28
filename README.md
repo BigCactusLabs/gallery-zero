@@ -62,6 +62,20 @@ The painting that named a movement, before the sun burned through. After *Impres
 
 ---
 
+## The Tanaka Collection
+
+Seven profiles after Atsuko Tanaka (1932–2005). Neon circuits and painted light, rewired as phosphor on glass.
+
+### Electric Dress
+
+<img src=".github/swatches/electric-dress.svg" width="360" alt="Electric Dress palette" />
+
+Two hundred bulbs in nine colors, worn like a second skin. The circuit that started everything. After *Electric Dress (Denkifuku)*, 1956.
+
+[Enter the Tanaka gallery.](tanaka/)
+
+---
+
 ## Acquisitions
 
 Double-click any `.terminal` file. It will appear in **Terminal → Preferences → Profiles**. Select it. Set it as default if you like.
@@ -73,6 +87,7 @@ open "rothko/Rothko — Seagram Murals.terminal"
 open "de-amaral/De Amaral — Alquimia.terminal"
 open "condo/Condo — Antipodal.terminal"
 open "monet/Monet — Brume.terminal"
+open "tanaka/Tanaka — Electric Dress.terminal"
 ```
 
 ## Forthcoming Exhibitions
