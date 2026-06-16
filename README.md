@@ -76,6 +76,20 @@ Two hundred bulbs in nine colors, worn like a second skin. The circuit that star
 
 ---
 
+## The Riley Collection
+
+Seven profiles after Bridget Riley (b. 1931). Perceptual geometry, reconsidered as phosphor on glass.
+
+### Movement in Squares
+
+<img src=".github/swatches/movement-in-squares.svg" width="360" alt="Movement in Squares palette" />
+
+Black squares compressing toward a fold that isn't there. The painting that started Op Art — and the gallery's first light room. After *Movement in Squares*, 1961.
+
+[Enter the Riley gallery.](riley/)
+
+---
+
 ## Acquisitions
 
 Double-click any `.terminal` file. It will appear in **Terminal → Preferences → Profiles**. Select it. Set it as default if you like.
@@ -88,6 +102,7 @@ open "de-amaral/De Amaral — Alquimia.terminal"
 open "condo/Condo — Antipodal.terminal"
 open "monet/Monet — Brume.terminal"
 open "tanaka/Tanaka — Electric Dress.terminal"
+open "riley/Riley — Movement in Squares.terminal"
 ```
 
 ## Forthcoming Exhibitions
