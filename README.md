@@ -90,6 +90,20 @@ Black squares compressing toward a fold that isn't there. The painting that star
 
 ---
 
+## The Pelton Collection
+
+Seven profiles after Agnes Pelton (1881–1961). Transcendental light, reconsidered as phosphor on glass — four of them, for the first time, translucent.
+
+### Ahmi in Egypt
+
+<img src=".github/swatches/ahmi-in-egypt.svg" width="360" alt="Ahmi in Egypt palette" />
+
+A red path snakes up from the lower darkness toward a golden lotus. Indigo night, lit from within, hung behind a veil. After *Ahmi in Egypt*, 1931.
+
+[Enter the Pelton gallery.](pelton/)
+
+---
+
 ## Acquisitions
 
 Double-click any `.terminal` file. It will appear in **Terminal → Preferences → Profiles**. Select it. Set it as default if you like.
@@ -103,6 +117,7 @@ open "condo/Condo — Antipodal.terminal"
 open "monet/Monet — Brume.terminal"
 open "tanaka/Tanaka — Electric Dress.terminal"
 open "riley/Riley — Movement in Squares.terminal"
+open "pelton/Pelton — Ahmi in Egypt.terminal"
 ```
 
 ## Forthcoming Exhibitions
