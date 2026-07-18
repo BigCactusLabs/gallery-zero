@@ -1,7 +1,8 @@
 .playwright-mcp/
 brainstorm.md
-themes/
-tools/
 docs/plans/
 CLAUDE.md
+AGENTS.md
 .DS_Store
+__pycache__/
+*.pyc
