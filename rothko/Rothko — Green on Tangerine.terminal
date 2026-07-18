@@ -244,8 +244,6 @@
 	<true/>
 	<key>UseOptionAsMetaKey</key>
 	<true/>
-	<key>useOptionAsMetaKey</key>
-	<true/>
 	<key>columnCount</key>
 	<integer>120</integer>
 	<key>name</key>
@@ -254,5 +252,7 @@
 	<integer>36</integer>
 	<key>type</key>
 	<string>Window Settings</string>
+	<key>useOptionAsMetaKey</key>
+	<true/>
 </dict>
 </plist>

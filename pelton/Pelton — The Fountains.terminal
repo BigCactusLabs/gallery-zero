@@ -148,6 +148,8 @@
 	</data>
 	<key>BackgroundAlphaInactive</key>
 	<real>1.0</real>
+	<key>BackgroundBlur</key>
+	<real>0.0</real>
 	<key>BackgroundColor</key>
 	<data>
 	YnBsaXN0MDDUAQIDBAUGFRhZJGFyY2hpdmVyWCRvYmplY3RzVCR0b3BYJHZlcnNpb25f
