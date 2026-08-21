@@ -1,6 +1,7 @@
 {
   "collection": "rothko",
   "artist": "Rothko",
+  "archive": "full",
   "themes": [
     {
       "name": "Black and Orange",
