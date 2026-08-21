@@ -1,6 +1,7 @@
 {
   "collection": "monet",
   "artist": "Monet",
+  "archive": "full",
   "themes": [
     {
       "name": "Brume",

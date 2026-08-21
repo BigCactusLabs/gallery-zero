@@ -1,6 +1,7 @@
 {
   "collection": "condo",
   "artist": "Condo",
+  "archive": "full",
   "themes": [
     {
       "name": "Antipodal",
