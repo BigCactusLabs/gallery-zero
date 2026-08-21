@@ -120,6 +120,10 @@ open "riley/Riley — Movement in Squares.terminal"
 open "pelton/Pelton — Ahmi in Egypt.terminal"
 ```
 
+## Conservation Notes
+
+How the gallery is built — plist archaeology, archived color blobs, glass, escape codes. See [TECHNIQUES.md](TECHNIQUES.md).
+
 ## Forthcoming Exhibitions
 
 New artist series are underway. The gallery accepts loans.

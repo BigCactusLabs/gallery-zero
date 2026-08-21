@@ -20,7 +20,7 @@ Quiet registers of distance. After *No. 1 (Royal Red and Blue)*, 1954.
 
 <img src="../.github/swatches/blue-divided-by-blue.svg" width="360" alt="Blue Divided by Blue palette" />
 
-The line between knowing and not knowing. After the late blue works, 1968–69.
+The line between knowing and not knowing. After *Untitled (Blue Divided by Blue)*, 1966.
 
 ### Earth and Green
 
@@ -45,6 +45,14 @@ All surface, no edge. After *No. 14*, 1960.
 <img src="../.github/swatches/seagram-murals.svg" width="360" alt="Seagram Murals palette" />
 
 The commission he returned. Maroon and black for a restaurant he decided did not deserve them. After the Seagram murals, 1958–59.
+
+---
+
+## Framing
+
+These seven hang differently than the rest of the gallery. Every frame is a uniform 110×30, but the glass is cut per painting: dense and nearly opaque for the late dark surfaces (Black and Orange, Seagram Murals), thin and fully blurred for the luminous washes (Blue and Grey, Blue Divided by Blue). Line spacing follows the same logic — tight where the paint is dense, airy where it breathes. The cursor blinks only where the painting has an ember in it.
+
+Each title bar carries a museum placard — *Seagram Murals — Rothko, 1958–59* — alongside the working directory. Text renders the exact mixed palette; Terminal's automatic contrast adjustment is off. The full recipe per theme lives in [`themes/rothko.json`](../themes/rothko.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
 
 ---
 
