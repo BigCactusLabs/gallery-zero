@@ -29,6 +29,20 @@
         "cursor": "#b8b8c8",
         "cursor_text": "#18181e",
         "selection": "#303038"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.9,
+        "background_blur": 0.85,
+        "inactive_alpha": 0.82,
+        "inactive_blur": 0.85,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.12,
+        "window_title": "Alquimia Plata — de Amaral, 1980s–90s",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -57,6 +71,20 @@
         "cursor": "#e8b840",
         "cursor_text": "#1c1408",
         "selection": "#382810"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.94,
+        "background_blur": 0.55,
+        "inactive_alpha": 0.86,
+        "inactive_blur": 0.55,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.08,
+        "window_title": "Alquimia — de Amaral, 1984",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -85,6 +113,20 @@
         "cursor": "#3a3028",
         "cursor_text": "#e8dcd0",
         "selection": "#d0c0a8"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.87,
+        "background_blur": 1.0,
+        "inactive_alpha": 0.78,
+        "inactive_blur": 1.0,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.16,
+        "window_title": "Bruma — de Amaral, 2010s",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -113,6 +155,20 @@
         "cursor": "#d8b050",
         "cursor_text": "#3a2e20",
         "selection": "#524028"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.96,
+        "background_blur": 0.45,
+        "inactive_alpha": 0.89,
+        "inactive_blur": 0.45,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.07,
+        "window_title": "Hojarasca — de Amaral, late 1970s",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -141,6 +197,20 @@
         "cursor": "#967838",
         "cursor_text": "#1a1510",
         "selection": "#2c2419"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.97,
+        "background_blur": 0.35,
+        "inactive_alpha": 0.9,
+        "inactive_blur": 0.35,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.05,
+        "window_title": "Muro Tejido — de Amaral, 1970s",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -169,6 +239,20 @@
         "cursor": "#c88818",
         "cursor_text": "#f0e0c8",
         "selection": "#e0c8a0"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.9,
+        "background_blur": 0.9,
+        "inactive_alpha": 0.81,
+        "inactive_blur": 0.9,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.1,
+        "window_title": "Sol — de Amaral, c. 1984–2010s",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -197,6 +281,20 @@
         "cursor": "#d0a848",
         "cursor_text": "#181210",
         "selection": "#302818"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.95,
+        "background_blur": 0.5,
+        "inactive_alpha": 0.88,
+        "inactive_blur": 0.5,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.06,
+        "window_title": "Strata — de Amaral, 2000s",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     }
   ]

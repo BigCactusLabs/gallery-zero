@@ -48,6 +48,14 @@ Cascading color, departing from the portrait. After the Diagonal series, 2023–
 
 ---
 
+## Framing
+
+Every frame is a uniform 110×30, and the glass is cut to the psychology. The dark chiaroscuro of *Dreams and Nightmares* sits behind the densest pane; the smoky jazz of *Dancing to Miles* gets thin luminous glass with the blur turned up. Line spacing crowds where the impasto is frantic — *Mental States*, *Antipodal* — and breathes where the argument is composed. The cursor blinks wherever the painting won't sit still.
+
+Each title bar carries a museum placard — *Mental States — Condo, 2011* — alongside the working directory. The full recipe per theme lives in [`themes/condo.json`](../themes/condo.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
+
+---
+
 ## Acquisition
 
 Double-click any `.terminal` file in this directory. It will appear in **Terminal → Preferences → Profiles**. Select it. Set it as default if you like.

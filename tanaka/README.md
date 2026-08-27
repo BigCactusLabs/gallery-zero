@@ -50,6 +50,14 @@ The same wires, decades later. Every connection earned. After the late paintings
 
 ---
 
+## Framing
+
+Every frame is a uniform 110×30, and the glass is cut to the current. Painted light runs thin — *Electric Dress* and *Neon District* get the most translucent, blurriest panes, so the city bleeds through — while the enamel grounds of *Red and Black* and *The Void* sit dense and still. Line spacing tightens where the wires crowd and opens where the signal clears. The cursor blinks wherever the circuit is live; it rests only in the early paintings, the void, and the late clarity.
+
+Each title bar carries a museum placard — *Electric Dress — Tanaka, 1956* — alongside the working directory. The full recipe per theme lives in [`themes/tanaka.json`](../themes/tanaka.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
+
+---
+
 ## Acquisition
 
 Double-click any `.terminal` file in this directory. It will appear in **Terminal → Preferences → Profiles**. Select it. Set it as default if you like.

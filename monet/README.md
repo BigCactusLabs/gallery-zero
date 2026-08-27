@@ -50,6 +50,14 @@ Parliament through fog. The empire, dimly. After *Houses of Parliament, London*,
 
 ---
 
+## Framing
+
+Every frame is a uniform 110×30, and the glass is cut to the weather. The fogs get the thinnest panes in the building — *Crépuscule* is barely there at all — while the crusted stone of *Effet du Matin* and the full daylight of *Plein Soleil* sit behind dense, nearly clear glass. Line spacing opens with the atmosphere, widest over the lily pond. The cursor blinks only where something burns: the poppy field at noon, the lagoon at dusk.
+
+Each title bar carries a museum placard — *Nymphéas — Monet, 1914–26* — alongside the working directory. The full recipe per theme lives in [`themes/monet.json`](../themes/monet.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
+
+---
+
 ## Acquisition
 
 Double-click any `.terminal` file in this directory. It will appear in **Terminal → Preferences → Profiles**. Select it. Set it as default if you like.

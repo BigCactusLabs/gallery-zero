@@ -48,6 +48,14 @@ The light the gold was always borrowing. After the radiant works spanning her ca
 
 ---
 
+## Framing
+
+Every frame is a uniform 110×30, and the glass is cut to the weave. Raw wool hangs nearly opaque — *Muro Tejido* gets the densest, least blurred pane in the room — while *Bruma*, threads suspended in air, gets the thinnest and mistiest. Line spacing tightens where the fiber is packed and opens where it floats, and the cursor blinks only twice: an ember in the gold of *Alquimia*, a flare in *Sol*.
+
+Each title bar carries a museum placard — *Alquimia — de Amaral, 1984* — alongside the working directory. The full recipe per theme lives in [`themes/de-amaral.json`](../themes/de-amaral.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
+
+---
+
 ## Acquisition
 
 Double-click any `.terminal` file in this directory. It will appear in **Terminal → Preferences → Profiles**. Select it. Set it as default if you like.

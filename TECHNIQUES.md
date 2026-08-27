@@ -14,7 +14,7 @@ Fun consequence: you can retint a profile with a text substitution on bytes insi
 
 ## The glass: alpha baked into the paint
 
-Terminal has no `BackgroundAlpha` key. Window transparency *is* the alpha component of the archived background `NSColor` — the fourth float in those component strings. Pair it with `BackgroundBlur` (0–1, frosted glass over whatever's behind) and the window becomes a pane instead of a poster. `BackgroundAlphaInactive` / `BackgroundBlurInactive` control the unfocused state — the **veil** in the Pelton collection, the room-stays-dim trick in the Rothkos.
+Terminal has no `BackgroundAlpha` key. Window transparency *is* the alpha component of the archived background `NSColor` — the fourth float in those component strings. Pair it with `BackgroundBlur` (0–1, frosted glass over whatever's behind) and the window becomes a pane instead of a poster. `BackgroundAlphaInactive` / `BackgroundBlurInactive` control the unfocused state — the **veil** that began in the Pelton collection, now the room-stays-dim trick hung throughout the gallery.
 
 We tune these per painting: dense late-Rothko glazes get near-opaque low-blur glass; acrylic-on-paper gets the thinnest, most luminous pane in the building.
 

@@ -29,6 +29,20 @@
         "cursor": "#d83030",
         "cursor_text": "#f5f5f5",
         "selection": "#e0e0e8"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.9,
+        "background_blur": 0.9,
+        "inactive_alpha": 0.82,
+        "inactive_blur": 0.9,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.06,
+        "window_title": "Electric Dress — Tanaka, 1956",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -57,6 +71,20 @@
         "cursor": "#d84010",
         "cursor_text": "#f0f2f5",
         "selection": "#dce0e8"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.95,
+        "background_blur": 0.45,
+        "inactive_alpha": 0.87,
+        "inactive_blur": 0.45,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.05,
+        "window_title": "Gate of Hell — Tanaka, 1965",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -85,6 +113,20 @@
         "cursor": "#3070c8",
         "cursor_text": "#fafafa",
         "selection": "#dce0e8"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.92,
+        "background_blur": 0.85,
+        "inactive_alpha": 0.84,
+        "inactive_blur": 0.85,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.14,
+        "window_title": "Late Clarity — Tanaka, c. 1990–2005",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -113,6 +155,20 @@
         "cursor": "#e83060",
         "cursor_text": "#f5f5f5",
         "selection": "#e0d8f0"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.89,
+        "background_blur": 0.95,
+        "inactive_alpha": 0.8,
+        "inactive_blur": 0.95,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.05,
+        "window_title": "Neon District — Tanaka, 1984–88",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -141,6 +197,20 @@
         "cursor": "#c02020",
         "cursor_text": "#fafafa",
         "selection": "#f0d0d0"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.96,
+        "background_blur": 0.4,
+        "inactive_alpha": 0.9,
+        "inactive_blur": 0.4,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.1,
+        "window_title": "Red and Black — Tanaka, 1959–61",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -169,6 +239,20 @@
         "cursor": "#2870d0",
         "cursor_text": "#f5f3f0",
         "selection": "#d8dce8"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.94,
+        "background_blur": 0.55,
+        "inactive_alpha": 0.86,
+        "inactive_blur": 0.55,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.08,
+        "window_title": "Thanks, Sam — Tanaka, 1963",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -197,6 +281,20 @@
         "cursor": "#c82828",
         "cursor_text": "#eaecee",
         "selection": "#c8d0e0"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.97,
+        "background_blur": 0.35,
+        "inactive_alpha": 0.9,
+        "inactive_blur": 0.35,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.12,
+        "window_title": "The Void — Tanaka, 1966",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     }
   ]

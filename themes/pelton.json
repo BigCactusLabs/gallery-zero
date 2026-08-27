@@ -30,9 +30,19 @@
         "cursor_text": "#141833",
         "selection": "#303263"
       },
-      "veil": {
-        "alpha": "0.93",
-        "blur": 0.6
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.93,
+        "background_blur": 0.6,
+        "inactive_alpha": 0.86,
+        "inactive_blur": 0.6,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.12,
+        "window_title": "Ahmi in Egypt — Pelton, 1931",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -61,6 +71,20 @@
         "cursor": "#c25668",
         "cursor_text": "#f3e7d0",
         "selection": "#ead5b8"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.95,
+        "background_blur": 0.5,
+        "inactive_alpha": 0.9,
+        "inactive_blur": 0.5,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.1,
+        "window_title": "Incarnation — Pelton, 1929",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -90,9 +114,19 @@
         "cursor_text": "#0e1630",
         "selection": "#263258"
       },
-      "veil": {
-        "alpha": "0.93",
-        "blur": 0.6
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.93,
+        "background_blur": 0.6,
+        "inactive_alpha": 0.86,
+        "inactive_blur": 0.6,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.14,
+        "window_title": "Messengers — Pelton, 1932",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -121,6 +155,20 @@
         "cursor": "#f26a3c",
         "cursor_text": "#16100e",
         "selection": "#3c2a20"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.97,
+        "background_blur": 0.35,
+        "inactive_alpha": 0.93,
+        "inactive_blur": 0.35,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.06,
+        "window_title": "Mount of Flame — Pelton, 1932",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -150,9 +198,19 @@
         "cursor_text": "#141230",
         "selection": "#2c2858"
       },
-      "veil": {
-        "alpha": "0.93",
-        "blur": 0.6
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.93,
+        "background_blur": 0.6,
+        "inactive_alpha": 0.86,
+        "inactive_blur": 0.6,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.16,
+        "window_title": "Orbits — Pelton, 1934",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -182,9 +240,19 @@
         "cursor_text": "#0d1f24",
         "selection": "#1e3a42"
       },
-      "veil": {
-        "alpha": "0.93",
-        "blur": 0.6
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.91,
+        "background_blur": 0.75,
+        "inactive_alpha": 0.83,
+        "inactive_blur": 0.75,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.12,
+        "window_title": "Sea Change — Pelton, 1931",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -213,6 +281,20 @@
         "cursor": "#5878a4",
         "cursor_text": "#e9edf2",
         "selection": "#ccd9e8"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.92,
+        "background_blur": 0.85,
+        "inactive_alpha": 0.84,
+        "inactive_blur": 0.85,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.14,
+        "window_title": "The Fountains — Pelton, 1926",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     }
   ]

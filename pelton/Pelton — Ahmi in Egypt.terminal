@@ -1187,8 +1187,10 @@
 	DZENlg2ZDaENpA2pDasAAAAAAAACAQAAAAAAAAAoAAAAAAAAAAAAAAAAAAANsA==
 	</data>
 	<key>BackgroundAlphaInactive</key>
-	<real>1.0</real>
+	<real>0.86</real>
 	<key>BackgroundBlur</key>
+	<real>0.6</real>
+	<key>BackgroundBlurInactive</key>
 	<real>0.6</real>
 	<key>BackgroundColor</key>
 	<data>
@@ -1264,6 +1266,8 @@
 	XgBlAHIAfwCUAKcArQCvALEA2ADaANwBBAELAREBFgEYARoBHA1oDW0Ndg2BDYQNjQ2S
 	DZUNnQ2gDaUNpwAAAAAAAAIBAAAAAAAAACgAAAAAAAAAAAAAAAAAAA2s
 	</data>
+	<key>BackgroundSettingsForInactiveWindows</key>
+	<true/>
 	<key>CursorBlink</key>
 	<false/>
 	<key>CursorColor</key>
@@ -1418,8 +1422,12 @@
 	<integer>0</integer>
 	<key>DisableANSIColor</key>
 	<false/>
+	<key>DynamicANSIForegroundColors</key>
+	<false/>
 	<key>FontAntialias</key>
 	<true/>
+	<key>FontHeightSpacing</key>
+	<real>1.12</real>
 	<key>FontWidthSpacing</key>
 	<real>1.0</real>
 	<key>ProfileCurrentVersion</key>
@@ -1505,7 +1513,7 @@
 	<key>ShowActiveProcessArgumentsInTitle</key>
 	<false/>
 	<key>ShowActiveProcessInTitle</key>
-	<true/>
+	<false/>
 	<key>ShowCommandKeyInTitle</key>
 	<false/>
 	<key>ShowDimensionsInTitle</key>
@@ -1674,12 +1682,14 @@
 	<true/>
 	<key>UseOptionAsMetaKey</key>
 	<true/>
+	<key>WindowTitle</key>
+	<string>Ahmi in Egypt — Pelton, 1931</string>
 	<key>columnCount</key>
-	<integer>120</integer>
+	<integer>110</integer>
 	<key>name</key>
 	<string>Pelton — Ahmi in Egypt</string>
 	<key>rowCount</key>
-	<integer>36</integer>
+	<integer>30</integer>
 	<key>type</key>
 	<string>Window Settings</string>
 	<key>useOptionAsMetaKey</key>

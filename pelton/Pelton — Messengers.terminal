@@ -1187,8 +1187,10 @@
 	DYoNkw2YDZsNow2mDasNrQAAAAAAAAIBAAAAAAAAACgAAAAAAAAAAAAAAAAAAA2y
 	</data>
 	<key>BackgroundAlphaInactive</key>
-	<real>1.0</real>
+	<real>0.86</real>
 	<key>BackgroundBlur</key>
+	<real>0.6</real>
+	<key>BackgroundBlurInactive</key>
 	<real>0.6</real>
 	<key>BackgroundColor</key>
 	<data>
@@ -1265,6 +1267,8 @@
 	ASwNeA19DYYNkQ2UDZ0Nog2lDa0NsA21DbcAAAAAAAACAQAAAAAAAAAoAAAAAAAAAAAA
 	AAAAAAANvA==
 	</data>
+	<key>BackgroundSettingsForInactiveWindows</key>
+	<true/>
 	<key>CursorBlink</key>
 	<false/>
 	<key>CursorColor</key>
@@ -1419,8 +1423,12 @@
 	<integer>0</integer>
 	<key>DisableANSIColor</key>
 	<false/>
+	<key>DynamicANSIForegroundColors</key>
+	<false/>
 	<key>FontAntialias</key>
 	<true/>
+	<key>FontHeightSpacing</key>
+	<real>1.14</real>
 	<key>FontWidthSpacing</key>
 	<real>1.0</real>
 	<key>ProfileCurrentVersion</key>
@@ -1506,7 +1514,7 @@
 	<key>ShowActiveProcessArgumentsInTitle</key>
 	<false/>
 	<key>ShowActiveProcessInTitle</key>
-	<true/>
+	<false/>
 	<key>ShowCommandKeyInTitle</key>
 	<false/>
 	<key>ShowDimensionsInTitle</key>
@@ -1675,12 +1683,14 @@
 	<true/>
 	<key>UseOptionAsMetaKey</key>
 	<true/>
+	<key>WindowTitle</key>
+	<string>Messengers — Pelton, 1932</string>
 	<key>columnCount</key>
-	<integer>120</integer>
+	<integer>110</integer>
 	<key>name</key>
 	<string>Pelton — Messengers</string>
 	<key>rowCount</key>
-	<integer>36</integer>
+	<integer>30</integer>
 	<key>type</key>
 	<string>Window Settings</string>
 	<key>useOptionAsMetaKey</key>

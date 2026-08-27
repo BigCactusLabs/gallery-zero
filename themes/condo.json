@@ -29,6 +29,20 @@
         "cursor": "#e8c010",
         "cursor_text": "#101010",
         "selection": "#404040"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.96,
+        "background_blur": 0.4,
+        "inactive_alpha": 0.88,
+        "inactive_blur": 0.4,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.05,
+        "window_title": "Antipodal — Condo, 2000s",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -57,6 +71,20 @@
         "cursor": "#e0c030",
         "cursor_text": "#1a1820",
         "selection": "#383040"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.93,
+        "background_blur": 0.65,
+        "inactive_alpha": 0.85,
+        "inactive_blur": 0.65,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.1,
+        "window_title": "Artificial Realism — Condo, 1980s",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -85,6 +113,20 @@
         "cursor": "#e8b030",
         "cursor_text": "#2a2018",
         "selection": "#483828"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.9,
+        "background_blur": 0.85,
+        "inactive_alpha": 0.81,
+        "inactive_blur": 0.85,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.08,
+        "window_title": "Dancing to Miles — Condo, 1985",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -113,6 +155,20 @@
         "cursor": "#e8a810",
         "cursor_text": "#f0e8e0",
         "selection": "#d8c8b0"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.91,
+        "background_blur": 0.8,
+        "inactive_alpha": 0.83,
+        "inactive_blur": 0.8,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.08,
+        "window_title": "Diagonal — Condo, 2023–24",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -141,6 +197,20 @@
         "cursor": "#b89030",
         "cursor_text": "#1c1010",
         "selection": "#382018"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.97,
+        "background_blur": 0.35,
+        "inactive_alpha": 0.89,
+        "inactive_blur": 0.35,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.12,
+        "window_title": "Dreams and Nightmares — Condo, 2006",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -169,6 +239,20 @@
         "cursor": "#e03888",
         "cursor_text": "#181418",
         "selection": "#382838"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.95,
+        "background_blur": 0.45,
+        "inactive_alpha": 0.87,
+        "inactive_blur": 0.45,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.05,
+        "window_title": "Mental States — Condo, 2011",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -197,6 +281,20 @@
         "cursor": "#38a0a0",
         "cursor_text": "#201c1a",
         "selection": "#3a3430"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.92,
+        "background_blur": 0.7,
+        "inactive_alpha": 0.84,
+        "inactive_blur": 0.7,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.1,
+        "window_title": "People Are Strange — Condo, 2023",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     }
   ]

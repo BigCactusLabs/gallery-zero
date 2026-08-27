@@ -29,6 +29,20 @@
         "cursor": "#e2614a",
         "cursor_text": "#15191a",
         "selection": "#1f3a3e"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.96,
+        "background_blur": 0.4,
+        "inactive_alpha": 0.88,
+        "inactive_blur": 0.4,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.06,
+        "window_title": "Cataract — Riley, 1967",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -57,6 +71,20 @@
         "cursor": "#c9ccd0",
         "cursor_text": "#121315",
         "selection": "#2a2e34"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.97,
+        "background_blur": 0.35,
+        "inactive_alpha": 0.9,
+        "inactive_blur": 0.35,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.05,
+        "window_title": "Fall — Riley, 1963",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -85,6 +113,20 @@
         "cursor": "#c14a2c",
         "cursor_text": "#17110a",
         "selection": "#343a22"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.96,
+        "background_blur": 0.45,
+        "inactive_alpha": 0.88,
+        "inactive_blur": 0.45,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.1,
+        "window_title": "Ka — Riley, 1980",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -113,6 +155,20 @@
         "cursor": "#d2493f",
         "cursor_text": "#111419",
         "selection": "#2c3d63"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.94,
+        "background_blur": 0.55,
+        "inactive_alpha": 0.86,
+        "inactive_blur": 0.55,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.08,
+        "window_title": "Late Morning — Riley, 1967–68",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -141,6 +197,20 @@
         "cursor": "#23211d",
         "cursor_text": "#f4f1ea",
         "selection": "#dcd6c8"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.97,
+        "background_blur": 0.35,
+        "inactive_alpha": 0.92,
+        "inactive_blur": 0.35,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.05,
+        "window_title": "Movement in Squares — Riley, 1961",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -169,6 +239,20 @@
         "cursor": "#e07b3c",
         "cursor_text": "#191418",
         "selection": "#3a2440"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.95,
+        "background_blur": 0.45,
+        "inactive_alpha": 0.87,
+        "inactive_blur": 0.45,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.07,
+        "window_title": "Nataraja — Riley, 1993",
+        "cursor_blink": true,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     },
     {
@@ -197,6 +281,20 @@
         "cursor": "#d98aa6",
         "cursor_text": "#16191e",
         "selection": "#2c3650"
+      },
+      "depth": {
+        "colorspace": "sRGB",
+        "background_alpha": 0.92,
+        "background_blur": 0.7,
+        "inactive_alpha": 0.84,
+        "inactive_blur": 0.7,
+        "columns": 110,
+        "rows": 30,
+        "font_height_spacing": 1.12,
+        "window_title": "To a Summer's Day — Riley, 1980",
+        "cursor_blink": false,
+        "dynamic_ansi_foregrounds": false,
+        "show_cwd_path_in_title": true
       }
     }
   ]

@@ -50,6 +50,14 @@ A single curve, repeated until the surface vibrates at the edge of stillness. Af
 
 ---
 
+## Framing
+
+Every frame is a uniform 110×30, and the glass is cut to the surface — which, in Riley's case, is razor-flat and opaque almost everywhere. *Fall* and *Movement in Squares* hang behind the densest panes in the gallery; only *To a Summer's Day*, light on moving water, thins toward atmosphere. Line spacing stays tight where the pattern squeezes and relaxes where the stripes are codified into law. The cursor blinks with the optical churn — five of seven flicker — and holds still only in the Egyptian calm of *Ka* and the summer drift.
+
+Each title bar carries a museum placard — *Fall — Riley, 1963* — alongside the working directory. The full recipe per theme lives in [`themes/riley.json`](../themes/riley.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
+
+---
+
 ## Acquisition
 
 Double-click any `.terminal` file in this directory. It will appear in **Terminal → Preferences → Profiles**. Select it. Set it as default if you like.
