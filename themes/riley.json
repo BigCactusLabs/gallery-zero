@@ -41,7 +41,7 @@
         "font_height_spacing": 1.06,
         "window_title": "Cataract — Riley, 1967",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -83,7 +83,7 @@
         "font_height_spacing": 1.05,
         "window_title": "Fall — Riley, 1963",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -125,7 +125,7 @@
         "font_height_spacing": 1.1,
         "window_title": "Ka — Riley, 1980",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -167,7 +167,7 @@
         "font_height_spacing": 1.08,
         "window_title": "Late Morning — Riley, 1967–68",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -209,7 +209,7 @@
         "font_height_spacing": 1.05,
         "window_title": "Movement in Squares — Riley, 1961",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -251,7 +251,7 @@
         "font_height_spacing": 1.07,
         "window_title": "Nataraja — Riley, 1993",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -293,7 +293,7 @@
         "font_height_spacing": 1.12,
         "window_title": "To a Summer's Day — Riley, 1980",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     }

@@ -41,7 +41,7 @@
         "font_height_spacing": 1.12,
         "window_title": "Alquimia Plata — de Amaral, 1980s–90s",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -83,7 +83,7 @@
         "font_height_spacing": 1.08,
         "window_title": "Alquimia — de Amaral, 1984",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -125,7 +125,7 @@
         "font_height_spacing": 1.16,
         "window_title": "Bruma — de Amaral, 2010s",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -167,7 +167,7 @@
         "font_height_spacing": 1.07,
         "window_title": "Hojarasca — de Amaral, late 1970s",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -209,7 +209,7 @@
         "font_height_spacing": 1.05,
         "window_title": "Muro Tejido — de Amaral, 1970s",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -251,7 +251,7 @@
         "font_height_spacing": 1.1,
         "window_title": "Sol — de Amaral, c. 1984–2010s",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -293,7 +293,7 @@
         "font_height_spacing": 1.06,
         "window_title": "Strata — de Amaral, 2000s",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     }

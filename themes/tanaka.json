@@ -41,7 +41,7 @@
         "font_height_spacing": 1.06,
         "window_title": "Electric Dress — Tanaka, 1956",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -83,7 +83,7 @@
         "font_height_spacing": 1.05,
         "window_title": "Gate of Hell — Tanaka, 1965",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -125,7 +125,7 @@
         "font_height_spacing": 1.14,
         "window_title": "Late Clarity — Tanaka, c. 1990–2005",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -167,7 +167,7 @@
         "font_height_spacing": 1.05,
         "window_title": "Neon District — Tanaka, 1984–88",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -209,7 +209,7 @@
         "font_height_spacing": 1.1,
         "window_title": "Red and Black — Tanaka, 1959–61",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -251,7 +251,7 @@
         "font_height_spacing": 1.08,
         "window_title": "Thanks, Sam — Tanaka, 1963",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -293,7 +293,7 @@
         "font_height_spacing": 1.12,
         "window_title": "The Void — Tanaka, 1966",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     }

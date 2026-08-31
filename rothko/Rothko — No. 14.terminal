@@ -1427,7 +1427,7 @@
 	<key>DisableANSIColor</key>
 	<false/>
 	<key>DynamicANSIForegroundColors</key>
-	<false/>
+	<true/>
 	<key>FontAntialias</key>
 	<true/>
 	<key>FontHeightSpacing</key>

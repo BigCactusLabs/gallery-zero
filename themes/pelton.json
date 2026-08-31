@@ -41,7 +41,7 @@
         "font_height_spacing": 1.12,
         "window_title": "Ahmi in Egypt — Pelton, 1931",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -83,7 +83,7 @@
         "font_height_spacing": 1.1,
         "window_title": "Incarnation — Pelton, 1929",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -125,7 +125,7 @@
         "font_height_spacing": 1.14,
         "window_title": "Messengers — Pelton, 1932",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -167,7 +167,7 @@
         "font_height_spacing": 1.06,
         "window_title": "Mount of Flame — Pelton, 1932",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -209,7 +209,7 @@
         "font_height_spacing": 1.16,
         "window_title": "Orbits — Pelton, 1934",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -251,7 +251,7 @@
         "font_height_spacing": 1.12,
         "window_title": "Sea Change — Pelton, 1931",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -293,7 +293,7 @@
         "font_height_spacing": 1.14,
         "window_title": "The Fountains — Pelton, 1926",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     }

@@ -41,7 +41,7 @@
         "font_height_spacing": 1.05,
         "window_title": "Antipodal — Condo, 2000s",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -83,7 +83,7 @@
         "font_height_spacing": 1.1,
         "window_title": "Artificial Realism — Condo, 1980s",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -125,7 +125,7 @@
         "font_height_spacing": 1.08,
         "window_title": "Dancing to Miles — Condo, 1985",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -167,7 +167,7 @@
         "font_height_spacing": 1.08,
         "window_title": "Diagonal — Condo, 2023–24",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -209,7 +209,7 @@
         "font_height_spacing": 1.12,
         "window_title": "Dreams and Nightmares — Condo, 2006",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -251,7 +251,7 @@
         "font_height_spacing": 1.05,
         "window_title": "Mental States — Condo, 2011",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -293,7 +293,7 @@
         "font_height_spacing": 1.1,
         "window_title": "People Are Strange — Condo, 2023",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     }

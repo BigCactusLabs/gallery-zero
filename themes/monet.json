@@ -34,14 +34,14 @@
         "colorspace": "sRGB",
         "background_alpha": 0.88,
         "background_blur": 0.95,
-        "inactive_alpha": 0.79,
+        "inactive_alpha": 0.88,
         "inactive_blur": 0.95,
         "columns": 110,
         "rows": 30,
         "font_height_spacing": 1.14,
         "window_title": "Brume — Monet, 1872",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -74,16 +74,16 @@
       },
       "depth": {
         "colorspace": "sRGB",
-        "background_alpha": 0.87,
+        "background_alpha": 0.92,
         "background_blur": 1.0,
-        "inactive_alpha": 0.78,
+        "inactive_alpha": 0.92,
         "inactive_blur": 1.0,
         "columns": 110,
         "rows": 30,
         "font_height_spacing": 1.16,
         "window_title": "Crépuscule — Monet, 1904",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -118,14 +118,14 @@
         "colorspace": "sRGB",
         "background_alpha": 0.95,
         "background_blur": 0.45,
-        "inactive_alpha": 0.87,
+        "inactive_alpha": 0.88,
         "inactive_blur": 0.45,
         "columns": 110,
         "rows": 30,
         "font_height_spacing": 1.08,
         "window_title": "Effet du Matin — Monet, 1894",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -160,14 +160,14 @@
         "colorspace": "sRGB",
         "background_alpha": 0.94,
         "background_blur": 0.55,
-        "inactive_alpha": 0.85,
+        "inactive_alpha": 0.91,
         "inactive_blur": 0.55,
         "columns": 110,
         "rows": 30,
         "font_height_spacing": 1.1,
         "window_title": "Lumière Dorée — Monet, 1890",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -202,14 +202,14 @@
         "colorspace": "sRGB",
         "background_alpha": 0.9,
         "background_blur": 0.85,
-        "inactive_alpha": 0.82,
+        "inactive_alpha": 0.89,
         "inactive_blur": 0.85,
         "columns": 110,
         "rows": 30,
         "font_height_spacing": 1.16,
         "window_title": "Nymphéas — Monet, 1914–26",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -251,7 +251,7 @@
         "font_height_spacing": 1.06,
         "window_title": "Plein Soleil — Monet, 1873",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -286,14 +286,14 @@
         "colorspace": "sRGB",
         "background_alpha": 0.89,
         "background_blur": 0.9,
-        "inactive_alpha": 0.8,
+        "inactive_alpha": 0.89,
         "inactive_blur": 0.9,
         "columns": 110,
         "rows": 30,
         "font_height_spacing": 1.12,
         "window_title": "Soleil Couchant — Monet, 1908",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     }

@@ -41,7 +41,7 @@
         "font_height_spacing": 1.05,
         "window_title": "Black and Orange — Rothko, 1957",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -76,14 +76,14 @@
         "colorspace": "sRGB",
         "background_alpha": 0.87,
         "background_blur": 1.0,
-        "inactive_alpha": 0.78,
+        "inactive_alpha": 0.85,
         "inactive_blur": 1.0,
         "columns": 110,
         "rows": 30,
         "font_height_spacing": 1.16,
         "window_title": "Blue Divided by Blue — Rothko, 1966",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -118,14 +118,14 @@
         "colorspace": "sRGB",
         "background_alpha": 0.9,
         "background_blur": 1.0,
-        "inactive_alpha": 0.82,
+        "inactive_alpha": 0.86,
         "inactive_blur": 1.0,
         "columns": 110,
         "rows": 30,
         "font_height_spacing": 1.1,
         "window_title": "Blue and Grey — Rothko, 1954",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -167,7 +167,7 @@
         "font_height_spacing": 1.06,
         "window_title": "Earth and Green — Rothko, 1956",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -209,7 +209,7 @@
         "font_height_spacing": 1.08,
         "window_title": "Green on Tangerine — Rothko, 1948–49",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -251,7 +251,7 @@
         "font_height_spacing": 1.12,
         "window_title": "No. 14 — Rothko, 1960",
         "cursor_blink": false,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     },
@@ -293,7 +293,7 @@
         "font_height_spacing": 1.12,
         "window_title": "Seagram Murals — Rothko, 1958–59",
         "cursor_blink": true,
-        "dynamic_ansi_foregrounds": false,
+        "dynamic_ansi_foregrounds": true,
         "show_cwd_path_in_title": true
       }
     }

@@ -1187,7 +1187,7 @@
 	DYoNkw2YDZsNow2mDasNrQAAAAAAAAIBAAAAAAAAACgAAAAAAAAAAAAAAAAAAA2y
 	</data>
 	<key>BackgroundAlphaInactive</key>
-	<real>0.82</real>
+	<real>0.86</real>
 	<key>BackgroundBlur</key>
 	<real>1.0</real>
 	<key>BackgroundBlurInactive</key>
@@ -1424,7 +1424,7 @@
 	<key>DisableANSIColor</key>
 	<false/>
 	<key>DynamicANSIForegroundColors</key>
-	<false/>
+	<true/>
 	<key>FontAntialias</key>
 	<true/>
 	<key>FontHeightSpacing</key>
