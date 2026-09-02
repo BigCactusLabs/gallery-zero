@@ -14,13 +14,13 @@ Fun consequence: you can retint a profile with a text substitution on bytes insi
 
 ## The glass: alpha baked into the paint
 
-Terminal has no `BackgroundAlpha` key. Window transparency *is* the alpha component of the archived background `NSColor` — the fourth float in those component strings. Pair it with `BackgroundBlur` (0–1, frosted glass over whatever's behind) and the window becomes a pane instead of a poster. `BackgroundAlphaInactive` / `BackgroundBlurInactive` control the unfocused state — the **veil** that began in the Pelton collection, now the room-stays-dim trick hung throughout the gallery.
+Terminal has no `BackgroundAlpha` key. Window transparency *is* the alpha component of the archived background `NSColor` — the fourth float in those component strings. Pair it with `BackgroundBlur` (0–1, frosted glass over whatever's behind) and the window becomes a pane instead of a poster. `BackgroundAlphaInactive` / `BackgroundBlurInactive` control the unfocused state. The gallery follows Apple's own translucent profiles (Clear Light 0.93, Clear Dark 0.95, blur 0.5): an unfocused window keeps its alpha and drops its blur to 0.25 — Apple goes to zero, but with many terminals open a sharp pane ghosts the text behind it, and a light blur smears that into a flat tint. The earlier **veil** — thinner glass when unfocused — lifted dark panes to mid-grey over a bright desktop and was retired.
 
-We tune these per painting: dense late-Rothko glazes get near-opaque low-blur glass; acrylic-on-paper gets the thinnest, most luminous pane in the building.
+We tune these per painting within a fixed band: alpha 0.93–0.98, blur 0–0.5. Dense late-Rothko glazes sit at the top of the band; acrylic-on-paper sits at the bottom, still the thinnest pane in the building. Because transparency mixes the profile background with whatever is behind the window, the specs are audited against black, mid-grey, and white backing colors. Foreground text must keep a contrast ratio of at least 4.5:1 in active and inactive windows, and the audit enforces the band itself.
 
 ## The light: sixteen ANSI values
 
-The palette is the painting reduced to `black`→`bright_white`, plus background, foreground, bold, cursor, and selection. `DynamicANSIForegroundColors` lets Terminal auto-adjust ANSI text colors for contrast against the background — useful when the canvas is nearly black.
+The palette is the painting reduced to `black`→`bright_white`, plus background, foreground, bold, cursor, and selection. Every Gallery Zero profile enables `DynamicANSIForegroundColors`, which lets Terminal adjust ANSI foreground use when a specified color would be difficult to read. The source palette stays unchanged in `themes/*.json`.
 
 ## The placard: window titles
 
@@ -46,8 +46,14 @@ On Tahoe, if a file-opened profile contains `RunCommandAsShell` at all, Terminal
 
 ## The studio: spec-driven generation
 
-`themes/*.json` is the source of truth — palette plus a `depth`/`veil` block per theme. A generator turns specs into `.terminal` plists, so the archive blobs are reproducible and the JSON diffs like prose. The SVG swatches in the README are generated from the same specs.
+`themes/*.json` is the source of truth — palette plus a `depth`/`veil` block per theme. The checked-in SVG swatches and `.terminal` files show that source in different forms. The profile tool keeps the depth settings synchronized and verifies every palette and depth value:
+
+```sh
+python3 tools/profiles.py sync-depth
+python3 tools/profiles.py verify
+python3 tools/profiles.py audit-contrast
+```
 
 ---
 
-*Nothing here is documented by Apple. All of it survives an import dialog.*
+*The profile-file details are AppKit archaeology. All of them survive an import dialog.*
