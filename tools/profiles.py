@@ -34,6 +34,13 @@ ANSI_KEYS = (
 
 CONTRAST_MINIMUM = 4.5
 
+# Glass policy. Apple's bundled translucent profiles (Clear Light 0.93, Clear
+# Dark 0.95, blur 0.5) hold alpha when unfocused and drop blur to zero; thinner
+# or blurrier glass lifts a dark pane to mid-grey over a bright desktop.
+ALPHA_FLOOR = 0.93
+BLUR_CAP = 0.5
+BACKINGS = ("#000000", "#808080", "#ffffff")
+
 COLOR_KEYS = {
     "black": "ANSIBlackColor",
     "red": "ANSIRedColor",
@@ -125,11 +132,20 @@ def audit_theme(artist: str, theme: dict[str, Any]) -> list[str]:
         if ratio < CONTRAST_MINIMUM:
             issues.append(f"{key} on opaque background: {ratio:.2f}:1 < {CONTRAST_MINIMUM:.2f}:1")
 
+    if depth["background_alpha"] < ALPHA_FLOOR:
+        issues.append(f"background alpha {depth['background_alpha']!r} < floor {ALPHA_FLOOR!r}")
+    if depth["background_blur"] > BLUR_CAP:
+        issues.append(f"background blur {depth['background_blur']!r} > cap {BLUR_CAP!r}")
+    if depth["inactive_alpha"] != depth["background_alpha"]:
+        issues.append("inactive alpha must equal background alpha")
+    if depth["inactive_blur"] != 0:
+        issues.append(f"inactive blur {depth['inactive_blur']!r} must be 0")
+
     for state, alpha_key in (
         ("active", "background_alpha"),
         ("inactive", "inactive_alpha"),
     ):
-        for backing in ("#000000", "#ffffff"):
+        for backing in BACKINGS:
             rendered_background = composite(colors["background"], backing, depth[alpha_key])
             for key in ("foreground", "bold"):
                 ratio = contrast_ratio(colors[key], rendered_background)
@@ -138,6 +154,17 @@ def audit_theme(artist: str, theme: dict[str, Any]) -> list[str]:
                     issues.append(
                         f"{label}{state} background over {backing}: "
                         f"{ratio:.2f}:1 < {CONTRAST_MINIMUM:.2f}:1"
+                    )
+            if state == "active" and not depth["dynamic_ansi_foregrounds"]:
+                glass_failing = [
+                    key
+                    for key in ANSI_KEYS
+                    if contrast_ratio(colors[key], rendered_background) < CONTRAST_MINIMUM
+                ]
+                if glass_failing:
+                    issues.append(
+                        f"dynamic ANSI foregrounds are disabled while {len(glass_failing)} "
+                        f"ANSI colors are below {CONTRAST_MINIMUM:.2f}:1 over {backing}"
                     )
 
     failing_ansi = [

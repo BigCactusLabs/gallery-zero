@@ -52,7 +52,7 @@ A rose bloom floating on a glowing golden ground, blue mountain shards beneath. 
 
 ## Framing
 
-Every frame is a uniform 110×30, and the glass keeps the veil this collection was born with. *Ahmi in Egypt*, *Messengers*, and *Orbits* hold their original pane — 93% opacity, frosted — while *Sea Change*, the most literally translucent canvas she painted, thins a shade further. Only *Mount of Flame* hangs opaque: power is mass, not mist, and it carries the collection's one blinking ember. Everywhere else the cursor is still and the line spacing is wide — widest where the spheres keep their appointed distance. If you prefer your darkness absolute, raise the opacity under **Terminal → Preferences → Profiles → Window**.
+Every frame is a uniform 110×30, and the glass keeps the veil this collection was born with. *Ahmi in Egypt*, *Messengers*, and *Orbits* share one pane — 96% opacity, lightly frosted — while *Sea Change*, the most literally translucent canvas she painted, thins a shade further. Only *Mount of Flame* hangs opaque: power is mass, not mist, and it carries the collection's one blinking ember. Everywhere else the cursor is still and the line spacing is wide — widest where the spheres keep their appointed distance. If you prefer your darkness absolute, raise the opacity under **Terminal → Preferences → Profiles → Window**.
 
 Each title bar carries a museum placard — *Orbits — Pelton, 1934* — alongside the working directory. The full recipe per theme lives in [`themes/pelton.json`](../themes/pelton.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
 

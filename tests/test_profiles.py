@@ -106,9 +106,9 @@ def dark_theme(*, active: float, inactive: float, dynamic: bool) -> dict:
         },
         "depth": {
             "background_alpha": active,
-            "background_blur": 1.0,
+            "background_blur": 0.5,
             "inactive_alpha": inactive,
-            "inactive_blur": 1.0,
+            "inactive_blur": 0.0,
             "columns": 110,
             "rows": 30,
             "font_height_spacing": 1.16,
@@ -144,9 +144,22 @@ class ContrastAuditTests(unittest.TestCase):
         self.assertIn("inactive background over #ffffff: 2.84:1 < 4.50:1", issues)
         self.assertTrue(any(issue.startswith("bold inactive background") for issue in issues))
         self.assertTrue(any("dynamic ANSI foregrounds are disabled" in issue for issue in issues))
+        self.assertTrue(any("over #808080" in issue for issue in issues))
+
+    def test_rejects_glass_outside_policy(self) -> None:
+        theme = dark_theme(active=0.92, inactive=0.85, dynamic=True)
+        theme["depth"]["background_blur"] = 0.85
+        theme["depth"]["inactive_blur"] = 0.85
+
+        issues = audit_theme("Fixture", theme)
+
+        self.assertIn("background alpha 0.92 < floor 0.93", issues)
+        self.assertIn("background blur 0.85 > cap 0.5", issues)
+        self.assertIn("inactive alpha must equal background alpha", issues)
+        self.assertIn("inactive blur 0.85 must be 0", issues)
 
     def test_accepts_contrast_safe_glass_with_dynamic_ansi(self) -> None:
-        issues = audit_theme("Fixture", dark_theme(active=0.92, inactive=0.92, dynamic=True))
+        issues = audit_theme("Fixture", dark_theme(active=0.93, inactive=0.93, dynamic=True))
 
         self.assertEqual([], issues)
 
@@ -204,14 +217,14 @@ class ProfileSyncTests(unittest.TestCase):
 
 class ProfileVerificationTests(unittest.TestCase):
     def test_accepts_profile_that_matches_all_colors_and_depth(self) -> None:
-        theme = dark_theme(active=0.92, inactive=0.92, dynamic=True)
+        theme = dark_theme(active=0.93, inactive=0.93, dynamic=True)
 
         issues = verify_profile_xml("Fixture — Dark", complete_profile_xml(theme), theme)
 
         self.assertEqual([], issues)
 
     def test_reports_color_and_depth_mismatches(self) -> None:
-        theme = dark_theme(active=0.92, inactive=0.92, dynamic=True)
+        theme = dark_theme(active=0.93, inactive=0.93, dynamic=True)
         profile = plistlib.loads(complete_profile_xml(theme))
         profile["ANSIRedColor"] = archived_color(1.0, 0.0, 0.0, 1.0)
         profile["DynamicANSIForegroundColors"] = False
@@ -233,7 +246,7 @@ class ProfileVerificationTests(unittest.TestCase):
             spec = {
                 "collection": "fixture",
                 "artist": "Fixture",
-                "themes": [dark_theme(active=0.92, inactive=0.92, dynamic=True)],
+                "themes": [dark_theme(active=0.93, inactive=0.93, dynamic=True)],
             }
             (root / "themes" / "fixture.json").write_text(json.dumps(spec))
 
