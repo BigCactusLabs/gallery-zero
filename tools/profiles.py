@@ -36,9 +36,12 @@ CONTRAST_MINIMUM = 4.5
 
 # Glass policy. Apple's bundled translucent profiles (Clear Light 0.93, Clear
 # Dark 0.95, blur 0.5) hold alpha when unfocused and drop blur to zero; thinner
-# or blurrier glass lifts a dark pane to mid-grey over a bright desktop.
+# or blurrier glass lifts a dark pane to mid-grey over a bright desktop. We keep
+# a light unfocused blur so text in the window behind smears to a flat tint
+# instead of ghosting through.
 ALPHA_FLOOR = 0.93
 BLUR_CAP = 0.5
+INACTIVE_BLUR = 0.25
 BACKINGS = ("#000000", "#808080", "#ffffff")
 
 COLOR_KEYS = {
@@ -138,8 +141,8 @@ def audit_theme(artist: str, theme: dict[str, Any]) -> list[str]:
         issues.append(f"background blur {depth['background_blur']!r} > cap {BLUR_CAP!r}")
     if depth["inactive_alpha"] != depth["background_alpha"]:
         issues.append("inactive alpha must equal background alpha")
-    if depth["inactive_blur"] != 0:
-        issues.append(f"inactive blur {depth['inactive_blur']!r} must be 0")
+    if depth["inactive_blur"] != INACTIVE_BLUR:
+        issues.append(f"inactive blur {depth['inactive_blur']!r} must be {INACTIVE_BLUR!r}")
 
     for state, alpha_key in (
         ("active", "background_alpha"),

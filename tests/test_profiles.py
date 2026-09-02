@@ -108,7 +108,7 @@ def dark_theme(*, active: float, inactive: float, dynamic: bool) -> dict:
             "background_alpha": active,
             "background_blur": 0.5,
             "inactive_alpha": inactive,
-            "inactive_blur": 0.0,
+            "inactive_blur": 0.25,
             "columns": 110,
             "rows": 30,
             "font_height_spacing": 1.16,
@@ -156,7 +156,7 @@ class ContrastAuditTests(unittest.TestCase):
         self.assertIn("background alpha 0.92 < floor 0.93", issues)
         self.assertIn("background blur 0.85 > cap 0.5", issues)
         self.assertIn("inactive alpha must equal background alpha", issues)
-        self.assertIn("inactive blur 0.85 must be 0", issues)
+        self.assertIn("inactive blur 0.85 must be 0.25", issues)
 
     def test_accepts_contrast_safe_glass_with_dynamic_ansi(self) -> None:
         issues = audit_theme("Fixture", dark_theme(active=0.93, inactive=0.93, dynamic=True))

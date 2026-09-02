@@ -1192,7 +1192,7 @@
 	<key>BackgroundBlur</key>
 	<real>0.33</real>
 	<key>BackgroundBlurInactive</key>
-	<real>0.0</real>
+	<real>0.25</real>
 	<key>BackgroundColor</key>
 	<data>
 	YnBsaXN0MDDUAQIDBAUGJCdZJGFyY2hpdmVyWCRvYmplY3RzVCR0b3BYJHZlcnNpb25f
