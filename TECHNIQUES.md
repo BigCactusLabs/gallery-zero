@@ -46,9 +46,10 @@ On Tahoe, if a file-opened profile contains `RunCommandAsShell` at all, Terminal
 
 ## The studio: spec-driven generation
 
-`themes/*.json` is the source of truth — palette plus a `depth`/`veil` block per theme. The checked-in SVG swatches and `.terminal` files show that source in different forms. The profile tool keeps the depth settings synchronized and verifies every palette and depth value:
+`themes/*.json` is the source of truth — palette plus a `depth` block per theme. The checked-in SVG swatches and `.terminal` files show that source in different forms. The profile tool writes the palette and depth settings into the `.terminal` files and verifies every palette and depth value:
 
 ```sh
+python3 tools/profiles.py sync-colors
 python3 tools/profiles.py sync-depth
 python3 tools/profiles.py verify
 python3 tools/profiles.py audit-contrast

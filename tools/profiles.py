@@ -214,6 +214,35 @@ def _update_background_alpha(data: bytes, alpha: float) -> bytes:
     return plistlib.dumps(archive, fmt=plistlib.FMT_BINARY, sort_keys=False)
 
 
+def _replace_rgb(components: bytes, hex_color: str) -> bytes:
+    terminator = b"\x00" if components.endswith(b"\x00") else b""
+    body = components[: -len(terminator)] if terminator else components
+    values = body.split(b" ")
+    if len(values) < 3:
+        raise ValueError("NSColor components do not contain an RGB triple")
+    rgb = [f"{component:.10g}".encode("ascii") for component in _rgb(hex_color)]
+    return b" ".join(rgb + values[3:]) + terminator
+
+
+def _update_rgb(data: bytes, hex_color: str) -> bytes:
+    archive = plistlib.loads(data)
+    root = _color_root(archive)
+    for key in ("NSComponents", "NSRGB"):
+        value = root.get(key)
+        if not isinstance(value, bytes):
+            raise ValueError(f"NSColor archive is missing byte field {key}")
+        root[key] = _replace_rgb(value, hex_color)
+    return plistlib.dumps(archive, fmt=plistlib.FMT_BINARY, sort_keys=False)
+
+
+def sync_colors_xml(xml: bytes, colors: dict[str, str]) -> bytes:
+    """Rewrite each color's RGB from the spec, keeping its alpha and color space."""
+    profile = plistlib.loads(xml)
+    for color_name, profile_key in COLOR_KEYS.items():
+        profile[profile_key] = _update_rgb(profile[profile_key], colors[color_name])
+    return plistlib.dumps(profile, fmt=plistlib.FMT_XML, sort_keys=False)
+
+
 def sync_profile_xml(xml: bytes, depth: dict[str, Any]) -> bytes:
     profile = plistlib.loads(xml)
     profile["BackgroundColor"] = _update_background_alpha(
@@ -343,6 +372,18 @@ def _sync_depth(records: Sequence[ProfileRecord]) -> int:
     return 0
 
 
+def _sync_colors(records: Sequence[ProfileRecord]) -> int:
+    updated = 0
+    for record in records:
+        original = record.artifact_path.read_bytes()
+        result = sync_colors_xml(original, record.theme["colors"])
+        if result != original:
+            record.artifact_path.write_bytes(result)
+            updated += 1
+    print(f"PROFILES={len(records)} UPDATED={updated}")
+    return 0
+
+
 def _verify(records: Sequence[ProfileRecord]) -> int:
     mismatches = 0
     for record in records:
@@ -368,7 +409,7 @@ def _audit_contrast(records: Sequence[ProfileRecord]) -> int:
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "command", choices=("sync-depth", "verify", "audit-contrast")
+        "command", choices=("sync-colors", "sync-depth", "verify", "audit-contrast")
     )
     parser.add_argument(
         "--root",
@@ -386,6 +427,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     except (KeyError, OSError, RepositoryError, ValueError, json.JSONDecodeError) as error:
         print(f"error: {error}", file=sys.stderr)
         return 2
+    if arguments.command == "sync-colors":
+        return _sync_colors(records)
     if arguments.command == "sync-depth":
         return _sync_depth(records)
     if arguments.command == "verify":

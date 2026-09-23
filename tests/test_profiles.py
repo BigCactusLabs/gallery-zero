@@ -8,6 +8,7 @@ from tools.profiles import (
     RepositoryError,
     audit_theme,
     load_repository,
+    sync_colors_xml,
     sync_profile_xml,
     verify_profile_xml,
 )
@@ -211,6 +212,33 @@ class ProfileSyncTests(unittest.TestCase):
 
         once = sync_profile_xml(profile_xml(), depth)
         twice = sync_profile_xml(once, depth)
+
+        self.assertEqual(once, twice)
+
+
+class ColorSyncTests(unittest.TestCase):
+    def test_syncs_rgb_and_keeps_alpha_and_unrelated_settings(self) -> None:
+        theme = dark_theme(active=0.93, inactive=0.93, dynamic=True)
+        profile = plistlib.loads(complete_profile_xml(theme))
+        profile["ANSIRedColor"] = archived_color(1.0, 0.0, 0.0, 1.0)
+        profile["BackgroundColor"] = archived_color(1.0, 1.0, 1.0, 0.93)
+        stale = plistlib.dumps(profile, fmt=plistlib.FMT_XML, sort_keys=False)
+
+        updated = sync_colors_xml(stale, theme["colors"])
+        synced = plistlib.loads(updated)
+        color = plistlib.loads(synced["BackgroundColor"])
+        root = color["$objects"][color["$top"]["root"].data]
+
+        self.assertEqual([], verify_profile_xml("Fixture — Dark", updated, theme))
+        self.assertEqual(b"0.09411764706 0.0862745098 0.1254901961 0.93", root["NSComponents"])
+        self.assertEqual(b"0.09411764706 0.0862745098 0.1254901961 0.93\x00", root["NSRGB"])
+        self.assertEqual("preserve-me", synced["UnrelatedSetting"])
+
+    def test_color_sync_is_idempotent(self) -> None:
+        theme = dark_theme(active=0.93, inactive=0.93, dynamic=True)
+
+        once = sync_colors_xml(complete_profile_xml(theme), theme["colors"])
+        twice = sync_colors_xml(once, theme["colors"])
 
         self.assertEqual(once, twice)
 
