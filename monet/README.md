@@ -40,7 +40,7 @@ The hour when shadows are longer than what casts them. After the *Haystacks*, 18
 
 <img src="../.github/swatches/soleil-couchant.svg" width="360" alt="Soleil Couchant palette" />
 
-Venice dissolving into its own reflection. After *San Giorgio Maggiore at Dusk*, 1908.
+The cliff at Étretat gone dark against the setting sun, with the sea still holding the light. After *The Cliff, Étretat, Sunset*, 1882–83.
 
 ### Crépuscule
 
@@ -50,9 +50,19 @@ Parliament through fog. The empire, dimly. After *Houses of Parliament, London*,
 
 ---
 
+## Palette
+
+Each palette is sampled from an image of its painting, and the sixteen ANSI colors are drawn from the pigments Monet listed in 1905 — lead white, cadmium yellow, vermilion, madder, cobalt blue and viridian — plus the cobalt violet and ultramarine in his colourman's records ([Roy, *National Gallery Technical Bulletin* 28, 2007](https://www.nationalgallery.org.uk/media/15524/roy2007.pdf)). Black is "very rarely present" in his paintings, so ANSI black is a colored shadow rather than near-black.
+
+Each painting's dominant pair of colors runs at full strength and the rest stay quieter: viridian against cobalt violet in *Nymphéas*, cadmium yellow against blue in *Effet du Matin*, the orange sun against the ultramarine cliff in *Soleil Couchant*. *Crépuscule* lays its twelve ANSI colors along the single arc of hue the Parliament canvas runs through, from lavender through rose and coral to olive-gold.
+
+On the five dark grounds every ANSI color except black and bright black reaches 4.5:1 contrast; bright black stays dimmer on purpose, for comments and secondary text. On the two light grounds the white and bright variants fall below that (and yellow on *Plein Soleil*); Terminal's dynamic ANSI foregrounds adjust those at render time.
+
+---
+
 ## Framing
 
-Every frame is a uniform 110×30, and the glass is cut to the weather. The fogs get the thinnest panes in the building — *Crépuscule* is barely there at all — while the crusted stone of *Effet du Matin* and the full daylight of *Plein Soleil* sit behind dense, nearly clear glass. Line spacing opens with the atmosphere, widest over the lily pond. The cursor blinks only where something burns: the poppy field at noon, the lagoon at dusk.
+Every frame is a uniform 110×30, and the glass is cut to the weather. *Brume* and *Soleil Couchant* sit behind the thinnest panes (94% opaque), while the crusted stone of *Effet du Matin* and the full daylight of *Plein Soleil* sit behind the densest (97–98%). Line spacing opens with the atmosphere, widest over the lily pond and the Parliament fog. The cursor blinks only where something burns: the poppy field at noon, the sun at Étretat.
 
 Each title bar carries a museum placard — *Nymphéas — Monet, 1914–26* — alongside the working directory. The full recipe per theme lives in [`themes/monet.json`](../themes/monet.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
 
