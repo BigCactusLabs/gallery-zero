@@ -16,7 +16,7 @@ Two hundred bulbs in nine colors, worn like a second skin. The circuit that star
 
 <img src="../.github/swatches/red-and-black.svg" width="360" alt="Red and Black palette" />
 
-Two wires, one circuit. The world before the palette expanded. After the early paintings, 1959–61.
+Two wires, one circuit. The world before the palette expanded. After *Work*, 1958.
 
 ### Thanks, Sam
 
@@ -34,7 +34,7 @@ Quivering lines spewing from concentric rings. The nervous system, exposed. Afte
 
 <img src="../.github/swatches/the-void.svg" width="360" alt="The Void palette" />
 
-Shiny red circles. Bright blue paths. A black void where the signal drops. After *Untitled*, 1966.
+Shiny red circles. Bright blue paths. A slate void where the signal drops. After *Untitled*, 1966.
 
 ### Neon District
 
@@ -47,6 +47,18 @@ Every color Dotonbori could throw, jostling for space on the same wall. After th
 <img src="../.github/swatches/late-clarity.svg" width="360" alt="Late Clarity palette" />
 
 The same wires, decades later. Every connection earned. After the late paintings, 1990s–2000s.
+
+---
+
+## Palette
+
+Each palette is sampled from an image of its work, and each ground comes from that work's own surface. Tanaka painted in synthetic resin enamel, and the circle paintings sit on white or cream canvas, so *Red and Black* (after *Work*, 1958, Hyogo Prefectural Museum of Art) and *Late Clarity* (after *2001-F*) keep light grounds, warmed or cooled to their canvas. The other grounds come from inside the work. *Electric Dress* is a darkened gallery, with the lamps at full strength and the bare tubes' white as ink. *Gate of Hell* is the oxblood and charcoal of its hottest circles, with every ANSI color bent toward fire. *The Void* is the slate oval at the center of the 1966 canvas, and *Thanks, Sam* is the ultramarine of its great target, with the rings' vermilion, orange, amber and cadmium as its ANSI colors.
+
+*Neon District* keeps its original white ground and pushes its twelve colored ANSI values to the edge of sRGB: `#fd03ff` magenta, `#23ff00` green, `#04feff` cyan, `#feff01` yellow. It is the one profile in the gallery with Terminal's dynamic ANSI foregrounds switched off, so the neon renders unadjusted. Neon yellow, green and cyan text on white is close to invisible, on purpose.
+
+On the four dark grounds every ANSI color except black and bright black reaches 4.5:1 contrast. On *Red and Black* and *Late Clarity* every normal ANSI color passes, while white and the brights sit lighter, like lit bulbs, and Terminal's dynamic ANSI foregrounds adjust them at render time.
+
+Sources: [Takamatsu Art Museum, *Denkifuku*](https://artplatform.go.jp/collections/W411501) (enamel on lamps) and installation photographs; [Hyogo Prefectural Museum of Art bulletin 9](https://www.artm.pref.hyogo.jp/artcenter/pdf/kiyou09.pdf) (*Work*, 1958; lit and unlit bulbs); [Moderna Museet](https://www.modernamuseet.se/en/stockholm/exhibitions/atsuko-tanaka/biography-atsuko-tanaka/) (*Thanks, Sam*); [National Museum of Art, Osaka](https://artsandculture.google.com/asset/gate-of-hell-tanaka-atsuko/0gG6D-WjdgJGBA) (*Gate of Hell*); [The Rachofsky Collection](https://thewarehousedallas.org/artists/atsuko-tanaka/) (*Untitled*, 1966); [Phillips](https://www.phillips.com/detail/atsuko-tanaka/NY010419/198) (*85-E*, 1985); [Marianne Boesky Gallery](https://marianneboeskygallery.com/exhibitions/27/works/artworks-24085-atsuko-tanaka-2001-f-2001/) (*2001-F*, 2001).
 
 ---
 
