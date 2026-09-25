@@ -129,6 +129,12 @@ def audit_theme(artist: str, theme: dict[str, Any]) -> list[str]:
     colors = theme["colors"]
     depth = theme["depth"]
     issues: list[str] = []
+    # A theme may opt out of Terminal's ANSI adjustment to show its palette raw
+    # (Tanaka's Neon District keeps gamut-edge neon on white). The opt-out only
+    # waives the ANSI checks; foreground and bold must still clear the minimum.
+    raw_ansi = depth.get("raw_ansi", False)
+    if raw_ansi and depth["dynamic_ansi_foregrounds"]:
+        issues.append("raw ANSI requires dynamic ANSI foregrounds to be disabled")
 
     for key in ("foreground", "bold"):
         ratio = contrast_ratio(colors[key], colors["background"])
@@ -158,7 +164,7 @@ def audit_theme(artist: str, theme: dict[str, Any]) -> list[str]:
                         f"{label}{state} background over {backing}: "
                         f"{ratio:.2f}:1 < {CONTRAST_MINIMUM:.2f}:1"
                     )
-            if state == "active" and not depth["dynamic_ansi_foregrounds"]:
+            if state == "active" and not depth["dynamic_ansi_foregrounds"] and not raw_ansi:
                 glass_failing = [
                     key
                     for key in ANSI_KEYS
@@ -175,7 +181,7 @@ def audit_theme(artist: str, theme: dict[str, Any]) -> list[str]:
         for key in ANSI_KEYS
         if contrast_ratio(colors[key], colors["background"]) < CONTRAST_MINIMUM
     ]
-    if failing_ansi and not depth["dynamic_ansi_foregrounds"]:
+    if failing_ansi and not depth["dynamic_ansi_foregrounds"] and not raw_ansi:
         issues.append(
             "dynamic ANSI foregrounds are disabled while "
             f"{len(failing_ansi)} ANSI colors are below {CONTRAST_MINIMUM:.2f}:1"

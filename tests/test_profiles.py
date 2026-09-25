@@ -164,6 +164,34 @@ class ContrastAuditTests(unittest.TestCase):
 
         self.assertEqual([], issues)
 
+    def test_raw_ansi_waives_only_the_ansi_checks(self) -> None:
+        theme = dark_theme(active=0.93, inactive=0.93, dynamic=False)
+        theme["colors"]["bright_yellow"] = "#1c1a24"
+        theme["depth"]["raw_ansi"] = True
+
+        self.assertEqual([], audit_theme("Fixture", theme))
+
+        theme["colors"]["foreground"] = "#2a2830"
+        issues = audit_theme("Fixture", theme)
+        self.assertTrue(any(issue.startswith("foreground on opaque background") for issue in issues))
+        self.assertFalse(any("dynamic ANSI" in issue for issue in issues))
+
+    def test_disabled_dynamic_ansi_without_raw_ansi_still_fails(self) -> None:
+        theme = dark_theme(active=0.93, inactive=0.93, dynamic=False)
+        theme["colors"]["bright_yellow"] = "#1c1a24"
+
+        issues = audit_theme("Fixture", theme)
+        self.assertTrue(any("dynamic ANSI foregrounds are disabled" in issue for issue in issues))
+
+    def test_raw_ansi_with_dynamic_ansi_enabled_is_rejected(self) -> None:
+        theme = dark_theme(active=0.93, inactive=0.93, dynamic=True)
+        theme["depth"]["raw_ansi"] = True
+
+        self.assertIn(
+            "raw ANSI requires dynamic ANSI foregrounds to be disabled",
+            audit_theme("Fixture", theme),
+        )
+
 
 class ProfileSyncTests(unittest.TestCase):
     def test_syncs_depth_without_changing_rgb_or_unrelated_settings(self) -> None:
