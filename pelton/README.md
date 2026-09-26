@@ -16,13 +16,7 @@ A red path snakes up from the lower darkness toward a golden lotus and a bejewel
 
 <img src="../.github/swatches/messengers.svg" width="360" alt="Messengers palette" />
 
-Starlight crossing a great distance of blue to arrive exactly here. Pale gold announcements in a deep night. Veiled. After *Messengers*, 1932.
-
-### Mount of Flame
-
-<img src="../.github/swatches/mount-of-flame.svg" width="360" alt="Mount of Flame palette" />
-
-Fire held in dense darkness — the one canvas whose power is mass, not mist. The collection's single opaque dark. After *Mount of Flame*, 1932.
+Palm fronds of pale gold above a tall cone of light, with ultramarine water and rose-lit peaks below. A steel-blue dusk ground with quiet accents. Veiled. After *Messengers*, 1932.
 
 ### Sea Change
 
@@ -34,25 +28,31 @@ Submarine blue-greens and pearl, the light of a world seen through water. The mo
 
 <img src="../.github/swatches/orbits.svg" width="360" alt="Orbits palette" />
 
-Celestial spheres suspended in a depth of violet sky, each keeping its appointed distance. Veiled. After *Orbits*, 1934.
+Stars on looping orbits under a lavender cloud: amber, lemon, cobalt, rose, lilac and cyan at full strength on near-black navy. Veiled. After *Orbits*, 1934.
+
+### Tall Ginger
+
+<img src="../.github/swatches/tall-ginger.svg" width="360" alt="Tall Ginger palette" />
+
+Coral and pink ginger blooms among dark leaves, on a maroon ground that warms to salmon. Painted after her 1923–24 stay in Hawaii, and her first symmetrical composition. The collection's one opaque profile. After *Tall Ginger*, c. 1925.
 
 ### The Fountains
 
 <img src="../.github/swatches/the-fountains.svg" width="360" alt="The Fountains palette" />
 
-A misty gray-blue orb on an ethereal ground of ambiguous origin. Her earliest abstraction here, and the gallery's palest room. After *The Fountains*, 1926.
+A grey orb inside an iridescent veil, lit by a pale yellow sun. Lemon ground, slate text, and the bubbles' rose, green, gold, blue and violet. Her earliest abstraction here. After *The Fountains*, 1926.
 
-### Incarnation
+### Winter
 
-<img src="../.github/swatches/incarnation.svg" width="360" alt="Incarnation palette" />
+<img src="../.github/swatches/winter.svg" width="360" alt="Winter palette" />
 
-A rose bloom floating on a glowing golden ground, blue mountain shards beneath. Light that appears to have a body. After *Incarnation*, 1929.
+A lavender-white arch glowing pink from within, between snow-covered trees, under a blue sphere. The arch is the ground, its pink glow the selection, and the canvas's slate the text. After *Winter*, 1933.
 
 ---
 
 ## Framing
 
-Every frame is a uniform 110×30, and the glass keeps the veil this collection was born with. *Ahmi in Egypt*, *Messengers*, and *Orbits* share one pane — 96% opacity, lightly frosted — while *Sea Change*, the most literally translucent canvas she painted, thins a shade further. Only *Mount of Flame* hangs opaque: power is mass, not mist, and it carries the collection's one blinking ember. Everywhere else the cursor is still and the line spacing is wide — widest where the spheres keep their appointed distance. If you prefer your darkness absolute, raise the opacity under **Terminal → Preferences → Profiles → Window**.
+Every frame is a uniform 110×30, and the glass keeps the veil this collection was born with. *Ahmi in Egypt*, *Messengers*, and *Orbits* share one pane — 96% opacity, lightly frosted — while *Sea Change*, the most literally translucent canvas she painted, thins a shade further. Only *Tall Ginger* hangs opaque, and it has the collection's one blinking cursor. Everywhere else the cursor is still and the line spacing is wide — widest in *Orbits*. If you prefer your darkness absolute, raise the opacity under **Terminal → Preferences → Profiles → Window**.
 
 Each title bar carries a museum placard — *Orbits — Pelton, 1934* — alongside the working directory. The full recipe per theme lives in [`themes/pelton.json`](../themes/pelton.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
 
