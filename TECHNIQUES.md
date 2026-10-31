@@ -20,7 +20,7 @@ We tune these per painting within a fixed band: alpha 0.93–0.98, blur 0–0.5.
 
 ## The light: sixteen ANSI values
 
-The palette is the painting reduced to `black`→`bright_white`, plus background, foreground, bold, cursor, and selection. Every Gallery Zero profile but one enables `DynamicANSIForegroundColors`, which lets Terminal adjust ANSI foreground use when a specified color would be difficult to read. The source palette stays unchanged in `themes/*.json`. The exception is Tanaka's *Neon District*, whose spec sets `"raw_ansi": true` so its gamut-edge neon renders unadjusted on white; the audit waives its ANSI checks but still holds foreground and bold to 4.5:1, and rejects any profile that disables the adjustment without that flag.
+The palette is the painting reduced to `black`→`bright_white`, plus background, foreground, bold, cursor, and selection. Every Gallery Zero profile but two enables `DynamicANSIForegroundColors`, which lets Terminal adjust ANSI foreground use when a specified color would be difficult to read. The source palette stays unchanged in `themes/*.json`. The exceptions are Tanaka's *Neon District* and Riley's *Red with Red 1*, whose specs set `"raw_ansi": true` so their colours render unadjusted: gamut-edge neon on white, and saturated inks held at 3.5:1 on a pink-red ground; the audit waives its ANSI checks but still holds foreground and bold to 4.5:1, and rejects any profile that disables the adjustment without that flag.
 
 ## The placard: window titles
 

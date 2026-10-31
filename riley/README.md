@@ -2,7 +2,7 @@
 
 Seven profiles after Bridget Riley (b. 1931). Perceptual geometry, reconsidered as phosphor on glass.
 
-Seven studies in colour as a system. Riley built paintings like precise machines for the eye — stripes, curves, and lozenges deployed in strict repeating sequences until the surface begins to move. Five themes trace her colour years, from the morning she first let red, blue, and green into the work to the fixed "Egyptian palette" she carried home from the Nile. Two more return to the black-and-white op art that started it all — including the gallery's first light room.
+Seven studies in colour as a system. Riley built paintings like precise machines for the eye — stripes, curves, and lozenges deployed in strict repeating sequences until the surface begins to move. Five themes trace her colour years, from the morning she first let red, blue, and green into the work to the fixed "Egyptian palette" she carried home from the Nile. *Fall* returns to the black-and-white op art that started it all, and *Red with Red 1* jumps forward to the late curves. Every palette is sampled from an image of its painting.
 
 ---
 
@@ -10,13 +10,13 @@ Seven studies in colour as a system. Riley built paintings like precise machines
 
 <img src="../.github/swatches/late-morning.svg" width="360" alt="Late Morning palette" />
 
-Red, blue, and green stood in rows until the eye mixed a green no one painted. The morning she let colour in. After *Late Morning*, 1967–68.
+Red, blue, and green stood in rows until the eye mixed a green no one painted. The morning she let colour in, hung on the painting's own pale field, with red and green at full strength. After *Late Morning*, 1967–68.
 
 ### Cataract
 
 <img src="../.github/swatches/cataract.svg" width="360" alt="Cataract palette" />
 
-Vermilion and turquoise unfurl like ribbons, warm against cold, new colours surfacing where the edges meet. After *Cataract 3*, 1967.
+Grey curves warm, stripe by stripe, into vermilion and turquoise. Only those two run at full strength; every other colour is held back toward grey, as the painting holds its edges. After *Cataract 3*, 1967.
 
 ### Nataraja
 
@@ -34,25 +34,27 @@ Pale waves of blue, violet, pink, and ochre, twisting like light on moving water
 
 <img src="../.github/swatches/ka.svg" width="360" alt="Ka palette" />
 
-The Egyptian palette — brick red, ochre, blue, turquoise, green — carried home from the Nile and fixed into law. After *Ka*, 1980.
+The Egyptian palette — brick red, ochre, cornflower, turquoise — carried home from the Nile and fixed into law. Colour only: the ground is the cornflower field deepened, the text is pale ochre, and there is no black or white anywhere. After the *Ka* series, 1980.
 
-### Movement in Squares
+### Red with Red 1
 
-<img src="../.github/swatches/movement-in-squares.svg" width="360" alt="Movement in Squares palette" />
+<img src="../.github/swatches/red-with-red-1.svg" width="360" alt="Red with Red 1 palette" />
 
-Black squares compress toward a fold that isn't there. The painting that started Op Art, hung in the gallery's first light room. After *Movement in Squares*, 1961.
+A pink-red and a vermilion at the same lightness, flickering against each other, cut by navy curves. The pink is the ground and the navy is the text. After *Red with Red 1*, 2007.
 
 ### Fall
 
 <img src="../.github/swatches/fall.svg" width="360" alt="Fall palette" />
 
-A single curve, repeated until the surface vibrates at the edge of stillness. After *Fall*, 1963.
+A single curve, repeated until the surface vibrates at the edge of stillness. Grayscale only: every colour is a step between the canvas's olive charcoal and its warm ivory, told apart by lightness alone. After *Fall*, 1963.
 
 ---
 
 ## Framing
 
-Every frame is a uniform 110×30, and the glass is cut to the surface — which, in Riley's case, is razor-flat and opaque almost everywhere. *Fall* and *Movement in Squares* hang behind the densest panes in the gallery; only *To a Summer's Day*, light on moving water, thins toward atmosphere. Line spacing stays tight where the pattern squeezes and relaxes where the stripes are codified into law. The cursor blinks with the optical churn — five of seven flicker — and holds still only in the Egyptian calm of *Ka* and the summer drift.
+Every frame is a uniform 110×30, and the glass is cut to the surface — which, in Riley's case, is razor-flat and opaque almost everywhere. *Fall* and *Red with Red 1* hang behind the densest panes in the gallery; only *To a Summer's Day*, light on moving water, thins toward atmosphere. Line spacing stays tight where the pattern squeezes and relaxes where the stripes are codified into law. The cursor blinks with the optical churn — five of seven flicker — and holds still only in the Egyptian calm of *Ka* and the summer drift.
+
+*Red with Red 1* is the second profile in the gallery, after Tanaka's *Neon District*, with Terminal's dynamic ANSI foregrounds switched off. A mid-light pink leaves no room for colourful text at 4.5:1, so its ANSI inks are held at 3.5:1 and shown as painted rather than pulled back toward navy. Text and bold stay above 7:1.
 
 Each title bar carries a museum placard — *Fall — Riley, 1963* — alongside the working directory. The full recipe per theme lives in [`themes/riley.json`](../themes/riley.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
 
@@ -65,7 +67,7 @@ Double-click any `.terminal` file in this directory. It will appear in **Termina
 Or, from the command line:
 
 ```sh
-open "Riley — Movement in Squares.terminal"
+open "Riley — Red with Red 1.terminal"
 open "Riley — Ka.terminal"
 ```
 
