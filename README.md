@@ -38,11 +38,11 @@ Fiber becoming gold. After the *Alquimia* series, 1984.
 
 Seven profiles after George Condo (b. 1957). Psychological Cubism, reconsidered as phosphor on glass.
 
-### Antipodal
+### The Fallen Butler
 
-<img src=".github/swatches/antipodal.svg" width="360" alt="Antipodal palette" />
+<img src=".github/swatches/the-fallen-butler.svg" width="360" alt="The Fallen Butler palette" />
 
-Colors that shouldn't be in the same room together. After the Antipodal portraits, 2000s.
+A butler collapsing at a crowded table: plum floor, scraped-white text, salmon flesh and a green bottle. After *The Fallen Butler*, 2009, at MoMA.
 
 [Enter the Condo gallery.](condo/)
 
@@ -113,7 +113,7 @@ Or, from the command line:
 ```sh
 open "rothko/Rothko — Seagram Murals.terminal"
 open "de-amaral/De Amaral — Alquimia.terminal"
-open "condo/Condo — Antipodal.terminal"
+open "condo/Condo — The Fallen Butler.terminal"
 open "monet/Monet — Brume.terminal"
 open "tanaka/Tanaka — Electric Dress.terminal"
 open "riley/Riley — Red with Red 1.terminal"

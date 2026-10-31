@@ -2,57 +2,59 @@
 
 Seven profiles after George Condo (b. 1957). Psychological Cubism, reconsidered as phosphor on glass.
 
+Seven paintings from four decades, from an early abstraction of 1983 to the head compositions of 2018. Condo calls his approach Artificial Realism: the realistic representation of that which is artificial. Six of the rooms are dark, each on a different near-black taken from its canvas (olive, oxblood, navy, plum, slate, violet), and one is light. Every palette is sampled from an image of its painting.
+
 ---
+
+### Untitled 1983
+
+<img src="../.github/swatches/untitled-1983.svg" width="360" alt="Untitled 1983 palette" />
+
+A black field with a burst of vermilion, orange and crimson, and olive moss at the edges. Vermilion and moss green run at full strength on the canvas black; blue and cyan stay quiet because the painting barely has them. After *Untitled*, 1983.
 
 ### Dancing to Miles
 
 <img src="../.github/swatches/dancing-to-miles.svg" width="360" alt="Dancing to Miles palette" />
 
-The jazz before the fracture. After *Dancing to Miles*, 1985.
+A wall of drawn faces in sepia, painted in Keith Haring's studio. Oxblood black with sand-coloured text, every colour kept inside the painting's sepia range, and only rust at full strength. After *Dancing to Miles*, 1985–86.
 
-### Artificial Realism
+### Couple on Blue Striped Chair
 
-<img src="../.github/swatches/artificial-realism.svg" width="360" alt="Artificial Realism palette" />
+<img src="../.github/swatches/couple-on-blue-striped-chair.svg" width="360" alt="Couple on Blue Striped Chair palette" />
 
-The realistic representation of that which is artificial. After the term he coined in the 1980s.
+The light room. A pale wash of the painting's leaf-green field, teal-black text from the stockings, and inks from the chair's cobalt, the red-orange, rose and flesh. After *Couple on Blue Striped Chair*, 2005.
 
-### Antipodal
+### Nude 33
 
-<img src="../.github/swatches/antipodal.svg" width="360" alt="Antipodal palette" />
+<img src="../.github/swatches/nude-33.svg" width="360" alt="Nude 33 palette" />
 
-Colors that shouldn't be in the same room together. After the Antipodal portraits, 2000s.
+A nude against navy quatrefoil wallpaper. The wall is the ground and its pale blue tracery is the text; flesh coral and tracery blue run at full strength, and white takes the lilac of the fur. After *Untitled (Nude 33)*, 2008.
 
-### Mental States
+### The Fallen Butler
 
-<img src="../.github/swatches/mental-states.svg" width="360" alt="Mental States palette" />
+<img src="../.github/swatches/the-fallen-butler.svg" width="360" alt="The Fallen Butler palette" />
 
-Every emotion at once. After the *Mental States* series, 2011.
+A butler collapsing at a crowded table. The black floor with its lilac scumble becomes a plum ground, the pale scraped wall becomes the text, and salmon flesh and the green bottle run at full strength. After *The Fallen Butler*, 2009, at MoMA.
 
-### Dreams and Nightmares
+### Lost at Sea
 
-<img src="../.github/swatches/dreams-and-nightmares.svg" width="360" alt="Dreams and Nightmares palette" />
+<img src="../.github/swatches/lost-at-sea.svg" width="360" alt="Lost at Sea palette" />
 
-Old Masters, badly dreaming. After *Dreams and Nightmares of the Queen*, 2006.
+A cubist head over a grey sea. Storm slate with chalk-white text; cobalt and orange-red run at full strength, with tan, teal, lemon and lavender from the head. After *Lost at Sea*, 2014.
 
-### People Are Strange
+### Green and Purple Head
 
-<img src="../.github/swatches/people-are-strange.svg" width="360" alt="People Are Strange palette" />
+<img src="../.github/swatches/green-and-purple-head.svg" width="360" alt="Green and Purple Head palette" />
 
-A well-dressed argument. After the exhibition, 2023.
-
-### Diagonal
-
-<img src="../.github/swatches/diagonal.svg" width="360" alt="Diagonal palette" />
-
-Cascading color, departing from the portrait. After the Diagonal series, 2023–24.
+The most saturated ground in the collection: the painting's violet field, deepened, with bone text. Leaf and emerald greens run at full strength against it, with orange-red from the line work. After *Green and Purple Head Composition*, 2018.
 
 ---
 
 ## Framing
 
-Every frame is a uniform 110×30, and the glass is cut to the psychology. The dark chiaroscuro of *Dreams and Nightmares* sits behind the densest pane; the smoky jazz of *Dancing to Miles* gets thin luminous glass with the blur turned up. Line spacing crowds where the impasto is frantic — *Mental States*, *Antipodal* — and breathes where the argument is composed. The cursor blinks wherever the painting won't sit still.
+Every frame is a uniform 110×30. The glass is thinnest, with the most blur, on the two rooms that are mostly atmosphere: *Lost at Sea* and the smoky *Dancing to Miles*. *Green and Purple Head* and *Untitled 1983* sit behind the densest panes, and their line spacing is the tightest in the set. *Nude 33* and *Lost at Sea* get the most room between lines. The cursor blinks in the four paintings with the most movement: *Untitled 1983*, *Dancing to Miles*, *Couple on Blue Striped Chair* and *Green and Purple Head*.
 
-Each title bar carries a museum placard — *Mental States — Condo, 2011* — alongside the working directory. The full recipe per theme lives in [`themes/condo.json`](../themes/condo.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
+Each title bar carries a museum placard, such as *The Fallen Butler — Condo, 2009*, alongside the working directory. The full recipe per theme lives in [`themes/condo.json`](../themes/condo.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
 
 ---
 
@@ -63,7 +65,7 @@ Double-click any `.terminal` file in this directory. It will appear in **Termina
 Or, from the command line:
 
 ```sh
-open "Condo — Antipodal.terminal"
+open "Condo — The Fallen Butler.terminal"
 open "Condo — Dancing to Miles.terminal"
 ```
 
