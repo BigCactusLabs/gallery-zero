@@ -80,11 +80,11 @@ Two hundred bulbs in nine colors, worn like a second skin. The circuit that star
 
 Seven profiles after Bridget Riley (b. 1931). Perceptual geometry, reconsidered as phosphor on glass.
 
-### Movement in Squares
+### Red with Red 1
 
-<img src=".github/swatches/movement-in-squares.svg" width="360" alt="Movement in Squares palette" />
+<img src=".github/swatches/red-with-red-1.svg" width="360" alt="Red with Red 1 palette" />
 
-Black squares compressing toward a fold that isn't there. The painting that started Op Art — and the gallery's first light room. After *Movement in Squares*, 1961.
+Two reds of equal lightness flicker against each other, cut by navy curves. The pink is the ground; the navy writes on it. After *Red with Red 1*, 2007.
 
 [Enter the Riley gallery.](riley/)
 
@@ -116,7 +116,7 @@ open "de-amaral/De Amaral — Alquimia.terminal"
 open "condo/Condo — Antipodal.terminal"
 open "monet/Monet — Brume.terminal"
 open "tanaka/Tanaka — Electric Dress.terminal"
-open "riley/Riley — Movement in Squares.terminal"
+open "riley/Riley — Red with Red 1.terminal"
 open "pelton/Pelton — Ahmi in Egypt.terminal"
 ```
 
