@@ -2,57 +2,59 @@
 
 Seven profiles after Mark Rothko (1903–1970). Oil on canvas, reconsidered as phosphor on glass.
 
+Seven paintings from 1957 to 1969, most of them from the dark late work. A Rothko has two or three colours, so these palettes do not bend the standard red, green, yellow and blue toward the painting. Every ANSI slot is a step on a scale of the painting's own hues, and the slots are told apart by lightness and strength. Six of the rooms are dark, each on a different ground taken from its canvas (navy, brown-black, red-brown, black, green, violet-black), and one is a teal field. Every palette is sampled from an image of its painting.
+
 ---
 
-### Black and Orange
+### Blue and Gray
 
-<img src="../.github/swatches/black-and-orange.svg" width="360" alt="Black and Orange palette" />
+<img src="../.github/swatches/blue-and-gray.svg" width="360" alt="Blue and Gray palette" />
 
-A meditation on warmth and void. After *Black in Deep Red*, 1957.
-
-### Blue and Grey
-
-<img src="../.github/swatches/blue-and-grey.svg" width="360" alt="Blue and Grey palette" />
-
-Quiet registers of distance. After *No. 1 (Royal Red and Blue)*, 1954.
+A navy block and a warm grey block on a mauve surround. The ground is the navy, darkened; three slots step through that blue, one takes the mauve, and two take the warm grey. After *Blue and Gray*, 1962, at the Fondation Beyeler.
 
 ### Blue Divided by Blue
 
 <img src="../.github/swatches/blue-divided-by-blue.svg" width="360" alt="Blue Divided by Blue palette" />
 
-The line between knowing and not knowing. After *Untitled (Blue Divided by Blue)*, 1966.
+The one colour field in the set. The ground is the painting's deep teal, and every slot is a step from the pale band's sky blue up to white. Its colours render unadjusted at 3.5:1 or better. After *Untitled (Blue Divided by Blue)*, 1966.
 
-### Earth and Green
+### Black and Gray
 
-<img src="../.github/swatches/earth-and-green.svg" width="360" alt="Earth and Green palette" />
+<img src="../.github/swatches/black-and-gray.svg" width="360" alt="Black and Gray palette" />
 
-Ground and growth. After *Green and Tangerine on Red*, 1956.
+A brown-black field over a cool grey one. Three slots are steps of the cool grey and three are steps of the warm brown that sits in the black. After *Untitled*, 1969, from the Black on Gray series, at the National Gallery of Art.
 
-### Green on Tangerine
+### Four Darks in Red
 
-<img src="../.github/swatches/green-on-tangerine.svg" width="360" alt="Green on Tangerine palette" />
+<img src="../.github/swatches/four-darks-in-red.svg" width="360" alt="Four Darks in Red palette" />
 
-The appetite of color against color. After the multiforms, 1948–49.
+Four dark bands on a red field. The ground is the wide red-brown band; the slots step from that brown up to the bright red of the border, with one warm grey from the black band. After *Four Darks in Red*, 1958, at the Whitney Museum.
 
-### No. 14
+### Untitled 1969
 
-<img src="../.github/swatches/no-14.svg" width="360" alt="No. 14 palette" />
+<img src="../.github/swatches/untitled-1969.svg" width="360" alt="Untitled 1969 palette" />
 
-All surface, no edge. After *No. 14*, 1960.
+Black on black. A grey scale on a near-black ground, with the faint plum of the border in the red and magenta slots only. After *Untitled*, 1969.
 
-### Seagram Murals
+### Untitled 1957
 
-<img src="../.github/swatches/seagram-murals.svg" width="360" alt="Seagram Murals palette" />
+<img src="../.github/swatches/untitled-1957.svg" width="360" alt="Untitled 1957 palette" />
 
-The commission he returned. Maroon and black for a restaurant he decided did not deserve them. After the Seagram murals, 1958–59.
+Green on green. The ground is the green field, darkened, and every slot is a step of that green: strong and weak, slightly yellower and slightly bluer. The painting's blue band is left out. After *Untitled*, 1957, at the National Gallery of Art.
+
+### No. 4
+
+<img src="../.github/swatches/no-4.svg" width="360" alt="No. 4 palette" />
+
+The quietest of the seven: low-chroma steps of dusky rose and violet on a violet-black ground. After *No. 4*, 1964.
 
 ---
 
 ## Framing
 
-These seven were the first in the gallery to hang this way. Every frame is a uniform 110×30, but the glass is cut per painting: dense and nearly opaque for the late dark surfaces (Black and Orange, Seagram Murals), thin and most blurred for the luminous washes (Blue and Grey, Blue Divided by Blue). Line spacing follows the same logic — tight where the paint is dense, airy where it breathes. The cursor blinks only where the painting has an ember in it.
+Every frame is a uniform 110×30. The glass is thinnest, with the most blur, on the two blue rooms: *Blue Divided by Blue* and *Blue and Gray*. *Four Darks in Red*, *Untitled 1969* and *No. 4* sit behind the densest panes. Line spacing is tightest on *Four Darks in Red* and *Black and Gray*, and *Blue Divided by Blue* gets the most room between lines. The cursor blinks in *Four Darks in Red* and *Untitled 1957*.
 
-Each title bar carries a museum placard — *Seagram Murals — Rothko, 1958–59* — alongside the working directory. Text renders the exact mixed palette; Terminal's automatic contrast adjustment is off. The full recipe per theme lives in [`themes/rothko.json`](../themes/rothko.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
+Each title bar carries a museum placard, such as *Four Darks in Red — Rothko, 1958*, alongside the working directory. Six profiles let Terminal adjust ANSI colours for contrast; *Blue Divided by Blue* sets `"raw_ansi": true` so its pale blues render exactly as mixed. The full recipe per theme lives in [`themes/rothko.json`](../themes/rothko.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
 
 ---
 
@@ -63,8 +65,8 @@ Double-click any `.terminal` file in this directory. It will appear in **Termina
 Or, from the command line:
 
 ```sh
-open "Rothko — Black and Orange.terminal"
-open "Rothko — Seagram Murals.terminal"
+open "Rothko — Four Darks in Red.terminal"
+open "Rothko — Untitled 1957.terminal"
 ```
 
 ---

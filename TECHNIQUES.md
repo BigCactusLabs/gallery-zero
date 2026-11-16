@@ -20,11 +20,11 @@ We tune these per painting within a fixed band: alpha 0.93–0.98, blur 0–0.5.
 
 ## The light: sixteen ANSI values
 
-The palette is the painting reduced to `black`→`bright_white`, plus background, foreground, bold, cursor, and selection. Every Gallery Zero profile but two enables `DynamicANSIForegroundColors`, which lets Terminal adjust ANSI foreground use when a specified color would be difficult to read. The source palette stays unchanged in `themes/*.json`. The exceptions are Tanaka's *Neon District* and Riley's *Red with Red 1*, whose specs set `"raw_ansi": true` so their colours render unadjusted: gamut-edge neon on white, and saturated inks held at 3.5:1 on a pink-red ground. The audit waives their ANSI checks but still holds foreground and bold to 4.5:1, and rejects any profile that disables the adjustment without that flag.
+The palette is the painting reduced to `black`→`bright_white`, plus background, foreground, bold, cursor, and selection. Every Gallery Zero profile but three enables `DynamicANSIForegroundColors`, which lets Terminal adjust ANSI foreground use when a specified color would be difficult to read. The source palette stays unchanged in `themes/*.json`. The exceptions are Tanaka's *Neon District*, Riley's *Red with Red 1* and Rothko's *Blue Divided by Blue*, whose specs set `"raw_ansi": true` so their colours render unadjusted: gamut-edge neon on white, saturated inks held at 3.5:1 on a pink-red ground, and pale blues held at 3.5:1 on a teal field. The audit waives their ANSI checks but still holds foreground and bold to 4.5:1, and rejects any profile that disables the adjustment without that flag.
 
 ## The placard: window titles
 
-`WindowTitle` holds a museum label ("Seagram Murals — Rothko, 1958–59"). The catch: Terminal appends process names, dimensions, tty paths, and more unless you switch off every `Show…InTitle` bit individually. Eight booleans to get a clean placard.
+`WindowTitle` holds a museum label ("Four Darks in Red — Rothko, 1958"). The catch: Terminal appends process names, dimensions, tty paths, and more unless you switch off every `Show…InTitle` bit individually. Eight booleans to get a clean placard.
 
 ## The proportions: type and rhythm
 

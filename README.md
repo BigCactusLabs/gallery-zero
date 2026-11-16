@@ -10,11 +10,11 @@ Each work translates a painter's color relationships into the sixteen ANSI value
 
 Seven profiles after Mark Rothko (1903–1970). Oil on canvas, reconsidered as phosphor on glass.
 
-### Seagram Murals
+### Four Darks in Red
 
-<img src=".github/swatches/seagram-murals.svg" width="360" alt="Seagram Murals palette" />
+<img src=".github/swatches/four-darks-in-red.svg" width="360" alt="Four Darks in Red palette" />
 
-The commission he returned. Maroon and black for a restaurant he decided did not deserve them. After the Seagram murals, 1958–59.
+Four dark bands on a red field. Every colour in the palette is a step between the painting's red-brown and the bright red of its border. After *Four Darks in Red*, 1958.
 
 [Enter the Rothko gallery.](rothko/)
 
@@ -111,7 +111,7 @@ Double-click any `.terminal` file. It will appear in **Terminal → Preferences 
 Or, from the command line:
 
 ```sh
-open "rothko/Rothko — Seagram Murals.terminal"
+open "rothko/Rothko — Four Darks in Red.terminal"
 open "de-amaral/De Amaral — Alquimia.terminal"
 open "condo/Condo — The Fallen Butler.terminal"
 open "monet/Monet — Brume.terminal"
