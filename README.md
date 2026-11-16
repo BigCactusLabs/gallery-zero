@@ -24,11 +24,11 @@ Four dark bands on a red field. Every colour in the palette is a step between th
 
 Seven profiles after Olga de Amaral (b. 1932). Gold leaf and horsehair, reconsidered as phosphor on glass.
 
-### Alquimia
+### Pirámide D
 
-<img src=".github/swatches/alquimia.svg" width="360" alt="Alquimia palette" />
+<img src=".github/swatches/piramide-d.svg" width="360" alt="Pirámide D palette" />
 
-Fiber becoming gold. After the *Alquimia* series, 1984.
+Gold leaf, edge to edge. The gold is the ground, and every colour in the palette is a step of it from amber to cream. After *Pirámide D*, 2004.
 
 [Enter the De Amaral gallery.](de-amaral/)
 
@@ -112,7 +112,7 @@ Or, from the command line:
 
 ```sh
 open "rothko/Rothko — Four Darks in Red.terminal"
-open "de-amaral/De Amaral — Alquimia.terminal"
+open "de-amaral/De Amaral — Pirámide D.terminal"
 open "condo/Condo — The Fallen Butler.terminal"
 open "monet/Monet — Brume.terminal"
 open "tanaka/Tanaka — Electric Dress.terminal"
