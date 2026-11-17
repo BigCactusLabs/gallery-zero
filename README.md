@@ -126,6 +126,10 @@ open "pelton/Pelton — Ahmi in Egypt.terminal"
 
 How the gallery is built — plist archaeology, archived color blobs, glass, escape codes. See [TECHNIQUES.md](TECHNIQUES.md).
 
+## License
+
+The themes, swatches and wall text are licensed under [CC BY 4.0](LICENSE). Share and adapt them freely with credit to Gallery Zero. The paintings themselves belong to their artists and estates; only the sampled palettes are offered here.
+
 ## Forthcoming Exhibitions
 
 New artist series are underway. The gallery accepts loans.

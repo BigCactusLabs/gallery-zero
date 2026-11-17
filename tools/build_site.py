@@ -321,7 +321,7 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
 <nav class="index" aria-label="Collections"><div class="shell">{nav}</div></nav>
 <div class="shell">{rooms}</div>
 </main>
-<footer><div class="shell"><span>Gallery Zero. Palettes sampled from images of each painting.</span>
+<footer><div class="shell"><span>Gallery Zero. Palettes sampled from images of each painting. Themes licensed <a href="{repo}/blob/main/LICENSE">CC BY 4.0</a>.</span>
 <span><a href="{repo}/blob/main/TECHNIQUES.md">How the profiles are built</a> · <a href="{repo}">Source</a></span></div></footer>
 <script>
 const works = {hero_data};
