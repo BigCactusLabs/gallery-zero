@@ -2,6 +2,8 @@
 
 Color themes for macOS Terminal, curated from the permanent collection.
 
+**[Visit the gallery →](https://bigcactuslabs.github.io/gallery-zero/)** Every theme previewed as a live terminal, with one-click downloads.
+
 Each work translates a painter's color relationships into the sixteen ANSI values that define a terminal session. The background becomes the canvas. The text becomes the light.
 
 ---
@@ -106,7 +108,7 @@ A red path snakes up from the lower darkness toward a golden lotus. Indigo night
 
 ## Acquisitions
 
-Double-click any `.terminal` file. It will appear in **Terminal → Preferences → Profiles**. Select it. Set it as default if you like.
+Download one from [the gallery site](https://bigcactuslabs.github.io/gallery-zero/), or all of them as [one zip](https://bigcactuslabs.github.io/gallery-zero/gallery-zero.zip). Double-click any `.terminal` file. It will appear in **Terminal → Preferences → Profiles**. Select it. Set it as default if you like.
 
 Or, from the command line:
 

@@ -55,6 +55,8 @@ python3 tools/profiles.py verify
 python3 tools/profiles.py audit-contrast
 ```
 
+`tools/build_site.py` builds the [gallery site](https://bigcactuslabs.github.io/gallery-zero/) from the same specs plus each collection README's wall text: one live terminal preview per theme, the `.terminal` files, and a zip of all of them. The Pages workflow runs the tests, builds into `_site/`, and deploys on every push to `main`. The works hang in README order, and the top-level README's featured work for each collection rotates in the hero. Run `python3 tools/build_site.py --out _site` to preview locally.
+
 ---
 
 *The profile-file details are AppKit archaeology. All of them survive an import dialog.*
