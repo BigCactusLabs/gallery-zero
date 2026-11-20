@@ -1,13 +1,20 @@
+import contextlib
+import io
 import json
 import plistlib
 import tempfile
+import unicodedata
 import unittest
 from pathlib import Path
 
 from tools.profiles import (
     RepositoryError,
     audit_theme,
+    ProfileRecord,
     load_repository,
+    main,
+    plan_terminal_install,
+    swatch_svg,
     sync_colors_xml,
     sync_profile_xml,
     verify_profile_xml,
@@ -310,6 +317,83 @@ class ProfileVerificationTests(unittest.TestCase):
                 RepositoryError, "missing artifact: fixture/Fixture — Dark.terminal"
             ):
                 load_repository(root)
+
+
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def fixture_record(name: str = "Fixture — Dark") -> ProfileRecord:
+    theme = dark_theme(active=0.93, inactive=0.93, dynamic=True)
+    return ProfileRecord(name, theme, Path("themes/fixture.json"), Path(f"fixture/{name}.terminal"))
+
+
+class SwatchTests(unittest.TestCase):
+    def test_renders_a_committed_swatch_byte_for_byte(self) -> None:
+        spec = json.loads((ROOT / "themes" / "riley.json").read_text(encoding="utf-8"))
+        cataract = next(theme for theme in spec["themes"] if theme["slug"] == "cataract")
+
+        self.assertEqual(
+            (ROOT / ".github" / "swatches" / "cataract.svg").read_text(encoding="utf-8"),
+            swatch_svg(cataract["colors"]),
+        )
+
+    def test_verify_reports_a_drifted_swatch(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "themes").mkdir()
+            (root / "fixture").mkdir()
+            theme = {**dark_theme(active=0.93, inactive=0.93, dynamic=True), "slug": "dark"}
+            spec = {"collection": "fixture", "artist": "Fixture", "themes": [theme]}
+            (root / "themes" / "fixture.json").write_text(json.dumps(spec))
+            (root / "fixture" / "Fixture — Dark.terminal").write_bytes(complete_profile_xml(theme))
+            swatch = root / ".github" / "swatches" / "dark.svg"
+            swatch.parent.mkdir(parents=True)
+            swatch.write_text(swatch_svg(theme["colors"]))
+
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(0, main(["verify", "--root", str(root)]))
+            swatch.write_text(swatch_svg({**theme["colors"], "red": "#ff0000"}))
+            report = io.StringIO()
+            with contextlib.redirect_stdout(report):
+                self.assertEqual(1, main(["verify", "--root", str(root)]))
+            self.assertIn("dark.svg: swatch differs from spec", report.getvalue())
+
+
+class TerminalInstallPlanTests(unittest.TestCase):
+    def installed(self, record: ProfileRecord) -> dict:
+        return plistlib.loads(complete_profile_xml(record.theme, record.name))
+
+    def test_current_profile_needs_nothing(self) -> None:
+        record = fixture_record()
+
+        self.assertEqual(([], []), plan_terminal_install([record], {record.name: self.installed(record)}))
+
+    def test_missing_and_stale_profiles_are_installed(self) -> None:
+        current, missing = fixture_record(), fixture_record("Fixture — Light")
+        stale = self.installed(current)
+        stale["ANSIRedColor"] = archived_color(1.0, 0.0, 0.0, 1.0)
+
+        install, prune = plan_terminal_install([current, missing], {current.name: stale})
+
+        self.assertEqual([current, missing], install)
+        self.assertEqual([], prune)
+
+    def test_matches_names_stored_decomposed(self) -> None:
+        record = fixture_record("Fixture — Nébula 8")
+        stored = unicodedata.normalize("NFD", record.name)
+
+        self.assertEqual(([], []), plan_terminal_install([record], {stored: self.installed(record)}))
+
+    def test_retires_only_this_galleries_unlisted_works(self) -> None:
+        record = fixture_record("Fixture — Red with Red 1")
+        installed = {
+            record.name: self.installed(record),
+            "Fixture — Retired Work": {},
+            "Clear Dark": {},
+            "Other — Not Ours": {},
+        }
+
+        self.assertEqual(([], ["Fixture — Retired Work"]), plan_terminal_install([record], installed))
 
 
 if __name__ == "__main__":

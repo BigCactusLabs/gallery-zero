@@ -46,14 +46,17 @@ On Tahoe, if a file-opened profile contains `RunCommandAsShell` at all, Terminal
 
 ## The studio: spec-driven generation
 
-`themes/*.json` is the source of truth — palette plus a `depth` block per theme. The checked-in SVG swatches and `.terminal` files show that source in different forms. The profile tool writes the palette and depth settings into the `.terminal` files and verifies every palette and depth value:
+`themes/*.json` is the source of truth — palette plus a `depth` block per theme. The checked-in SVG swatches and `.terminal` files show that source in different forms. The profile tool writes the palette and depth settings into the `.terminal` files, renders the swatches, and verifies both against the spec:
 
 ```sh
 python3 tools/profiles.py sync-colors
 python3 tools/profiles.py sync-depth
+python3 tools/profiles.py sync-swatches
 python3 tools/profiles.py verify
 python3 tools/profiles.py audit-contrast
 ```
+
+To hang the current works in your own Terminal.app, `python3 tools/profiles.py install-terminal` imports every profile that is missing or differs from its spec, keeps your font, default and startup profile, and moves open tabs onto the new copy. `--dry-run` shows the plan, and `--prune` also removes profiles for works that have left the gallery.
 
 `tools/build_site.py` builds the [gallery site](https://bigcactuslabs.github.io/gallery-zero/) from the same specs plus each collection README's wall text: one live terminal preview per theme, the `.terminal` files, and a zip of all of them. The Pages workflow runs the tests, builds into `_site/`, and deploys on every push to `main`. The works hang in README order, and the top-level README's featured work for each collection rotates in the hero. Run `python3 tools/build_site.py --out _site` to preview locally.
 
