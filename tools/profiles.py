@@ -8,7 +8,11 @@ from dataclasses import dataclass
 import json
 import math
 import plistlib
+import subprocess
 import sys
+import tempfile
+import time
+import unicodedata
 from pathlib import Path
 from typing import Any, Sequence
 
@@ -335,6 +339,31 @@ def verify_profile_xml(name: str, xml: bytes, theme: dict[str, Any]) -> list[str
     return issues
 
 
+SWATCH_ROWS = (ANSI_KEYS[:8], ANSI_KEYS[8:])
+
+
+def swatch_svg(colors: dict[str, str]) -> str:
+    """The 360x200 palette card: foreground band, then normal and bright rows."""
+    lines = [
+        '<svg xmlns="http://www.w3.org/2000/svg" width="360" height="200" viewBox="0 0 360 200">',
+        f'  <rect width="360" height="200" rx="8" fill="{colors["background"]}"/>',
+        "",
+        "  <!-- foreground band -->",
+        f'  <rect x="16" y="16" width="328" height="28" rx="4" fill="{colors["foreground"]}" opacity="0.9"/>',
+    ]
+    for y, row in zip((56, 102), SWATCH_ROWS):
+        for index, key in enumerate(row):
+            lines.append(
+                f'  <rect x="{16 + index * 41.75:.1f}" y="{y}" width="35.8" height="40" rx="3" fill="{colors[key]}"/>'
+            )
+    lines.append("</svg>")
+    return "\n".join(lines) + "\n"
+
+
+def swatch_path(root: Path, theme: dict[str, Any]) -> Path:
+    return root / ".github" / "swatches" / f"{theme['slug']}.svg"
+
+
 def load_repository(root: Path) -> list[ProfileRecord]:
     records: list[ProfileRecord] = []
     expected_artifacts: set[Path] = set()
@@ -390,9 +419,29 @@ def _sync_colors(records: Sequence[ProfileRecord]) -> int:
     return 0
 
 
-def _verify(records: Sequence[ProfileRecord]) -> int:
+def _sync_swatches(root: Path, records: Sequence[ProfileRecord]) -> int:
+    updated = 0
+    for record in records:
+        path = swatch_path(root, record.theme)
+        result = swatch_svg(record.theme["colors"])
+        if not path.is_file() or path.read_text(encoding="utf-8") != result:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(result, encoding="utf-8")
+            updated += 1
+    print(f"SWATCHES={len(records)} UPDATED={updated}")
+    return 0
+
+
+def _verify(root: Path, records: Sequence[ProfileRecord]) -> int:
     mismatches = 0
     for record in records:
+        path = swatch_path(root, record.theme)
+        if not path.is_file():
+            print(f"{path.relative_to(root)}: missing swatch")
+            mismatches += 1
+        elif path.read_text(encoding="utf-8") != swatch_svg(record.theme["colors"]):
+            print(f"{path.relative_to(root)}: swatch differs from spec (run sync-swatches)")
+            mismatches += 1
         for issue in verify_profile_xml(
             record.name, record.artifact_path.read_bytes(), record.theme
         ):
@@ -411,11 +460,184 @@ def _audit_contrast(records: Sequence[ProfileRecord]) -> int:
     print(f"PROFILES={len(records)} FAILURES={failures}")
     return int(bool(failures))
 
+# --- Terminal.app installation -------------------------------------------------
+#
+# Terminal stores profiles in com.apple.Terminal "Window Settings", keyed by
+# name in NFD; repo names are NFC, so every comparison normalizes. Opening a
+# .terminal file never replaces a same-named profile: it adds "X 1" (or nothing,
+# if an identical copy is installed) and opens a window. So an update imports,
+# moves tabs onto the new set, deletes the old one, renames the new one, and
+# closes the import window. Deleting the default or startup profile silently
+# resets both, so they are restored at the end. Terminal rewrites color blobs
+# on import, so "current" means verify_profile_xml passes, not equal bytes.
+
+
+def _nfc(text: str) -> str:
+    return unicodedata.normalize("NFC", text)
+
+
+def plan_terminal_install(
+    records: Sequence[ProfileRecord], installed: dict[str, dict[str, Any]]
+) -> tuple[list[ProfileRecord], list[str]]:
+    """Return (records to install or update, installed names to prune)."""
+    by_name = {_nfc(name): profile for name, profile in installed.items()}
+    stale = []
+    for record in records:
+        profile = by_name.get(_nfc(record.name))
+        if profile is None:
+            stale.append(record)
+            continue
+        profile = {**profile, "name": record.name}
+        xml = plistlib.dumps(profile, fmt=plistlib.FMT_XML, sort_keys=False)
+        if verify_profile_xml(record.name, xml, record.theme):
+            stale.append(record)
+    current = {_nfc(record.name) for record in records}
+    artists = {record.name.split(" — ", 1)[0] for record in records}
+    retired = sorted(
+        name
+        for name in installed
+        if _nfc(name).split(" — ", 1)[0] in artists
+        and " — " in name
+        and _nfc(name) not in current
+    )
+    return stale, retired
+
+
+def _osascript(script: str) -> str:
+    result = subprocess.run(["osascript", "-e", script], capture_output=True, text=True)
+    if result.returncode:
+        raise RuntimeError(result.stderr.strip())
+    return result.stdout.strip()
+
+
+def _quote(text: str) -> str:
+    return '"' + text.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def _tell(body: str) -> str:
+    return _osascript(f'tell application "Terminal"\n{body}\nend tell')
+
+
+def _set_names() -> list[str]:
+    return [_nfc(name) for name in _tell("get name of every settings set").split(", ") if name]
+
+
+def _window_ids() -> set[str]:
+    return {wid for wid in _tell("get id of every window").split(", ") if wid}
+
+
+def _retarget_tabs(old: str, new: str, skip: set[str] | frozenset[str] = frozenset()) -> None:
+    # Loop over window ids: "repeat with w in windows" fails partway as windows change.
+    for wid in _window_ids() - skip:
+        _tell(
+            "try\n"
+            f"repeat with t in (tabs of (first window whose id is {wid}))\n"
+            f"if name of current settings of t is {_quote(old)} then "
+            f"set current settings of t to settings set {_quote(new)}\n"
+            "end repeat\nend try"
+        )
+
+
+def _installed_profiles() -> dict[str, Any]:
+    exported = subprocess.run(
+        ["defaults", "export", "com.apple.Terminal", "-"], capture_output=True, check=True
+    ).stdout
+    return plistlib.loads(exported)
+
+
+def _install_terminal(records: Sequence[ProfileRecord], *, dry_run: bool, prune: bool) -> int:
+    if sys.platform != "darwin":
+        print("error: install-terminal needs macOS Terminal.app", file=sys.stderr)
+        return 2
+    prefs = _installed_profiles()
+    installed = prefs.get("Window Settings", {})
+    stale, retired = plan_terminal_install(records, installed)
+    for record in stale:
+        print(f"install: {record.name}")
+    for name in retired:
+        print(f"{'prune' if prune else 'retired (keep; --prune deletes)'}: {_nfc(name)}")
+    if dry_run or (not stale and not (prune and retired)):
+        print(f"PROFILES={len(records)} STALE={len(stale)} RETIRED={len(retired)}")
+        return 0
+
+    default = _nfc(prefs.get("Default Window Settings", ""))
+    startup = _nfc(prefs.get("Startup Window Settings", ""))
+    by_name = {_nfc(name): profile for name, profile in installed.items()}
+    fallback_font = by_name.get(default, {}).get("Font")
+
+    with tempfile.TemporaryDirectory() as scratch:
+        for record in stale:
+            name = _nfc(record.name)
+            profile = plistlib.loads(record.artifact_path.read_bytes())
+            font = by_name.get(name, {}).get("Font", fallback_font)
+            if font is not None:
+                profile["Font"] = font  # Repo files carry no font; keep the user's.
+            staged = Path(scratch) / record.artifact_path.name
+            staged.write_bytes(plistlib.dumps(profile, fmt=plistlib.FMT_XML, sort_keys=False))
+
+            before, windows_before = set(_set_names()), _window_ids()
+            subprocess.run(["open", "-a", "Terminal", str(staged)], check=True)
+            added: set[str] = set()
+            for _ in range(40):
+                time.sleep(0.25)
+                added = set(_set_names()) - before
+                if added:
+                    break
+            time.sleep(0.4)
+            import_windows = _window_ids() - windows_before
+            if len(added) != 1:
+                raise RuntimeError(f"{record.name}: expected one imported set, found {sorted(added)}")
+            imported = added.pop()
+            if imported != name:
+                if name in before:
+                    _retarget_tabs(name, imported, skip=import_windows)
+                    _tell(f"delete settings set {_quote(name)}")
+                _tell(f"set name of settings set {_quote(imported)} to {_quote(name)}")
+            for wid in import_windows:
+                _tell(f"close (first window whose id is {wid})")
+            print(f"installed: {record.name}")
+
+        if prune:
+            for name in retired:
+                if _nfc(name) in (default, startup):
+                    print(f"kept (default/startup): {_nfc(name)}")
+                    continue
+                _retarget_tabs(_nfc(name), default)
+                _tell(f"delete settings set {_quote(_nfc(name))}")
+                print(f"pruned: {_nfc(name)}")
+
+    for setting, value in (("default settings", default), ("startup settings", startup)):
+        if value and value in _set_names():
+            _tell(f"set {setting} to settings set {_quote(value)}")
+    stale_after, retired_after = plan_terminal_install(
+        records, _installed_profiles().get("Window Settings", {})
+    )
+    print(f"PROFILES={len(records)} STALE={len(stale_after)} RETIRED={len(retired_after)}")
+    return int(bool(stale_after))
+
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "command", choices=("sync-colors", "sync-depth", "verify", "audit-contrast")
+        "command",
+        choices=(
+            "sync-colors",
+            "sync-depth",
+            "sync-swatches",
+            "verify",
+            "audit-contrast",
+            "install-terminal",
+        ),
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="install-terminal: print the plan without touching Terminal.app",
+    )
+    parser.add_argument(
+        "--prune",
+        action="store_true",
+        help="install-terminal: also delete installed gallery profiles that are no longer in the repo",
     )
     parser.add_argument(
         "--root",
@@ -437,8 +659,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _sync_colors(records)
     if arguments.command == "sync-depth":
         return _sync_depth(records)
+    if arguments.command == "sync-swatches":
+        return _sync_swatches(arguments.root.resolve(), records)
     if arguments.command == "verify":
-        return _verify(records)
+        return _verify(arguments.root.resolve(), records)
+    if arguments.command == "install-terminal":
+        return _install_terminal(records, dry_run=arguments.dry_run, prune=arguments.prune)
     return _audit_contrast(records)
 
 
