@@ -106,6 +106,20 @@ A red path snakes up from the lower darkness toward a golden lotus. Indigo night
 
 ---
 
+## The Demuth Collection
+
+Seven profiles after Charles Demuth (1883–1935). Precisionist daylight, reconsidered as phosphor on glass — six light grounds for working by day, and one night piece.
+
+### My Egypt
+
+<img src=".github/swatches/my-egypt.svg" width="360" alt="My Egypt palette" />
+
+A grain elevator raised to the scale of a pyramid, crossed by rays of light. The white of the silos is the ground, and brick orange, amber and two sky blues are set on it at full strength. After *My Egypt*, 1927, at the Whitney.
+
+[Enter the Demuth gallery.](demuth/)
+
+---
+
 ## Acquisitions
 
 Download one from [the gallery site](https://bigcactuslabs.github.io/gallery-zero/), or all of them as [one zip](https://bigcactuslabs.github.io/gallery-zero/gallery-zero.zip). Double-click any `.terminal` file. It will appear in **Terminal → Preferences → Profiles**. Select it. Set it as default if you like.
@@ -120,6 +134,7 @@ open "monet/Monet — Brume.terminal"
 open "tanaka/Tanaka — Electric Dress.terminal"
 open "riley/Riley — Red with Red 1.terminal"
 open "pelton/Pelton — Ahmi in Egypt.terminal"
+open "demuth/Demuth — My Egypt.terminal"
 ```
 
 ## Conservation Notes

@@ -25,7 +25,7 @@ REPO_URL = "https://github.com/BigCactusLabs/gallery-zero"
 ZIP_NAME = "gallery-zero.zip"
 
 # Hanging order on the site, matching the top-level README.
-COLLECTIONS = ("rothko", "de-amaral", "condo", "monet", "tanaka", "riley", "pelton")
+COLLECTIONS = ("rothko", "de-amaral", "condo", "monet", "tanaka", "riley", "pelton", "demuth")
 
 ANSI = (
     "black", "red", "green", "yellow", "blue", "magenta", "cyan", "white",
@@ -162,7 +162,7 @@ def render(collections: list[dict]) -> str:
         )
     first = featured[0]
     description = (f"{total} color themes for macOS Terminal, after paintings by Mark Rothko, Olga de Amaral, "
-                   "George Condo, Claude Monet, Atsuko Tanaka, Bridget Riley and Agnes Pelton.")
+                   "George Condo, Claude Monet, Atsuko Tanaka, Bridget Riley, Agnes Pelton and Charles Demuth.")
     return TEMPLATE.format(
         description=html.escape(description), site=SITE_URL, repo=REPO_URL, zip=ZIP_NAME, total=total,
         nav=nav, rooms="".join(rooms), hero=window(first, COLLECTIONS[0], "hero-term"),
@@ -184,7 +184,7 @@ TEMPLATE = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gallery Zero · Color themes for macOS Terminal, after seven painters</title>
+<title>Gallery Zero · Color themes for macOS Terminal, after eight painters</title>
 <meta name="description" content="{description}">
 <link rel="canonical" href="{site}">
 <meta property="og:type" content="website">

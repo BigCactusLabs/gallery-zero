@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="200" viewBox="0 0 360 200">
+  <rect width="360" height="200" rx="8" fill="#eed49f"/>
+
+  <!-- foreground band -->
+  <rect x="16" y="16" width="328" height="28" rx="4" fill="#251f0f" opacity="0.9"/>
+  <rect x="16.0" y="56" width="35.8" height="40" rx="3" fill="#251f0f"/>
+  <rect x="57.8" y="56" width="35.8" height="40" rx="3" fill="#ab2913"/>
+  <rect x="99.5" y="56" width="35.8" height="40" rx="3" fill="#65581c"/>
+  <rect x="141.2" y="56" width="35.8" height="40" rx="3" fill="#7f5001"/>
+  <rect x="183.0" y="56" width="35.8" height="40" rx="3" fill="#5d321e"/>
+  <rect x="224.8" y="56" width="35.8" height="40" rx="3" fill="#822c2b"/>
+  <rect x="266.5" y="56" width="35.8" height="40" rx="3" fill="#6c584e"/>
+  <rect x="308.2" y="56" width="35.8" height="40" rx="3" fill="#c8b183"/>
+  <rect x="16.0" y="102" width="35.8" height="40" rx="3" fill="#6c5945"/>
+  <rect x="57.8" y="102" width="35.8" height="40" rx="3" fill="#951701"/>
+  <rect x="99.5" y="102" width="35.8" height="40" rx="3" fill="#574803"/>
+  <rect x="141.2" y="102" width="35.8" height="40" rx="3" fill="#6b4202"/>
+  <rect x="183.0" y="102" width="35.8" height="40" rx="3" fill="#5a2101"/>
+  <rect x="224.8" y="102" width="35.8" height="40" rx="3" fill="#800214"/>
+  <rect x="266.5" y="102" width="35.8" height="40" rx="3" fill="#634636"/>
+  <rect x="308.2" y="102" width="35.8" height="40" rx="3" fill="#ddc492"/>
+</svg>
