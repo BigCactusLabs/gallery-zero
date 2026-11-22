@@ -2,8 +2,8 @@
 """Build the Gallery Zero website (GitHub Pages) from the theme specs and READMEs.
 
 Reads themes/*.json for colors and placards, each collection README for the
-wall text, and writes a static site: index.html, the .terminal profiles, and a
-zip of every profile.
+wall text, and writes a static site: index.html, the .terminal profiles, a zip
+of every profile, a zip per collection, and the share image.
 
     python3 tools/build_site.py --out _site
 """
@@ -15,7 +15,9 @@ import html
 import json
 import re
 import shutil
+import struct
 import zipfile
+import zlib
 from pathlib import Path
 from urllib.parse import quote
 
@@ -23,6 +25,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SITE_URL = "https://bigcactuslabs.github.io/gallery-zero/"
 REPO_URL = "https://github.com/BigCactusLabs/gallery-zero"
 ZIP_NAME = "gallery-zero.zip"
+OG_NAME = "og.png"
 
 # Hanging order on the site, matching the top-level README.
 COLLECTIONS = ("rothko", "de-amaral", "condo", "monet", "tanaka", "riley", "pelton", "demuth")
@@ -104,8 +107,8 @@ def style_vars(colors: dict) -> str:
 def session(collection: str) -> str:
     """A short shell session that uses every slot of the palette."""
     c = collection
-    swatch = lambda keys: "".join(f'<i style="background:var(--{k.replace("_", "-")})"></i>' for k in keys)
-    prompt = (f'<span class="c-green">gallery</span> <span class="c-blue dir">~/{c}</span> '
+    swatch = lambda keys: "".join(f'<i data-k="{k}" style="background:var(--{k.replace("_", "-")})"></i>' for k in keys)
+    prompt = (f'<span class="c-blue dir">~/{c}</span> '
               f'<span class="c-magenta">main</span> <span class="c-bright-black">❯</span> ')
     return "\n".join([
         f'{prompt}ls -F',
@@ -131,10 +134,61 @@ def window(work: dict, collection: str, extra_class: str = "") -> str:
     )
 
 
+def featured_works(collections: list[dict]) -> list[dict]:
+    """The work the top-level README highlights for each collection."""
+    picks = re.findall(r"^### (.+)$", (ROOT / "README.md").read_text(encoding="utf-8"), flags=re.M)
+    return [next(w for w in c["works"] if w["name"] == pick) for c, pick in zip(collections, picks, strict=True)]
+
+
+def room_zip(slug: str) -> str:
+    return f"gallery-zero-{slug}.zip"
+
+
+def png(width: int, height: int, rows: list[bytes]) -> bytes:
+    """Encode 8-bit RGB rows as a PNG, so the share image needs only the stdlib."""
+    def chunk(tag: bytes, data: bytes) -> bytes:
+        return struct.pack(">I", len(data)) + tag + data + struct.pack(">I", zlib.crc32(tag + data))
+    raw = b"".join(b"\x00" + row for row in rows)
+    return (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0))
+            + chunk(b"IDAT", zlib.compress(raw, 9)) + chunk(b"IEND", b""))
+
+
+OG_SIZE = (1200, 630)
+
+
+def og_image(featured: list[dict]) -> bytes:
+    """The share card: one panel per collection, its featured palette laid out like a swatch."""
+    width, height = OG_SIZE
+    panel = width // len(featured)
+    chip_w, chip_h, gap = 42, 50, 16
+    left = (panel - 2 * chip_w) // 2
+    top = (height - (chip_h + gap + 8 * chip_h)) // 2
+    grid = top + chip_h + gap
+    rgb = lambda value: bytes.fromhex(value.lstrip("#")[:6])
+    rows = []
+    for y in range(height):
+        if top <= y < top + chip_h:
+            pair = ("foreground", "foreground")
+        elif 0 <= (y - grid) // chip_h < 8:
+            slot = (y - grid) // chip_h
+            pair = (ANSI[slot], ANSI[slot + 8])
+        else:
+            pair = ()
+        row = bytearray()
+        for w in featured:
+            cells = bytearray(rgb(w["colors"]["background"]) * panel)
+            for i, key in enumerate(pair):
+                x = left + i * chip_w
+                cells[x * 3:(x + chip_w) * 3] = rgb(w["colors"][key]) * chip_w
+            row += cells
+        row += row[-3:] * (width - len(row) // 3)
+        rows.append(bytes(row))
+    return png(width, height, rows)
+
+
 def render(collections: list[dict]) -> str:
     total = sum(len(c["works"]) for c in collections)
-    picks = re.findall(r"^### (.+)$", (ROOT / "README.md").read_text(encoding="utf-8"), flags=re.M)
-    featured = [next(w for w in c["works"] if w["name"] == pick) for c, pick in zip(collections, picks, strict=True)]
+    featured = featured_works(collections)
     hero_data = json.dumps([
         {"vars": {f"--{k.replace('_', '-')}": w["colors"][k] for k in ANSI + EXTRA},
          "placard": w["placard"], "file": href(w["file"]), "name": w["name"], "dir": "~/" + c}
@@ -142,22 +196,28 @@ def render(collections: list[dict]) -> str:
     ], ensure_ascii=False)
     nav = "".join(f'<a href="#{c["slug"]}">{html.escape(c["artist"])}</a>' for c in collections)
     rooms = []
-    for c in collections:
+    for c, pick in zip(collections, featured, strict=True):
+        # The featured work hangs first, full width; the rest keep README order.
         cards = []
-        for w in c["works"]:
+        for w in [pick] + [w for w in c["works"] if w is not pick]:
+            wid = f'{c["slug"]}-{w["slug"]}'
+            name = html.escape(w["name"])
             cards.append(
-                f'<article class="work" id="{c["slug"]}-{w["slug"]}">'
+                f'<article class="work{" feature" if w is pick else ""}" id="{wid}">'
                 f'{window(w, c["slug"])}'
-                f'<div class="label"><h3>{html.escape(w["name"])}</h3>'
-                f'<a class="dl" href="{href(w["file"])}" download>Download<span class="vh"> {html.escape(w["name"])}</span></a></div>'
-                f'<p>{inline_md(w["text"])}</p></article>'
+                f'<div class="caption"><div class="label"><h3><a href="#{wid}">{name}</a></h3>'
+                f'<a class="dl" href="{href(w["file"])}" download>Download<span class="vh"> {name}</span></a></div>'
+                f'<p>{inline_md(w["text"])}</p></div></article>'
             )
         intro = "".join(f"<p>{inline_md(p)}</p>" for p in c["intro"])
+        artist = html.escape(c["artist"])
         rooms.append(
             f'<section class="room" id="{c["slug"]}" aria-labelledby="{c["slug"]}-h">'
-            f'<header class="wall"><h2 id="{c["slug"]}-h">{html.escape(c["artist"])}</h2>'
+            f'<header class="wall"><h2 id="{c["slug"]}-h">{artist}</h2>'
             f'<p class="lede">{inline_md(c["lede"])}</p>{intro}'
-            f'<a class="src" href="{REPO_URL}/tree/main/{c["slug"]}">Collection notes on GitHub</a></header>'
+            f'<p class="links"><a class="dl" href="{room_zip(c["slug"])}" download>Download all {len(c["works"])}'
+            f'<span class="vh"> {artist} themes</span></a>'
+            f'<a class="src" href="{REPO_URL}/tree/main/{c["slug"]}">Collection notes on GitHub</a></p></header>'
             f'<div class="works">{"".join(cards)}</div></section>'
         )
     first = featured[0]
@@ -167,7 +227,7 @@ def render(collections: list[dict]) -> str:
         description=html.escape(description), site=SITE_URL, repo=REPO_URL, zip=ZIP_NAME, total=total,
         nav=nav, rooms="".join(rooms), hero=window(first, COLLECTIONS[0], "hero-term"),
         hero_name=html.escape(first["placard"]), hero_file=href(first["file"]), hero_data=hero_data,
-        favicon=FAVICON,
+        favicon=FAVICON, og=OG_NAME, og_w=OG_SIZE[0], og_h=OG_SIZE[1],
     )
 
 
@@ -191,7 +251,11 @@ TEMPLATE = """<!doctype html>
 <meta property="og:title" content="Gallery Zero">
 <meta property="og:description" content="{description}">
 <meta property="og:url" content="{site}">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="{site}{og}">
+<meta property="og:image:width" content="{og_w}">
+<meta property="og:image:height" content="{og_h}">
+<meta property="og:image:alt" content="The palettes of eight Gallery Zero themes, one for each painter.">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:image/svg+xml,{favicon}">
 <style>
@@ -231,12 +295,20 @@ h1 {{ font: 500 clamp(44px, 6.4vw, 84px)/0.98 var(--serif); letter-spacing: -0.0
 .lobby .install {{ margin: 24px 0 0; font-size: 14px; }}
 .install code {{ font: 13px var(--mono); }}
 .easel {{ margin: 0; }}
-.easel figcaption {{ display: flex; justify-content: space-between; gap: 16px; margin-top: 18px; font-size: 14px; color: var(--muted); }}
+.easel figcaption {{ display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 18px; font-size: 14px; color: var(--muted); }}
 .easel figcaption a {{ color: var(--ink); font-weight: 600; text-decoration: none; }}
 .easel figcaption a:hover {{ text-decoration: underline; }}
-.dots {{ display: flex; align-items: center; margin-right: -6px; }}
+.controls {{ display: flex; align-items: center; gap: 4px; margin-right: -6px; }}
+.dots {{ display: flex; align-items: center; }}
+.toggle {{ width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: none; color: var(--muted);
+           cursor: pointer; display: grid; place-items: center; transition: color .15s, background-color .15s; }}
+.toggle[hidden] {{ display: none; }}
+.toggle:hover {{ color: var(--ink); background: var(--card); }}
+.toggle svg {{ width: 12px; height: 12px; fill: currentColor; }}
+.toggle .play, .toggle[data-state="paused"] .pause {{ display: none; }}
+.toggle[data-state="paused"] .play {{ display: block; }}
 .dots button {{ width: 20px; height: 20px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; }}
-.dots button::after {{ content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--rule); transition: background-color .3s, transform .3s; }}
+.dots button::after {{ content: ""; width: 7px; height: 7px; border-radius: 50%; background: color-mix(in srgb, var(--muted) 55%, var(--wall)); transition: background-color .3s, transform .3s; }}
 .dots button:hover::after {{ background: var(--muted); }}
 .dots button[aria-current="true"]::after {{ background: var(--ink); transform: scale(1.3); }}
 
@@ -256,18 +328,33 @@ h1 {{ font: 500 clamp(44px, 6.4vw, 84px)/0.98 var(--serif); letter-spacing: -0.0
 h2 {{ font: 500 clamp(36px, 4.4vw, 56px)/1 var(--serif); letter-spacing: -0.02em; margin: 0 0 16px; }}
 .wall .lede {{ font-size: 19px; color: var(--ink); margin: 0 0 12px; }}
 .wall p {{ color: var(--muted); margin: 0 0 12px; }}
+.wall .links {{ display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin: 22px 0 0; }}
 .src {{ font-size: 14px; color: var(--muted); }}
-.works {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); gap: 56px 36px; }}
+.works {{ display: grid; grid-template-columns: minmax(0, 1fr); gap: 52px 32px; }}
 .work .label {{ display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 20px 0 6px; }}
 h3 {{ font: 500 22px/1.2 var(--serif); margin: 0; letter-spacing: -0.01em; }}
+h3 a {{ text-decoration: none; }}
+h3 a::after {{ content: "#"; margin-left: .35em; color: var(--muted); opacity: 0; transition: opacity .15s; }}
+h3 a:hover::after, h3 a:focus-visible::after {{ opacity: 1; }}
 .work p {{ margin: 0; font-size: 14.5px; color: var(--muted); }}
-.dl {{ flex: none; font-size: 14px; font-weight: 600; text-decoration: none; padding: 4px 12px; border-radius: 999px;
+.dl {{ flex: none; color: var(--ink); font-size: 14px; font-weight: 600; text-decoration: none; padding: 4px 12px; border-radius: 999px;
        box-shadow: inset 0 0 0 1px var(--rule); transition: background-color .15s; }}
 .dl:hover {{ background: var(--card); }}
+@media (min-width: 800px) {{
+  .works {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }}
+  .feature {{ grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+              gap: clamp(32px, 4vw, 56px); align-items: center; }}
+  .feature .label {{ margin-top: 0; }}
+  .feature h3 {{ font-size: 30px; }}
+  .feature p {{ font-size: 16px; margin-top: 10px; }}
+  .feature .term pre {{ font-size: min(clamp(12px, 1.15vw, 14.5px), calc((100cqi - 44px) / 26.4)); padding: 20px 22px 24px; }}
+  .feature .bar {{ height: 34px; }}
+}}
+@media (min-width: 1200px) {{ .works {{ grid-template-columns: repeat(3, minmax(0, 1fr)); }} }}
 code {{ font-family: var(--mono); font-size: .9em; }}
 
 /* Terminal window */
-.term {{ border-radius: 12px; overflow: hidden; background: var(--background); color: var(--foreground);
+.term {{ container-type: inline-size; border-radius: 12px; overflow: hidden; background: var(--background); color: var(--foreground);
          box-shadow: var(--shadow); transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; }}
 .works .term:hover {{ transform: translateY(-3px); }}
 .term, .term * {{ transition-property: background-color, color, transform; transition-duration: .7s; }}
@@ -277,8 +364,10 @@ code {{ font-family: var(--mono); font-size: .9em; }}
 .lights i {{ width: 12px; height: 12px; border-radius: 50%; background: #ff5f57; }}
 .lights i:nth-child(2) {{ background: #febc2e; }} .lights i:nth-child(3) {{ background: #28c840; }}
 .placard {{ font: 600 12px var(--sans); opacity: .62; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
-.term pre {{ margin: 0; padding: 14px 16px 16px; font: 12.5px/1.5 var(--mono); white-space: pre; overflow: hidden; }}
-.hero-term pre {{ font-size: clamp(12px, 1.15vw, 14.5px); padding: 20px 22px 24px; }}
+/* The session's longest line is 43 characters, about 26.4em wide, so the type shrinks before the window clips it. */
+.term pre {{ margin: 0; padding: 14px 16px 16px; font: 12.5px/1.5 var(--mono); white-space: pre; overflow: hidden;
+             font-size: min(12.5px, calc((100cqi - 32px) / 26.4)); }}
+.hero-term pre {{ font-size: min(clamp(12px, 1.15vw, 14.5px), calc((100cqi - 44px) / 26.4)); padding: 20px 22px 24px; }}
 .hero-term .bar {{ height: 34px; }}
 .b {{ color: var(--bold); font-weight: 700; }}
 .sel {{ background: var(--selection); }}
@@ -286,7 +375,12 @@ code {{ font-family: var(--mono); font-size: .9em; }}
 @keyframes blink {{ 50% {{ background: transparent; }} }}
 @media (prefers-reduced-motion: reduce) {{ .cursor {{ animation: none; }} .term, .term * {{ transition: none; }} }}
 .chips {{ display: inline-flex; gap: 0; vertical-align: middle; }}
-.chips i {{ display: inline-block; width: 3ch; height: 1.2em; }}
+.chips i {{ display: inline-block; width: 3ch; height: 1.2em; cursor: pointer; }}
+.chips i:hover {{ position: relative; box-shadow: 0 0 0 1.5px var(--foreground); }}
+.tip {{ position: fixed; z-index: 10; transform: translate(-50%, calc(-100% - 8px)); padding: 5px 9px; border-radius: 6px;
+        background: var(--ink); color: var(--wall); font: 500 12px var(--mono); white-space: nowrap; pointer-events: none;
+        opacity: 0; transition: opacity .12s; }}
+.tip.on {{ opacity: 1; }}
 {ansi_css}
 
 footer {{ margin-top: clamp(80px, 10vw, 140px); border-top: 1px solid var(--rule); padding: 40px 0 56px; font-size: 14px; color: var(--muted); }}
@@ -296,7 +390,7 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
   .lobby {{ grid-template-columns: 1fr; }}
   .lobby p {{ max-width: 46ch; }}
 }}
-@media (max-width: 520px) {{ .hero-term pre, .term pre {{ font-size: 11px; padding: 12px 14px 14px; }} }}
+@media (max-width: 520px) {{ .hero-term pre, .term pre {{ padding: 12px 14px 14px; }} }}
 </style>
 </head>
 <body>
@@ -310,11 +404,11 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
         <a class="btn primary" href="{zip}" download>Download all {total}</a>
         <a class="btn ghost" href="{repo}">View on GitHub</a>
       </div>
-      <p class="install">Double-click a <code>.terminal</code> file to add it to Terminal &rsaquo; Settings &rsaquo; Profiles.</p>
+      <p class="install">Double-click a <code>.terminal</code> file to add it to Terminal &rsaquo; Settings &rsaquo; Profiles. Click any swatch to copy its hex.</p>
     </div>
     <figure class="easel" id="easel">
       {hero}
-      <figcaption><a id="easel-file" href="{hero_file}" download>{hero_name}</a><span class="dots" id="easel-dots"></span></figcaption>
+      <figcaption><a id="easel-file" href="{hero_file}" download>{hero_name}</a><span class="controls"><span class="dots" id="easel-dots"></span><button type="button" class="toggle" id="easel-toggle" aria-label="Pause rotation"><svg viewBox="0 0 12 12" aria-hidden="true"><path class="pause" d="M3 2h2.2v8H3zM6.8 2H9v8H6.8z"/><path class="play" d="M3.5 1.8 10 6l-6.5 4.2z"/></svg></button></span></figcaption>
     </figure>
   </section>
 </div>
@@ -328,8 +422,11 @@ const works = {hero_data};
 const term = document.querySelector('.hero-term');
 const link = document.getElementById('easel-file');
 const dots = document.getElementById('easel-dots');
+const toggle = document.getElementById('easel-toggle');
+const easel = document.getElementById('easel');
 const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-let at = 0, timer;
+const holds = new Set();
+let at = 0, timer, stopped = still;
 function show(i) {{
   at = (i + works.length) % works.length;
   const w = works[at];
@@ -339,24 +436,84 @@ function show(i) {{
   link.textContent = w.placard; link.href = w.file;
   dots.querySelectorAll('button').forEach((b, j) => b.setAttribute('aria-current', j === at));
 }}
+// The rotation runs unless the visitor stopped it, or is hovering or tabbing through the easel.
+function run() {{
+  clearInterval(timer);
+  if (!stopped && !holds.size) timer = setInterval(() => show(at + 1), 4200);
+}}
+function hold(why, on) {{ on ? holds.add(why) : holds.delete(why); run(); }}
 works.forEach((w, i) => {{
   const b = document.createElement('button');
   b.type = 'button'; b.setAttribute('aria-label', w.name);
-  b.onclick = () => {{ show(i); restart(); }};
+  b.onclick = () => {{ show(i); run(); }};
   dots.append(b);
 }});
-function restart() {{ clearInterval(timer); if (!still) timer = setInterval(() => show(at + 1), 4200); }}
-const easel = document.getElementById('easel');
-easel.addEventListener('mouseenter', () => clearInterval(timer));
-easel.addEventListener('mouseleave', restart);
-show(0); restart();
+easel.addEventListener('mouseenter', () => hold('hover', true));
+easel.addEventListener('mouseleave', () => hold('hover', false));
+easel.addEventListener('focusin', e => hold('focus', e.target.matches(':focus-visible')));
+easel.addEventListener('focusout', () => hold('focus', false));
+toggle.hidden = still;
+toggle.onclick = () => {{
+  stopped = !stopped;
+  toggle.dataset.state = stopped ? 'paused' : 'playing';
+  toggle.setAttribute('aria-label', stopped ? 'Play rotation' : 'Pause rotation');
+  run();
+}};
+show(0); run();
 
-const links = [...document.querySelectorAll('.index a')];
+const strip = document.querySelector('.index .shell');
+const links = [...strip.querySelectorAll('a')];
+const rooms = [...document.querySelectorAll('.room')];
+const inBand = new Set();
+let current;
 const io = new IntersectionObserver(entries => {{
-  for (const e of entries) if (e.isIntersecting)
-    links.forEach(a => a.setAttribute('aria-current', a.hash === '#' + e.target.id));
+  for (const e of entries) e.isIntersecting ? inBand.add(e.target.id) : inBand.delete(e.target.id);
+  const id = rooms.find(r => inBand.has(r.id))?.id ?? null;
+  if (id === current) return;
+  current = id;
+  let left = 0;
+  for (const a of links) {{
+    const on = a.hash === '#' + id;
+    a.setAttribute('aria-current', on);
+    if (on) left = a.offsetLeft - strip.offsetLeft - (strip.clientWidth - a.offsetWidth) / 2;
+  }}
+  strip.scrollTo({{ left, behavior: still ? 'auto' : 'smooth' }});
 }}, {{ rootMargin: '-45% 0px -50% 0px' }});
-document.querySelectorAll('.room').forEach(r => io.observe(r));
+rooms.forEach(r => io.observe(r));
+
+const tip = document.createElement('div');
+tip.className = 'tip'; tip.setAttribute('role', 'status');
+document.body.append(tip);
+let tipTimer;
+const chipOf = e => e.target instanceof Element ? e.target.closest('.chips i') : null;
+function hexOf(chip) {{
+  const slot = '--' + chip.dataset.k.replace('_', '-');
+  return getComputedStyle(chip.closest('.term')).getPropertyValue(slot).trim();
+}}
+function tipAt(chip, text, ms) {{
+  const r = chip.getBoundingClientRect();
+  tip.textContent = text;
+  tip.style.left = r.left + r.width / 2 + 'px';
+  tip.style.top = r.top + 'px';
+  tip.classList.add('on');
+  clearTimeout(tipTimer);
+  if (ms) tipTimer = setTimeout(() => tip.classList.remove('on'), ms);
+}}
+document.addEventListener('pointerover', e => {{
+  const chip = chipOf(e);
+  if (chip) tipAt(chip, chip.dataset.k.replace('_', ' ') + ' ' + hexOf(chip));
+}});
+document.addEventListener('pointerout', e => {{
+  if (chipOf(e)) tipTimer = setTimeout(() => tip.classList.remove('on'), 80);
+}});
+document.addEventListener('click', async e => {{
+  const chip = chipOf(e);
+  if (!chip) return;
+  const hex = hexOf(chip);
+  try {{ await navigator.clipboard.writeText(hex); tipAt(chip, 'Copied ' + hex, 1400); }}
+  catch {{ tipAt(chip, hex, 1400); }}
+}});
+addEventListener('scroll', () => tip.classList.remove('on'), {{ passive: true }});
 </script>
 </body>
 </html>
@@ -373,14 +530,17 @@ def build(out: Path) -> None:
     out.mkdir(parents=True)
     (out / "index.html").write_text(render(collections), encoding="utf-8")
     (out / ".nojekyll").write_text("")
+    (out / OG_NAME).write_bytes(og_image(featured_works(collections)))
     with zipfile.ZipFile(out / ZIP_NAME, "w", zipfile.ZIP_DEFLATED) as zf:
         for c in collections:
-            for w in c["works"]:
-                src = ROOT / w["file"]
-                dest = out / w["file"]
-                dest.parent.mkdir(exist_ok=True)
-                shutil.copy2(src, dest)
-                zf.write(src, f"gallery-zero/{w['file']}")
+            with zipfile.ZipFile(out / room_zip(c["slug"]), "w", zipfile.ZIP_DEFLATED) as room:
+                for w in c["works"]:
+                    src = ROOT / w["file"]
+                    dest = out / w["file"]
+                    dest.parent.mkdir(exist_ok=True)
+                    shutil.copy2(src, dest)
+                    for archive in (zf, room):
+                        archive.write(src, f"gallery-zero/{w['file']}")
 
 
 def main() -> None:

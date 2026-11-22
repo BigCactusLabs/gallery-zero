@@ -58,7 +58,7 @@ python3 tools/profiles.py audit-contrast
 
 To hang the current works in your own Terminal.app, `python3 tools/profiles.py install-terminal` imports every profile that is missing or differs from its spec, keeps your font, default and startup profile, and moves open tabs onto the new copy. `--dry-run` shows the plan, and `--prune` also removes profiles for works that have left the gallery.
 
-`tools/build_site.py` builds the [gallery site](https://bigcactuslabs.github.io/gallery-zero/) from the same specs plus each collection README's wall text: one live terminal preview per theme, the `.terminal` files, and a zip of all of them. The Pages workflow runs the tests, builds into `_site/`, and deploys on every push to `main`. The works hang in README order, and the top-level README's featured work for each collection rotates in the hero. Run `python3 tools/build_site.py --out _site` to preview locally.
+`tools/build_site.py` builds the [gallery site](https://bigcactuslabs.github.io/gallery-zero/) from the same specs plus each collection README's wall text: one live terminal preview per theme, the `.terminal` files, a zip of all of them, a zip per collection, and the share image (`og.png`, the eight featured palettes, written by a stdlib PNG encoder). The Pages workflow runs the tests, builds into `_site/`, and deploys on every push to `main`. The top-level README's featured work for each collection rotates in the hero and hangs first in its room, full width; the rest hang in README order. Run `python3 tools/build_site.py --out _site` to preview locally.
 
 ---
 
