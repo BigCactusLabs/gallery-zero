@@ -1,8 +1,10 @@
 # Gallery Zero
 
-Color themes for macOS Terminal, curated from the permanent collection.
+56 free color themes for macOS Terminal, drawn from the work of eight artists. Each profile installs with a double-click.
 
-**[Visit the gallery →](https://bigcactuslabs.github.io/gallery-zero/)** Every theme previewed as a live terminal, with one-click downloads.
+[![Two terminal previews in museum frames. Rothko’s Four Darks in Red sets pale rose text on oxblood. Demuth’s My Egypt sets brick orange and sky blue on ivory.](.github/gallery-preview.jpg)](https://bigcactuslabs.github.io/gallery-zero/)
+
+**[Visit the gallery →](https://bigcactuslabs.github.io/gallery-zero/)** Try a dark palette in [Rothko’s *Four Darks in Red*](https://bigcactuslabs.github.io/gallery-zero/#rothko-four-darks-in-red) or a light one in [Demuth’s *My Egypt*](https://bigcactuslabs.github.io/gallery-zero/#demuth-my-egypt).
 
 Each work translates a painter's color relationships into the sixteen ANSI values that define a terminal session. The background becomes the canvas. The text becomes the light.
 
