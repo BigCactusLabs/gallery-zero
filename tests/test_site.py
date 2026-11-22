@@ -10,7 +10,7 @@ class SiteTest(unittest.TestCase):
     def test_every_profile_is_hung_and_zipped(self):
         collections = load()
         works = [w for c in collections for w in c["works"]]
-        self.assertEqual(len(works), 49)
+        self.assertEqual(len(works), 56)
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
             build(out)
