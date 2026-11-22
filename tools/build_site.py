@@ -3,8 +3,8 @@
 
 Reads themes/*.json for colors and placards, each collection README for the
 wall text, and writes a static site: index.html, the .terminal profiles, a zip
-of every profile, a zip per collection, the share image, and the two gilt frames
-that take turns around the hero terminal (tools/assets/frame-*.webp, generated images).
+of every profile, a zip per collection, the share image, and the four gilt frames
+that take turns around the hero terminal (tools/assets/frame-*.webp).
 
     python3 tools/build_site.py --out _site
 """
@@ -28,14 +28,21 @@ REPO_URL = "https://github.com/BigCactusLabs/gallery-zero"
 ZIP_NAME = "gallery-zero.zip"
 OG_NAME = "og.png"
 
-# The hero's frames take turns as the palettes rotate. Both are original images, generated for
-# the gallery: a Louis XV swept frame whose acanthus runs on as gold circuit traces over a black
-# lattice, and one whose pierced rocaille branches like a neural network, with a gold bead at
-# each node. "size" is the cut-out in tools/assets; "sight" is its opening, plus a few px
-# tucked under the frame's lip.
+# The hero's frames take turns as the palettes rotate, in an order shuffled on each page load.
+# Two are original images, generated for the gallery: a Louis XV swept frame whose acanthus runs
+# on as gold circuit traces over a black lattice, and one whose pierced rocaille branches like a
+# neural network, with a gold bead at each node. Two are CC0 photographs from the Metropolitan
+# Museum of Art, cut out of their backdrops: a French ogee frame of about 1720-30 from the
+# Robert Lehman Collection (1975.1.2535), and the frame on Sébastien Bourdon's "A Classical
+# Landscape" (1985.90). "size" is the cut-out in tools/assets; "sight" is its opening, plus a
+# few px tucked under the frame's lip.
+OGEE_SOURCE = "https://commons.wikimedia.org/wiki/File:Ogee_frame_MET_SF-1975-1-2535.jpg"
+BOURDON_SOURCE = "https://commons.wikimedia.org/wiki/File:A_Classical_Landscape_MET_LC-1985_90-1.jpg"
 FRAMES = [
     {"file": "frame-circuit.webp", "size": (1600, 1197), "sight": (206, 214, 1392, 980)},
     {"file": "frame-neural.webp", "size": (1600, 1180), "sight": (208, 216, 1387, 960)},
+    {"file": "frame-ogee.webp", "size": (1600, 1167), "sight": (196, 197, 1405, 982)},
+    {"file": "frame-bourdon.webp", "size": (1600, 1277), "sight": (174, 174, 1426, 1107)},
 ]
 
 # Hanging order on the site, matching the top-level README.
@@ -166,7 +173,7 @@ def hang(frames: list[dict]) -> dict:
         imgs.append(f'<img class="frame f{i}" src="{f["file"]}" width="{f["size"][0]}" height="{f["size"][1]}" alt="">')
     return {
         "easel_w": f"{ew:.4f}", "easel_h": f"{eh:.4f}", "sight_left": pct(-x0, ew), "sight_top": pct(-y0, eh),
-        "sight_w": pct(1, ew), "frames_css": "\n".join(css), "frames_html": "".join(imgs), "first_frame": frames[0]["file"],
+        "sight_w": pct(1, ew), "frames_css": "\n".join(css), "frames_html": "".join(imgs),
     }
 
 
@@ -274,7 +281,7 @@ def render(collections: list[dict]) -> str:
         nav=nav, rooms="".join(rooms), hero=window(first, COLLECTIONS[0], "hero-term"),
         hero_name=html.escape(first["placard"]), hero_file=href(first["file"]), hero_data=hero_data,
         favicon=FAVICON, og=OG_NAME, og_w=OG_SIZE[0], og_h=OG_SIZE[1],
-        frame_count=len(FRAMES), **easel,
+        frame_count=len(FRAMES), ogee_source=OGEE_SOURCE, bourdon_source=BOURDON_SOURCE, **easel,
     )
 
 
@@ -305,7 +312,6 @@ TEMPLATE = """<!doctype html>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:image/svg+xml,{favicon}">
-<link rel="preload" as="image" href="{first_frame}">
 <style>
 :root {{
   --wall: #f3f3f2; --ink: #17171a; --muted: #5f5f66; --rule: #dcdcdc; --card: #ffffff;
@@ -469,6 +475,15 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
     </div>
     <figure class="easel" id="easel">
       <div class="gilt" id="gilt" data-frame="0">{hero}{frames_html}</div>
+      <script>
+      // The frames hang in a new order on each visit; this runs before the first paint.
+      const frameOrder = Array.from({{length: {frame_count}}}, (_, i) => i);
+      for (let i = frameOrder.length - 1; i > 0; i--) {{
+        const j = Math.floor(Math.random() * (i + 1));
+        [frameOrder[i], frameOrder[j]] = [frameOrder[j], frameOrder[i]];
+      }}
+      document.getElementById('gilt').dataset.frame = frameOrder[0];
+      </script>
       <figcaption><a id="easel-file" href="{hero_file}" download>{hero_name}</a><span class="controls"><span class="dots" id="easel-dots"></span><button type="button" class="toggle" id="easel-toggle" aria-label="Pause rotation"><svg viewBox="0 0 12 12" aria-hidden="true"><path class="pause" d="M3 2h2.2v8H3zM6.8 2H9v8H6.8z"/><path class="play" d="M3.5 1.8 10 6l-6.5 4.2z"/></svg></button></span></figcaption>
     </figure>
   </section>
@@ -477,7 +492,7 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
 <div class="shell">{rooms}</div>
 </main>
 <footer><div class="shell"><span>Gallery Zero. Palettes sampled from images of each painting. Themes licensed <a href="{repo}/blob/main/LICENSE">CC BY 4.0</a>.
-The frames are generated images: Louis XV in outline, circuit traces and neural branching in the carving.</span>
+Two of the frames are generated images. The other two are at The Met: a French ogee frame of about 1720&ndash;30 (<a href="{ogee_source}">CC0</a>) and the frame on Sébastien Bourdon&rsquo;s <cite>A Classical Landscape</cite> (<a href="{bourdon_source}">CC0</a>).</span>
 <span><a href="{repo}/blob/main/TECHNIQUES.md">How the profiles are built</a> · <a href="{repo}">Source</a></span></div></footer>
 <script>
 const works = {hero_data};
@@ -497,7 +512,7 @@ function show(i) {{
   term.querySelector('.placard').textContent = w.placard;
   term.querySelectorAll('.dir').forEach(d => d.textContent = w.dir);
   link.textContent = w.placard; link.href = w.file;
-  gilt.dataset.frame = at % {frame_count};
+  gilt.dataset.frame = frameOrder[at % frameOrder.length];
   dots.querySelectorAll('button').forEach((b, j) => b.setAttribute('aria-current', j === at));
 }}
 // The rotation runs unless the visitor stopped it, or is hovering or tabbing through the easel.
