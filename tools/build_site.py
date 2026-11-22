@@ -3,8 +3,8 @@
 
 Reads themes/*.json for colors and placards, each collection README for the
 wall text, and writes a static site: index.html, the .terminal profiles, a zip
-of every profile, a zip per collection, the share image, and the two gilt frames
-that take turns around the hero terminal (tools/assets/frame-*.webp, museum photographs).
+of every profile, a zip per collection, the share image, and the gilt frame
+around the hero terminal (tools/assets/frame-circuit.webp, a generated image).
 
     python3 tools/build_site.py --out _site
 """
@@ -28,16 +28,12 @@ REPO_URL = "https://github.com/BigCactusLabs/gallery-zero"
 ZIP_NAME = "gallery-zero.zip"
 OG_NAME = "og.png"
 
-# The hero's frames take turns as the palettes rotate. Both are CC0 photographs from the
-# Metropolitan Museum of Art, cut out of their backdrops: a French ogee frame of about 1720-30
-# from the Robert Lehman Collection (1975.1.2535), and the frame on Sébastien Bourdon's
-# "A Classical Landscape" (1985.90). "size" is the cut-out in tools/assets; "sight" is its
-# opening, plus a few px tucked under the frame's lip.
+# The hero's frame: an original image, generated for the gallery. A Louis XV swept frame whose
+# acanthus runs on as gold circuit traces over a black lattice. "size" is the cut-out in
+# tools/assets; "sight" is its opening, plus a few px tucked under the frame's lip. List more
+# than one frame and they take turns as the palettes rotate.
 FRAMES = [
-    {"file": "frame-ogee.webp", "size": (1600, 1167), "sight": (196, 197, 1405, 982),
-     "source": "https://commons.wikimedia.org/wiki/File:Ogee_frame_MET_SF-1975-1-2535.jpg"},
-    {"file": "frame-bourdon.webp", "size": (1600, 1277), "sight": (174, 174, 1426, 1107),
-     "source": "https://commons.wikimedia.org/wiki/File:A_Classical_Landscape_MET_LC-1985_90-1.jpg"},
+    {"file": "frame-circuit.webp", "size": (1600, 1197), "sight": (206, 214, 1392, 980)},
 ]
 
 # Hanging order on the site, matching the top-level README.
@@ -276,7 +272,7 @@ def render(collections: list[dict]) -> str:
         nav=nav, rooms="".join(rooms), hero=window(first, COLLECTIONS[0], "hero-term"),
         hero_name=html.escape(first["placard"]), hero_file=href(first["file"]), hero_data=hero_data,
         favicon=FAVICON, og=OG_NAME, og_w=OG_SIZE[0], og_h=OG_SIZE[1],
-        frame_count=len(FRAMES), ogee_source=FRAMES[0]["source"], bourdon_source=FRAMES[1]["source"], **easel,
+        frame_count=len(FRAMES), **easel,
     )
 
 
@@ -417,9 +413,9 @@ code {{ font-family: var(--mono); font-size: .9em; }}
 /* The session's longest line is 43 characters, about 26.4em wide, so the type shrinks before the window clips it. */
 .term pre {{ margin: 0; padding: 14px 16px 16px; font: 12.5px/1.5 var(--mono); white-space: pre; overflow: hidden;
              font-size: min(12.5px, calc((100cqi - 32px) / 26.4)); }}
-/* The easel: a terminal behind real frames that take turns. The frames are laid so their
-   openings share a top edge and a width; the terminal fills the opening of the one on show
-   and tucks under its lip, and its type scales with the opening. */
+/* The easel: a terminal behind a frame. The terminal fills the frame's opening and tucks
+   under its lip, and its type scales with the opening. With more than one frame they are
+   laid so their openings share a top edge and a width, and they cross-fade. */
 .gilt {{ position: relative; aspect-ratio: {easel_w} / {easel_h}; }}
 .gilt .frame {{ position: absolute; pointer-events: none; user-select: none; opacity: 0; transition: opacity .7s;
                 filter: drop-shadow(0 1px 1px rgb(0 0 0 / .45)) drop-shadow(0 14px 16px rgb(0 0 0 / .32)); }}
@@ -479,7 +475,7 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
 <div class="shell">{rooms}</div>
 </main>
 <footer><div class="shell"><span>Gallery Zero. Palettes sampled from images of each painting. Themes licensed <a href="{repo}/blob/main/LICENSE">CC BY 4.0</a>.
-The frames are at The Met: a French ogee frame of about 1720&ndash;30 (<a href="{ogee_source}">CC0</a>) and the frame on Sébastien Bourdon&rsquo;s <cite>A Classical Landscape</cite> (<a href="{bourdon_source}">CC0</a>).</span>
+The frame is a generated image: Louis XV in outline, circuit traces in the carving.</span>
 <span><a href="{repo}/blob/main/TECHNIQUES.md">How the profiles are built</a> · <a href="{repo}">Source</a></span></div></footer>
 <script>
 const works = {hero_data};
