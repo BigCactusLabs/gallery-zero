@@ -94,7 +94,7 @@ Two reds of equal lightness flicker against each other, cut by navy curves. The 
 
 ## The Pelton Collection
 
-Seven profiles after Agnes Pelton (1881–1961). Transcendental light, reconsidered as phosphor on glass — four of them, for the first time, translucent.
+Seven profiles after Agnes Pelton (1881–1961). Transcendental light, reconsidered as phosphor on glass.
 
 ### Ahmi in Egypt
 
