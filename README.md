@@ -114,7 +114,7 @@ Seven profiles after Charles Demuth (1883–1935). Precisionist daylight, recons
 
 <img src=".github/swatches/my-egypt.svg" width="360" alt="My Egypt palette" />
 
-A grain elevator raised to the scale of a pyramid, crossed by rays of light. The sky is the ground; soot, brick and two blues do the writing. After *My Egypt*, 1927, at the Whitney.
+A grain elevator raised to the scale of a pyramid, crossed by rays of light. The white of the silos is the ground, and brick orange, amber and two sky blues are set on it at full strength. After *My Egypt*, 1927, at the Whitney.
 
 [Enter the Demuth gallery.](demuth/)
 

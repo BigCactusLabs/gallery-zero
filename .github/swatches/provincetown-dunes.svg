@@ -4,19 +4,19 @@
   <!-- foreground band -->
   <rect x="16" y="16" width="328" height="28" rx="4" fill="#3d1a52" opacity="0.9"/>
   <rect x="16.0" y="56" width="35.8" height="40" rx="3" fill="#3d1a52"/>
-  <rect x="57.8" y="56" width="35.8" height="40" rx="3" fill="#cb1617"/>
-  <rect x="99.5" y="56" width="35.8" height="40" rx="3" fill="#606c21"/>
-  <rect x="141.2" y="56" width="35.8" height="40" rx="3" fill="#885e04"/>
-  <rect x="183.0" y="56" width="35.8" height="40" rx="3" fill="#3858e1"/>
-  <rect x="224.8" y="56" width="35.8" height="40" rx="3" fill="#ac368d"/>
-  <rect x="266.5" y="56" width="35.8" height="40" rx="3" fill="#016c9d"/>
+  <rect x="57.8" y="56" width="35.8" height="40" rx="3" fill="#cb1325"/>
+  <rect x="99.5" y="56" width="35.8" height="40" rx="3" fill="#6c6332"/>
+  <rect x="141.2" y="56" width="35.8" height="40" rx="3" fill="#915d01"/>
+  <rect x="183.0" y="56" width="35.8" height="40" rx="3" fill="#1d4fd3"/>
+  <rect x="224.8" y="56" width="35.8" height="40" rx="3" fill="#aa3791"/>
+  <rect x="266.5" y="56" width="35.8" height="40" rx="3" fill="#7057bb"/>
   <rect x="308.2" y="56" width="35.8" height="40" rx="3" fill="#dac0c3"/>
   <rect x="16.0" y="102" width="35.8" height="40" rx="3" fill="#746278"/>
-  <rect x="57.8" y="102" width="35.8" height="40" rx="3" fill="#b2000a"/>
-  <rect x="99.5" y="102" width="35.8" height="40" rx="3" fill="#515c04"/>
-  <rect x="141.2" y="102" width="35.8" height="40" rx="3" fill="#745002"/>
-  <rect x="183.0" y="102" width="35.8" height="40" rx="3" fill="#2735f4"/>
-  <rect x="224.8" y="102" width="35.8" height="40" rx="3" fill="#a30383"/>
-  <rect x="266.5" y="102" width="35.8" height="40" rx="3" fill="#015c87"/>
+  <rect x="57.8" y="102" width="35.8" height="40" rx="3" fill="#b0041c"/>
+  <rect x="99.5" y="102" width="35.8" height="40" rx="3" fill="#5f5402"/>
+  <rect x="141.2" y="102" width="35.8" height="40" rx="3" fill="#7b4e01"/>
+  <rect x="183.0" y="102" width="35.8" height="40" rx="3" fill="#0032df"/>
+  <rect x="224.8" y="102" width="35.8" height="40" rx="3" fill="#a10186"/>
+  <rect x="266.5" y="102" width="35.8" height="40" rx="3" fill="#663ac1"/>
   <rect x="308.2" y="102" width="35.8" height="40" rx="3" fill="#ecd4d7"/>
 </svg>
