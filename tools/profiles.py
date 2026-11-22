@@ -519,7 +519,13 @@ def _tell(body: str) -> str:
 
 
 def _set_names() -> list[str]:
-    return [_nfc(name) for name in _tell("get name of every settings set").split(", ") if name]
+    # One name per line: a profile name can hold a comma ("Buildings, Lancaster"),
+    # so AppleScript's default ", " list rendering cannot be split back apart.
+    listing = _tell(
+        "set AppleScript's text item delimiters to linefeed\n"
+        "return (name of every settings set) as text"
+    )
+    return [_nfc(name) for name in listing.split("\n") if name]
 
 
 def _window_ids() -> set[str]:
