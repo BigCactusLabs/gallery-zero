@@ -25,6 +25,8 @@ from urllib.parse import quote
 ROOT = Path(__file__).resolve().parent.parent
 SITE_URL = "https://bigcactuslabs.github.io/gallery-zero/"
 REPO_URL = "https://github.com/BigCactusLabs/gallery-zero"
+INSTALL_URL = "https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/install.sh"
+INSTALL_CMD = f"curl -fsSL {INSTALL_URL} | sh"
 ZIP_NAME = "gallery-zero.zip"
 OG_NAME = "og.png"
 
@@ -278,6 +280,7 @@ def render(collections: list[dict]) -> str:
                    "George Condo, Claude Monet, Atsuko Tanaka, Bridget Riley, Agnes Pelton and Charles Demuth.")
     return TEMPLATE.format(
         description=html.escape(description), site=SITE_URL, repo=REPO_URL, zip=ZIP_NAME, total=total,
+        install_cmd=html.escape(INSTALL_CMD),
         nav=nav, rooms="".join(rooms), hero=window(first, COLLECTIONS[0], "hero-term"),
         hero_name=html.escape(first["placard"]), hero_file=href(first["file"]), hero_data=hero_data,
         favicon=FAVICON, og=OG_NAME, og_w=OG_SIZE[0], og_h=OG_SIZE[1],
@@ -346,8 +349,18 @@ h1 {{ font: 500 clamp(44px, 6.4vw, 84px)/0.98 var(--serif); letter-spacing: -0.0
 .btn.primary {{ background: var(--ink); color: var(--wall); }}
 .btn.ghost {{ box-shadow: inset 0 0 0 1px var(--rule); }}
 .btn.ghost:hover {{ background: var(--card); }}
-.lobby .install {{ margin: 24px 0 0; font-size: 14px; }}
+.lobby .install {{ margin: 24px 0 0; font-size: 14px; max-width: 44ch; }}
 .install code {{ font: 13px var(--mono); }}
+.cli {{ margin-top: 16px; max-width: 44ch; }}
+.cli-label {{ display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }}
+.cmd {{ display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 10px;
+        background: var(--card); box-shadow: inset 0 0 0 1px var(--rule); }}
+.cmd code {{ flex: 1; min-width: 0; font: 12px/1.5 var(--mono); color: var(--ink);
+             overflow-wrap: anywhere; user-select: all; }}
+.copy-btn {{ flex: none; padding: 3px 10px; border: 0; border-radius: 999px; background: var(--wall);
+             color: var(--ink); font: 600 12px var(--sans); box-shadow: inset 0 0 0 1px var(--rule);
+             cursor: pointer; transition: background-color .15s, color .15s; }}
+.copy-btn:hover {{ background: var(--ink); color: var(--wall); }}
 .easel {{ margin: 0; justify-self: center; width: min(100%, 700px); }}
 .easel figcaption {{ display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 18px; font-size: 14px; color: var(--muted); }}
 .easel figcaption a {{ color: var(--ink); font-weight: 600; text-decoration: none; }}
@@ -471,7 +484,11 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
         <a class="btn primary" href="{zip}" download>Download all {total}</a>
         <a class="btn ghost" href="{repo}">View on GitHub</a>
       </div>
-      <p class="install">Double-click a <code>.terminal</code> file to add it to Terminal &rsaquo; Settings &rsaquo; Profiles. Click any swatch to copy its hex.</p>
+      <p class="install">Drag a <code>.terminal</code> file into Terminal &rsaquo; Settings &rsaquo; Profiles (or use <strong>&hellip; &rsaquo; Import&hellip;</strong>) &mdash; macOS blocks double-clicking browser downloads. Click any swatch to copy its hex.</p>
+      <div class="cli">
+        <span class="cli-label">Or install from Terminal (add <code>-s -- rothko demuth</code> for specific packs):</span>
+        <div class="cmd"><code>{install_cmd}</code><button type="button" class="copy-btn" data-copy="{install_cmd}">Copy</button></div>
+      </div>
     </div>
     <figure class="easel" id="easel">
       <div class="gilt" id="gilt" data-frame="0">{hero}{frames_html}</div>
@@ -586,6 +603,16 @@ document.addEventListener('pointerout', e => {{
   if (chipOf(e)) tipTimer = setTimeout(() => tip.classList.remove('on'), 80);
 }});
 document.addEventListener('click', async e => {{
+  const copyBtn = e.target instanceof Element ? e.target.closest('.copy-btn') : null;
+  if (copyBtn) {{
+    try {{
+      await navigator.clipboard.writeText(copyBtn.dataset.copy);
+      copyBtn.textContent = 'Copied';
+      clearTimeout(copyBtn._t);
+      copyBtn._t = setTimeout(() => copyBtn.textContent = 'Copy', 1600);
+    }} catch {{}}
+    return;
+  }}
   const chip = chipOf(e);
   if (!chip) return;
   const hex = hexOf(chip);
@@ -610,6 +637,7 @@ def build(out: Path) -> None:
     (out / "index.html").write_text(render(collections), encoding="utf-8")
     (out / ".nojekyll").write_text("")
     (out / OG_NAME).write_bytes(og_image(featured_works(collections)))
+    shutil.copy2(ROOT / "install.sh", out / "install.sh")
     for frame in FRAMES:
         shutil.copy2(ROOT / "tools" / "assets" / frame["file"], out / frame["file"])
     with zipfile.ZipFile(out / ZIP_NAME, "w", zipfile.ZIP_DEFLATED) as zf:

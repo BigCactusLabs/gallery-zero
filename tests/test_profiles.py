@@ -1,7 +1,11 @@
 import contextlib
 import io
 import json
+import os
 import plistlib
+import subprocess
+import sys
+import tarfile
 import tempfile
 import unicodedata
 import unittest
@@ -10,6 +14,7 @@ from pathlib import Path
 from tools.profiles import (
     RepositoryError,
     audit_theme,
+    filter_collections,
     ProfileRecord,
     load_repository,
     main,
@@ -322,9 +327,11 @@ class ProfileVerificationTests(unittest.TestCase):
 ROOT = Path(__file__).resolve().parent.parent
 
 
-def fixture_record(name: str = "Fixture — Dark") -> ProfileRecord:
+def fixture_record(name: str = "Fixture — Dark", collection: str = "fixture") -> ProfileRecord:
     theme = dark_theme(active=0.93, inactive=0.93, dynamic=True)
-    return ProfileRecord(name, theme, Path("themes/fixture.json"), Path(f"fixture/{name}.terminal"))
+    return ProfileRecord(
+        name, theme, Path(f"themes/{collection}.json"), Path(f"{collection}/{name}.terminal")
+    )
 
 
 class SwatchTests(unittest.TestCase):
@@ -394,6 +401,98 @@ class TerminalInstallPlanTests(unittest.TestCase):
         }
 
         self.assertEqual(([], ["Fixture — Retired Work"]), plan_terminal_install([record], installed))
+
+    def test_filters_by_collection_and_leaves_other_packs_unretired(self) -> None:
+        rothko = fixture_record("Rothko — Four Darks in Red", collection="rothko")
+        de_amaral = fixture_record("De Amaral — Pirámide D", collection="de-amaral")
+        demuth = fixture_record("Demuth — My Egypt", collection="demuth")
+        records = [rothko, de_amaral, demuth]
+
+        self.assertEqual(records, filter_collections(records, None))
+        self.assertEqual([rothko, de_amaral], filter_collections(records, ["Rothko,De Amaral"]))
+        self.assertEqual([rothko, demuth], filter_collections(records, ["rothko", "demuth"]))
+
+        installed = {
+            rothko.name: self.installed(rothko),
+            demuth.name: self.installed(demuth),
+        }
+        selected = filter_collections(records, ["rothko"])
+        self.assertEqual(([], []), plan_terminal_install(selected, installed))
+
+    def test_rejects_unknown_or_empty_collection_names(self) -> None:
+        records = [
+            fixture_record("Rothko — Four Darks in Red", collection="rothko"),
+            fixture_record("Demuth — My Egypt", collection="demuth"),
+        ]
+
+        with self.assertRaisesRegex(RepositoryError, r"unknown collection\(s\): picasso"):
+            filter_collections(records, ["rothko", "picasso"])
+        with self.assertRaisesRegex(RepositoryError, "no collection specified"):
+            filter_collections(records, [" , "])
+
+        stderr = io.StringIO()
+        with contextlib.redirect_stderr(stderr):
+            code = main(["install-terminal", "--dry-run", "--pack", "picasso"])
+        self.assertEqual(2, code)
+        self.assertIn("unknown collection(s): picasso", stderr.getvalue())
+
+    def test_lists_available_collections(self) -> None:
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            code = main(["install-terminal", "--list"])
+        self.assertEqual(0, code)
+        output = stdout.getvalue()
+        self.assertIn("rothko", output)
+        self.assertIn("de-amaral", output)
+        self.assertIn("Demuth (7)", output)
+
+
+class InstallScriptTests(unittest.TestCase):
+    def test_help_and_list_from_local_checkout(self) -> None:
+        script = ROOT / "install.sh"
+        help_run = subprocess.run(["sh", str(script), "--help"], capture_output=True, text=True, check=True)
+        self.assertIn("install.sh [OPTIONS] [COLLECTION...]", help_run.stdout)
+
+        list_run = subprocess.run(["sh", str(script), "--list"], capture_output=True, text=True, check=True)
+        self.assertIn("rothko", list_run.stdout)
+        self.assertIn("de-amaral", list_run.stdout)
+
+    def test_piped_stdin_fetches_tarball_and_cleans_up(self) -> None:
+        script_bytes = (ROOT / "install.sh").read_bytes()
+        with tempfile.TemporaryDirectory() as directory:
+            tmp = Path(directory)
+            archive_path = tmp / "gallery-zero.tar.gz"
+            with tarfile.open(archive_path, "w:gz") as tf:
+                tf.add(ROOT / "tools" / "profiles.py", arcname="gallery-zero-main/tools/profiles.py")
+                tf.add(ROOT / "themes", arcname="gallery-zero-main/themes")
+                for folder in ("condo", "de-amaral", "demuth", "monet", "pelton", "riley", "rothko", "tanaka"):
+                    tf.add(ROOT / folder, arcname=f"gallery-zero-main/{folder}")
+            scratch_tmp = tmp / "worktmp"
+            scratch_tmp.mkdir()
+            env = {
+                **os.environ,
+                "GALLERY_ZERO_TARBALL": archive_path.as_uri(),
+                "TMPDIR": str(scratch_tmp),
+            }
+            run = subprocess.run(
+                ["sh", "-s", "--", "--list"],
+                input=script_bytes,
+                capture_output=True,
+                env=env,
+                check=True,
+            )
+            self.assertIn(b"Rothko (7)", run.stdout)
+            self.assertEqual([], list(scratch_tmp.iterdir()))
+
+    @unittest.skipUnless(sys.platform == "darwin", "dry-run reads macOS Terminal defaults")
+    def test_dry_run_accepts_bare_and_spaced_pack_names(self) -> None:
+        run = subprocess.run(
+            ["sh", str(ROOT / "install.sh"), "--dry-run", "rothko", "De Amaral"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        self.assertIn("PROFILES=14 ", run.stdout)
 
 
 if __name__ == "__main__":

@@ -60,9 +60,15 @@ Each title bar carries a museum placard, such as *Four Darks in Red — Rothko, 
 
 ## Acquisition
 
-Double-click any `.terminal` file in this directory. It will appear in **Terminal → Preferences → Profiles**. Select it. Set it as default if you like.
+Install the full Rothko collection from Terminal (skips Gatekeeper, keeps your font and default profile):
 
-Or, from the command line:
+```sh
+curl -fsSL https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/install.sh | sh -s -- rothko
+```
+
+Or install manually: open **Terminal → Settings** (`⌘,`) **→ Profiles** and drag any `.terminal` file from this directory into the profiles list (or click **⋯ → Import…**). *(macOS Gatekeeper blocks double-clicking browser-downloaded `.terminal` files; importing through Settings skips it.)*
+
+Or, from a cloned repository:
 
 ```sh
 open "Rothko — Four Darks in Red.terminal"

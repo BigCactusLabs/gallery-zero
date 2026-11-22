@@ -1,12 +1,24 @@
 # Gallery Zero
 
-56 free color themes for macOS Terminal, drawn from the work of eight artists. Each profile installs with a double-click.
+56 free color themes for macOS Terminal, drawn from the work of eight artists. Import any profile in Terminal → Settings → Profiles, or install all 56 from the command line.
 
 [![Two terminal previews in museum frames. Rothko’s Four Darks in Red sets pale rose text on oxblood. Demuth’s My Egypt sets brick orange and sky blue on ivory.](.github/gallery-preview.jpg)](https://bigcactuslabs.github.io/gallery-zero/)
 
 **[Visit the gallery →](https://bigcactuslabs.github.io/gallery-zero/)** Try a dark palette in [Rothko’s *Four Darks in Red*](https://bigcactuslabs.github.io/gallery-zero/#rothko-four-darks-in-red) or a light one in [Demuth’s *My Egypt*](https://bigcactuslabs.github.io/gallery-zero/#demuth-my-egypt).
 
 Each work translates a painter's color relationships into the sixteen ANSI values that define a terminal session. The background becomes the canvas. The text becomes the light.
+
+## Quick install
+
+```sh
+# Install all 56 themes into macOS Terminal (no Gatekeeper prompt):
+curl -fsSL https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/install.sh | sh
+
+# Or install only specific packs (condo, de-amaral, demuth, monet, pelton, riley, rothko, tanaka):
+curl -fsSL https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/install.sh | sh -s -- rothko demuth
+```
+
+Keeps your current font, default, and startup profile, and cleans up after itself. Inspect [`install.sh`](install.sh) first, or see [Acquisitions](#acquisitions) for manual import via **Terminal → Settings → Profiles**.
 
 ---
 
@@ -124,11 +136,33 @@ A grain elevator raised to the scale of a pyramid, crossed by rays of light. The
 
 ## Acquisitions
 
-Download one from [the gallery site](https://bigcactuslabs.github.io/gallery-zero/), or all of them as [one zip](https://bigcactuslabs.github.io/gallery-zero/gallery-zero.zip). Double-click any `.terminal` file. It will appear in **Terminal → Preferences → Profiles**. Select it. Set it as default if you like.
+Download one from [the gallery site](https://bigcactuslabs.github.io/gallery-zero/), or all 56 as [one zip](https://bigcactuslabs.github.io/gallery-zero/gallery-zero.zip).
 
-Or, from the command line:
+**In Terminal Settings (recommended for browser downloads):** Open **Terminal → Settings** (`⌘,`) **→ Profiles**, then drag any `.terminal` file into the profiles list — or click the **⋯** button at the bottom of the list and choose **Import…**. Select it and click **Default** if you like.
+
+*(macOS Gatekeeper blocks double-clicking `.terminal` files downloaded through a browser, because the format can carry startup commands. Gallery Zero profiles contain only colors and window settings — no commands. Importing through Settings reads the file directly without triggering Gatekeeper, or you can clear the quarantine flag with `xattr -dr com.apple.quarantine <file-or-folder>`.)*
+
+**From the command line (no quarantine, no repo left behind):**
 
 ```sh
+# All 56 themes:
+curl -fsSL https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/install.sh | sh
+
+# Just specific packs:
+curl -fsSL https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/install.sh | sh -s -- rothko demuth
+
+# List available packs or preview without installing:
+curl -fsSL https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/install.sh | sh -s -- --list
+curl -fsSL https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/install.sh | sh -s -- --dry-run rothko
+```
+
+[`install.sh`](install.sh) fetches a fresh archive into a temporary directory, runs `tools/profiles.py install-terminal` (keeping your font, default, and startup profile), and removes the temporary directory on exit.
+
+Or, from a cloned repository (`git clone` doesn't add a quarantine flag):
+
+```sh
+./install.sh rothko demuth
+# or open individual profiles directly:
 open "rothko/Rothko — Four Darks in Red.terminal"
 open "de-amaral/De Amaral — Pirámide D.terminal"
 open "condo/Condo — The Fallen Butler.terminal"

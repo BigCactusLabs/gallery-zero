@@ -1,10 +1,11 @@
+import html
 import struct
 import tempfile
 import unittest
 import zipfile
 from pathlib import Path
 
-from tools.build_site import FRAMES, OG_NAME, OG_SIZE, ZIP_NAME, build, load, room_zip
+from tools.build_site import FRAMES, INSTALL_CMD, OG_NAME, OG_SIZE, ZIP_NAME, build, load, room_zip
 
 
 class SiteTest(unittest.TestCase):
@@ -35,6 +36,10 @@ class SiteTest(unittest.TestCase):
                 self.assertEqual((out / frame["file"]).read_bytes()[8:12], b"WEBP")
                 self.assertIn(f'<img class="frame f{i}" src="{frame["file"]}"', page)
                 self.assertIn(f'.gilt[data-frame="{i}"] .hero-term', page)
+            self.assertIn("Import&hellip;", page)
+            self.assertIn(html.escape(INSTALL_CMD), page)
+            self.assertNotIn("Double-click a", page)
+            self.assertTrue((out / "install.sh").is_file())
 
 
 if __name__ == "__main__":

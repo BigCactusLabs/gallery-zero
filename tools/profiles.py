@@ -85,6 +85,10 @@ class ProfileRecord:
     spec_path: Path
     artifact_path: Path
 
+    @property
+    def collection(self) -> str:
+        return self.spec_path.stem
+
 
 def _rgb(hex_color: str) -> tuple[float, float, float]:
     value = hex_color.removeprefix("#")
@@ -366,7 +370,7 @@ def swatch_path(root: Path, theme: dict[str, Any]) -> Path:
 
 def load_repository(root: Path) -> list[ProfileRecord]:
     records: list[ProfileRecord] = []
-    expected_artifacts: set[Path] = set()
+    expected_artifacts: set[str] = set()
     names: set[str] = set()
 
     for spec_path in sorted((root / "themes").glob("*.json")):
@@ -383,11 +387,11 @@ def load_repository(root: Path) -> list[ProfileRecord]:
             relative_artifact = artifact_path.relative_to(root)
             if not artifact_path.is_file():
                 raise RepositoryError(f"missing artifact: {relative_artifact}")
-            expected_artifacts.add(artifact_path)
+            expected_artifacts.add(_nfc(str(artifact_path)))
             records.append(ProfileRecord(name, theme, spec_path, artifact_path))
 
-    actual_artifacts = set(root.glob("*/*.terminal"))
-    unexpected = sorted(actual_artifacts - expected_artifacts)
+    actual_artifacts = sorted(root.glob("*/*.terminal"))
+    unexpected = [path for path in actual_artifacts if _nfc(str(path)) not in expected_artifacts]
     if unexpected:
         raise RepositoryError(f"unexpected artifact: {unexpected[0].relative_to(root)}")
     if not records:
@@ -472,6 +476,33 @@ def _audit_contrast(records: Sequence[ProfileRecord]) -> int:
 # on import, so "current" means verify_profile_xml passes, not equal bytes.
 
 
+def filter_collections(
+    records: Sequence[ProfileRecord], collections: Sequence[str] | None
+) -> list[ProfileRecord]:
+    """Return records belonging to the requested collection(s), or all records if none given."""
+    if not collections:
+        return list(records)
+    available = {record.collection for record in records}
+    requested: list[str] = []
+    for raw in collections:
+        for part in raw.split(","):
+            slug = "-".join(part.strip().lower().split())
+            if slug:
+                requested.append(slug)
+    if not requested:
+        raise RepositoryError(
+            f"no collection specified (available: {', '.join(sorted(available))})"
+        )
+    unknown = sorted(set(requested) - available)
+    if unknown:
+        raise RepositoryError(
+            f"unknown collection(s): {', '.join(unknown)} "
+            f"(available: {', '.join(sorted(available))})"
+        )
+    selected = set(requested)
+    return [record for record in records if record.collection in selected]
+
+
 def _nfc(text: str) -> str:
     return unicodedata.normalize("NFC", text)
 
@@ -551,6 +582,19 @@ def _installed_profiles() -> dict[str, Any]:
     return plistlib.loads(exported)
 
 
+def _list_collections(records: Sequence[ProfileRecord]) -> int:
+    counts: dict[str, tuple[str, int]] = {}
+    for record in records:
+        artist = record.name.split(" — ", 1)[0]
+        _, count = counts.get(record.collection, (artist, 0))
+        counts[record.collection] = (artist, count + 1)
+    width = max(len(slug) for slug in counts)
+    for slug in sorted(counts):
+        artist, count = counts[slug]
+        print(f"{slug:<{width}}  {artist} ({count})")
+    return 0
+
+
 def _install_terminal(records: Sequence[ProfileRecord], *, dry_run: bool, prune: bool) -> int:
     if sys.platform != "darwin":
         print("error: install-terminal needs macOS Terminal.app", file=sys.stderr)
@@ -601,7 +645,7 @@ def _install_terminal(records: Sequence[ProfileRecord], *, dry_run: bool, prune:
                 _tell(f"set name of settings set {_quote(imported)} to {_quote(name)}")
             for wid in import_windows:
                 _tell(f"close (first window whose id is {wid})")
-            print(f"installed: {record.name}")
+            print(f"installed: {record.name}", flush=True)
 
         if prune:
             for name in retired:
@@ -634,6 +678,21 @@ def _parser() -> argparse.ArgumentParser:
             "audit-contrast",
             "install-terminal",
         ),
+    )
+    parser.add_argument(
+        "--collection",
+        "--pack",
+        "-c",
+        action="append",
+        dest="collections",
+        metavar="NAME",
+        help="install-terminal: install only the named collection(s), e.g. --collection rothko,demuth (repeatable)",
+    )
+    parser.add_argument(
+        "--list",
+        "-l",
+        action="store_true",
+        help="install-terminal: list available collections and exit",
     )
     parser.add_argument(
         "--dry-run",
@@ -670,7 +729,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     if arguments.command == "verify":
         return _verify(arguments.root.resolve(), records)
     if arguments.command == "install-terminal":
-        return _install_terminal(records, dry_run=arguments.dry_run, prune=arguments.prune)
+        if arguments.list:
+            return _list_collections(records)
+        try:
+            selected = filter_collections(records, arguments.collections)
+        except RepositoryError as error:
+            print(f"error: {error}", file=sys.stderr)
+            return 2
+        return _install_terminal(selected, dry_run=arguments.dry_run, prune=arguments.prune)
     return _audit_contrast(records)
 
 

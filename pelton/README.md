@@ -52,7 +52,7 @@ A lavender-white arch glowing pink from within, between snow-covered trees, unde
 
 ## Framing
 
-Every frame is a uniform 110×30, and the glass keeps the veil this collection was born with. *Ahmi in Egypt*, *Messengers*, and *Orbits* share one pane — 96% opacity, lightly frosted — while *Sea Change*, the most literally translucent canvas she painted, thins a shade further. *Tall Ginger* hangs nearest to opaque, at 98%, and it has the collection's one blinking cursor. Everywhere else the cursor is still and the line spacing is wide — widest in *Orbits*. If you prefer your darkness absolute, raise the opacity under **Terminal → Preferences → Profiles → Window**.
+Every frame is a uniform 110×30, and the glass keeps the veil this collection was born with. *Ahmi in Egypt*, *Messengers*, and *Orbits* share one pane — 96% opacity, lightly frosted — while *Sea Change*, the most literally translucent canvas she painted, thins a shade further. *Tall Ginger* hangs nearest to opaque, at 98%, and it has the collection's one blinking cursor. Everywhere else the cursor is still and the line spacing is wide — widest in *Orbits*. If you prefer your darkness absolute, raise the opacity under **Terminal → Settings → Profiles → Window**.
 
 Each title bar carries a museum placard — *Orbits — Pelton, 1934* — alongside the working directory. The full recipe per theme lives in [`themes/pelton.json`](../themes/pelton.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
 
@@ -60,9 +60,15 @@ Each title bar carries a museum placard — *Orbits — Pelton, 1934* — alongs
 
 ## Acquisition
 
-Double-click any `.terminal` file in this directory. It will appear in **Terminal → Preferences → Profiles**. Select it. Set it as default if you like.
+Install the full Pelton collection from Terminal (skips Gatekeeper, keeps your font and default profile):
 
-Or, from the command line:
+```sh
+curl -fsSL https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/install.sh | sh -s -- pelton
+```
+
+Or install manually: open **Terminal → Settings** (`⌘,`) **→ Profiles** and drag any `.terminal` file from this directory into the profiles list (or click **⋯ → Import…**). *(macOS Gatekeeper blocks double-clicking browser-downloaded `.terminal` files; importing through Settings skips it.)*
+
+Or, from a cloned repository:
 
 ```sh
 open "Pelton — Ahmi in Egypt.terminal"
