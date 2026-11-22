@@ -4,7 +4,7 @@
 Reads themes/*.json for colors and placards, each collection README for the
 wall text, and writes a static site: index.html, the .terminal profiles, a zip
 of every profile, a zip per collection, the share image, and the gilt frame
-around the hero terminal (carved by tools/frame.py).
+around the hero terminal (tools/assets/frame.webp, a museum photograph).
 
     python3 tools/build_site.py --out _site
 """
@@ -22,17 +22,19 @@ import zlib
 from pathlib import Path
 from urllib.parse import quote
 
-try:
-    from tools import frame
-except ImportError:  # run as a script, with tools/ itself on the path
-    import frame
-
 ROOT = Path(__file__).resolve().parent.parent
 SITE_URL = "https://bigcactuslabs.github.io/gallery-zero/"
 REPO_URL = "https://github.com/BigCactusLabs/gallery-zero"
 ZIP_NAME = "gallery-zero.zip"
 OG_NAME = "og.png"
-FRAME_NAME = "frame.png"
+
+# The hero's frame: a French swept frame of about 1750 in carved and gilded oak, from the
+# Metropolitan Museum of Art's Robert Lehman Collection (1975.1.2355). The Met's photograph
+# is CC0; tools/assets/frame.webp is that photograph cut out of its black backdrop.
+FRAME_NAME = "frame.webp"
+FRAME_SOURCE = "https://commons.wikimedia.org/wiki/File:Swept_frame_MET_86AP_331R3.jpg"
+FRAME_SIZE = (1295, 1541)           # the cut-out, before it was scaled for the web
+FRAME_SIGHT = (318, 379, 975, 1227)   # the opening, plus a few px tucked under the frame's lip
 
 # Hanging order on the site, matching the top-level README.
 COLLECTIONS = ("rothko", "de-amaral", "condo", "monet", "tanaka", "riley", "pelton", "demuth")
@@ -111,33 +113,58 @@ def style_vars(colors: dict) -> str:
     return ";".join(f"--{k.replace('_', '-')}:{colors[k]}" for k in keys)
 
 
-def session(collection: str) -> str:
-    """A short shell session that uses every slot of the palette."""
+def session(collection: str, narrow: bool = False) -> str:
+    """A short shell session that uses every slot of the palette.
+
+    The narrow one, at most 29 columns, is for the upright hero terminal inside its frame.
+    """
     c = collection
+    span = lambda cls, text: f'<span class="{cls}">{text}</span>'
     swatch = lambda keys: "".join(f'<i data-k="{k}" style="background:var(--{k.replace("_", "-")})"></i>' for k in keys)
-    prompt = (f'<span class="c-blue dir">~/{c}</span> '
-              f'<span class="c-magenta">main</span> <span class="c-bright-black">❯</span> ')
+    chips = [span("chips", swatch(ANSI[:8])), span("chips", swatch(ANSI[8:]))]
+    files = [span("c-bright-blue b", "studies/"), span("c-bright-green b", "hang.sh*"),
+             span("c-cyan", "notes.md"), span("c-yellow", "palette.json")]
+    diff = [f' canvas.txt | 6 {span("c-green", "+++")}{span("c-red", "---")}',
+            f' {span("c-bright-yellow", "frame.toml")} | 2 {span("c-bright-green", "+")}{span("c-bright-red", "-")}']
+    glyphs = (f'{span("b", "phosphor on glass")} {span("c-bright-magenta", "✦")} {span("c-bright-cyan", "◐")} '
+              f'{span("c-white", "░")}{span("c-bright-white", "▓")}')
+    cursor = span("cursor", " ")
+    if narrow:
+        prompt = f'{span("c-blue dir", f"~/{c}")} {span("c-bright-black", "❯")} '
+        return "\n".join([
+            f'{prompt}ls -F',
+            "  ".join(files[:2]),
+            "  ".join(files[2:]),
+            f'{prompt}git diff --stat',
+            *diff,
+            f'{prompt}git branch',
+            f'{span("c-green", "*")} {span("c-magenta", "main")}',
+            '  varnish',
+            f'{prompt}cat notes.md',
+            glyphs,
+            span("sel", "after the painting"),
+            *chips,
+            f'{prompt}{cursor}',
+        ])
+    prompt = f'{span("c-blue dir", f"~/{c}")} {span("c-magenta", "main")} {span("c-bright-black", "❯")} '
     return "\n".join([
         f'{prompt}ls -F',
-        '<span class="c-bright-blue b">studies/</span>  <span class="c-bright-green b">hang.sh*</span>  '
-        '<span class="c-cyan">notes.md</span>  <span class="c-yellow">palette.json</span>',
+        "  ".join(files),
         f'{prompt}git diff --stat',
-        ' canvas.txt | 6 <span class="c-green">+++</span><span class="c-red">---</span>',
-        ' <span class="c-bright-yellow">frame.toml</span> | 2 <span class="c-bright-green">+</span><span class="c-bright-red">-</span>',
-        f'{prompt}echo "<span class="sel">phosphor on glass</span>"',
-        '<span class="b">phosphor on glass</span> <span class="c-bright-magenta">✦</span> <span class="c-bright-cyan">◐</span> <span class="c-white">░</span><span class="c-bright-white">▓</span>',
-        f'<span class="chips">{swatch(ANSI[:8])}</span>',
-        f'<span class="chips">{swatch(ANSI[8:])}</span>',
-        f'{prompt}<span class="cursor"> </span>',
+        *diff,
+        f'{prompt}echo "{span("sel", "phosphor on glass")}"',
+        glyphs,
+        *chips,
+        f'{prompt}{cursor}',
     ])
 
 
-def window(work: dict, collection: str, extra_class: str = "") -> str:
+def window(work: dict, collection: str, extra_class: str = "", narrow: bool = False) -> str:
     return (
         f'<div class="term {extra_class}" style="{style_vars(work["colors"])}">'
         f'<div class="bar"><span class="lights"><i></i><i></i><i></i></span>'
         f'<span class="placard">{html.escape(work["placard"])}</span></div>'
-        f'<pre aria-hidden="true">{session(collection)}</pre></div>'
+        f'<pre aria-hidden="true">{session(collection, narrow)}</pre></div>'
     )
 
 
@@ -228,14 +255,17 @@ def render(collections: list[dict]) -> str:
             f'<div class="works">{"".join(cards)}</div></section>'
         )
     first = featured[0]
+    (fw, fh), (left, top, right, bottom) = FRAME_SIZE, FRAME_SIGHT
+    pct = lambda part, whole: f"{100 * part / whole:.3f}%"
     description = (f"{total} color themes for macOS Terminal, after paintings by Mark Rothko, Olga de Amaral, "
                    "George Condo, Claude Monet, Atsuko Tanaka, Bridget Riley, Agnes Pelton and Charles Demuth.")
     return TEMPLATE.format(
         description=html.escape(description), site=SITE_URL, repo=REPO_URL, zip=ZIP_NAME, total=total,
-        nav=nav, rooms="".join(rooms), hero=window(first, COLLECTIONS[0], "hero-term"),
+        nav=nav, rooms="".join(rooms), hero=window(first, COLLECTIONS[0], "hero-term", narrow=True),
         hero_name=html.escape(first["placard"]), hero_file=href(first["file"]), hero_data=hero_data,
         favicon=FAVICON, og=OG_NAME, og_w=OG_SIZE[0], og_h=OG_SIZE[1],
-        frame=FRAME_NAME, frame_slice=frame.WIDTH,
+        frame=FRAME_NAME, frame_source=FRAME_SOURCE, frame_w=fw, frame_h=fh,
+        sight_left=pct(left, fw), sight_top=pct(top, fh), sight_w=pct(right - left, fw), sight_h=pct(bottom - top, fh),
     )
 
 
@@ -266,6 +296,7 @@ TEMPLATE = """<!doctype html>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:image/svg+xml,{favicon}">
+<link rel="preload" as="image" href="{frame}">
 <style>
 :root {{
   --wall: #f3f3f2; --ink: #17171a; --muted: #5f5f66; --rule: #dcdcdc; --card: #ffffff;
@@ -302,7 +333,7 @@ h1 {{ font: 500 clamp(44px, 6.4vw, 84px)/0.98 var(--serif); letter-spacing: -0.0
 .btn.ghost:hover {{ background: var(--card); }}
 .lobby .install {{ margin: 24px 0 0; font-size: 14px; }}
 .install code {{ font: 13px var(--mono); }}
-.easel {{ margin: 0; }}
+.easel {{ margin: 0; justify-self: center; width: min(100%, max(320px, 62vh)); }}
 .easel figcaption {{ display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 18px; font-size: 14px; color: var(--muted); }}
 .easel figcaption a {{ color: var(--ink); font-weight: 600; text-decoration: none; }}
 .easel figcaption a:hover {{ text-decoration: underline; }}
@@ -375,14 +406,15 @@ code {{ font-family: var(--mono); font-size: .9em; }}
 /* The session's longest line is 43 characters, about 26.4em wide, so the type shrinks before the window clips it. */
 .term pre {{ margin: 0; padding: 14px 16px 16px; font: 12.5px/1.5 var(--mono); white-space: pre; overflow: hidden;
              font-size: min(12.5px, calc((100cqi - 32px) / 26.4)); }}
-.hero-term pre {{ font-size: min(clamp(12px, 1.15vw, 14.5px), calc((100cqi - 44px) / 26.4)); padding: 20px 22px 24px; }}
-.hero-term .bar {{ height: 34px; }}
-/* The easel's gilt frame: a nine-slice image whose edge ornament repeats to fit. */
-.hero-term {{ --frame: clamp(26px, 4.4vw, 60px); position: relative; border-radius: 2px;
-              border: var(--frame) solid #9c7230; border-image: url({frame}) {frame_slice} / var(--frame) round;
-              box-shadow: 0 1px 2px rgb(0 0 0 / .3), 0 14px 24px -8px rgb(0 0 0 / .34), 0 44px 70px -26px rgb(0 0 0 / .42); }}
-.hero-term::after {{ content: ""; position: absolute; inset: 0; pointer-events: none;
-                     box-shadow: inset 0 0 0 1px rgb(0 0 0 / .4), inset 3px 4px 9px rgb(0 0 0 / .45); }}
+/* The easel: an upright terminal behind a real frame. The terminal fills the frame's
+   opening and tucks under its lip; its type scales with the opening (29 columns). */
+.gilt {{ position: relative; aspect-ratio: {frame_w} / {frame_h}; }}
+.gilt .frame {{ position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; user-select: none;
+                filter: drop-shadow(0 1px 1px rgb(0 0 0 / .45)) drop-shadow(0 14px 16px rgb(0 0 0 / .32)); }}
+.hero-term {{ position: absolute; left: {sight_left}; top: {sight_top}; width: {sight_w}; height: {sight_h};
+              border-radius: 0; box-shadow: none; }}
+.hero-term .bar {{ display: none; }}
+.hero-term pre {{ height: 100%; padding: 8cqi 6cqi 0; font-size: calc(88cqi / 17.9); line-height: 1.56; }}
 .b {{ color: var(--bold); font-weight: 700; }}
 .sel {{ background: var(--selection); }}
 .cursor {{ background: var(--cursor); color: var(--cursor-text); animation: blink 1.1s steps(1) infinite; }}
@@ -405,8 +437,8 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
   .lobby p {{ max-width: 46ch; }}
 }}
 @media (max-width: 520px) {{
-  .hero-term pre, .term pre {{ padding: 12px 14px 14px; }}
-  .hero-term pre {{ font-size: calc((100cqi - 28px) / 26.4); }}
+  .works .term pre {{ padding: 12px 14px 14px; }}
+  .gilt {{ margin: 0 -14px; }}
 }}
 </style>
 </head>
@@ -424,7 +456,7 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
       <p class="install">Double-click a <code>.terminal</code> file to add it to Terminal &rsaquo; Settings &rsaquo; Profiles. Click any swatch to copy its hex.</p>
     </div>
     <figure class="easel" id="easel">
-      {hero}
+      <div class="gilt">{hero}<img class="frame" src="{frame}" width="{frame_w}" height="{frame_h}" alt=""></div>
       <figcaption><a id="easel-file" href="{hero_file}" download>{hero_name}</a><span class="controls"><span class="dots" id="easel-dots"></span><button type="button" class="toggle" id="easel-toggle" aria-label="Pause rotation"><svg viewBox="0 0 12 12" aria-hidden="true"><path class="pause" d="M3 2h2.2v8H3zM6.8 2H9v8H6.8z"/><path class="play" d="M3.5 1.8 10 6l-6.5 4.2z"/></svg></button></span></figcaption>
     </figure>
   </section>
@@ -432,7 +464,8 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
 <nav class="index" aria-label="Collections"><div class="shell">{nav}</div></nav>
 <div class="shell">{rooms}</div>
 </main>
-<footer><div class="shell"><span>Gallery Zero. Palettes sampled from images of each painting. Themes licensed <a href="{repo}/blob/main/LICENSE">CC BY 4.0</a>.</span>
+<footer><div class="shell"><span>Gallery Zero. Palettes sampled from images of each painting. Themes licensed <a href="{repo}/blob/main/LICENSE">CC BY 4.0</a>.
+The frame is French, about 1750, from the Robert Lehman Collection at The Met (<a href="{frame_source}">CC0</a>).</span>
 <span><a href="{repo}/blob/main/TECHNIQUES.md">How the profiles are built</a> · <a href="{repo}">Source</a></span></div></footer>
 <script>
 const works = {hero_data};
@@ -548,7 +581,7 @@ def build(out: Path) -> None:
     (out / "index.html").write_text(render(collections), encoding="utf-8")
     (out / ".nojekyll").write_text("")
     (out / OG_NAME).write_bytes(og_image(featured_works(collections)))
-    (out / FRAME_NAME).write_bytes(png(frame.SIZE, frame.SIZE, frame.rows()))
+    shutil.copy2(ROOT / "tools" / "assets" / FRAME_NAME, out / FRAME_NAME)
     with zipfile.ZipFile(out / ZIP_NAME, "w", zipfile.ZIP_DEFLATED) as zf:
         for c in collections:
             with zipfile.ZipFile(out / room_zip(c["slug"]), "w", zipfile.ZIP_DEFLATED) as room:
