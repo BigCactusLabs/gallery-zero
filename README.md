@@ -108,7 +108,7 @@ A red path snakes up from the lower darkness toward a golden lotus. Indigo night
 
 ## The Demuth Collection
 
-Seven profiles after Charles Demuth (1883–1935). Precisionist daylight, reconsidered as phosphor on glass — the first room hung entirely on light grounds.
+Seven profiles after Charles Demuth (1883–1935). Precisionist daylight, reconsidered as phosphor on glass — six light grounds for working by day, and one night piece.
 
 ### My Egypt
 

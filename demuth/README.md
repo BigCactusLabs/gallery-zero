@@ -2,7 +2,7 @@
 
 Seven profiles after Charles Demuth (1883–1935). Precisionist daylight, reconsidered as phosphor on glass.
 
-Seven studies in daylight. Demuth painted the factories, steeples and grain elevators of Lancaster, Pennsylvania, in flat planes cut by rays of light. Before that he let watercolor run across wet paper on the Provincetown dunes, and between the factories he painted flowers. This is the gallery's first room hung entirely on light grounds, made for working by day: dark ink on sky, smoke, ochre and leaf green.
+Seven studies in daylight. Demuth painted the factories, steeples and grain elevators of Lancaster, Pennsylvania, in flat planes cut by rays of light. Before that he let watercolor run across wet paper on the Provincetown dunes, and between the factories he painted flowers. This is the gallery's first room made for working by day: six light grounds of sky, smoke, ochre and blush, with dark ink on each, and one navy night piece for the evening.
 
 ---
 
@@ -46,13 +46,13 @@ A feed-mill sign in yellow and ultramarine under a cloudless sky. The sky is the
 
 <img src="../.github/swatches/calla-lilies.svg" width="360" alt="Calla Lilies palette" />
 
-Two white lilies rising from a shell against deep navy, painted in memory of the performer Bert Savoy. The green of the leaves is the ground, the navy is the text, and the white of the lilies marks the selection. After *Calla Lilies (Bert Savoy)*, 1927.
+Two white lilies rising from a shell against deep navy, painted in memory of the performer Bert Savoy. The navy is the ground and the white of the lilies is the text, with leaf green, spadix gold and shell tan for colour. The one night piece in the room. After *Calla Lilies (Bert Savoy)*, 1927.
 
 ---
 
 ## Framing
 
-Every frame is a uniform 110×30 behind the same pane of glass: 96% opacity, lightly frosted, the same when the window is inactive. The cursor is still and the line spacing is 1.08 throughout. Six let Terminal adjust ANSI colors for contrast. *My Egypt* shows its palette raw, so its colors keep their full strength on the white.
+Every frame is a uniform 110×30 behind the same pane of glass: 96% opacity, lightly frosted, the same when the window is inactive. The cursor is still and the line spacing is 1.08 throughout. Six let Terminal adjust ANSI colors for contrast, *Calla Lilies* among them. *My Egypt* shows its palette raw, so its colors keep their full strength on the white.
 
 Each title bar carries a museum placard — *My Egypt — Demuth, 1927* — alongside the working directory. The full recipe per theme lives in [`themes/demuth.json`](../themes/demuth.json), and the techniques are documented in [TECHNIQUES.md](../TECHNIQUES.md).
 
