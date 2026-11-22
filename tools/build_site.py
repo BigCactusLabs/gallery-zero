@@ -3,7 +3,8 @@
 
 Reads themes/*.json for colors and placards, each collection README for the
 wall text, and writes a static site: index.html, the .terminal profiles, a zip
-of every profile, a zip per collection, and the share image.
+of every profile, a zip per collection, the share image, and the gilt frame
+around the hero terminal (carved by tools/frame.py).
 
     python3 tools/build_site.py --out _site
 """
@@ -21,11 +22,17 @@ import zlib
 from pathlib import Path
 from urllib.parse import quote
 
+try:
+    from tools import frame
+except ImportError:  # run as a script, with tools/ itself on the path
+    import frame
+
 ROOT = Path(__file__).resolve().parent.parent
 SITE_URL = "https://bigcactuslabs.github.io/gallery-zero/"
 REPO_URL = "https://github.com/BigCactusLabs/gallery-zero"
 ZIP_NAME = "gallery-zero.zip"
 OG_NAME = "og.png"
+FRAME_NAME = "frame.png"
 
 # Hanging order on the site, matching the top-level README.
 COLLECTIONS = ("rothko", "de-amaral", "condo", "monet", "tanaka", "riley", "pelton", "demuth")
@@ -228,6 +235,7 @@ def render(collections: list[dict]) -> str:
         nav=nav, rooms="".join(rooms), hero=window(first, COLLECTIONS[0], "hero-term"),
         hero_name=html.escape(first["placard"]), hero_file=href(first["file"]), hero_data=hero_data,
         favicon=FAVICON, og=OG_NAME, og_w=OG_SIZE[0], og_h=OG_SIZE[1],
+        frame=FRAME_NAME, frame_slice=frame.WIDTH,
     )
 
 
@@ -369,6 +377,12 @@ code {{ font-family: var(--mono); font-size: .9em; }}
              font-size: min(12.5px, calc((100cqi - 32px) / 26.4)); }}
 .hero-term pre {{ font-size: min(clamp(12px, 1.15vw, 14.5px), calc((100cqi - 44px) / 26.4)); padding: 20px 22px 24px; }}
 .hero-term .bar {{ height: 34px; }}
+/* The easel's gilt frame: a nine-slice image whose edge ornament repeats to fit. */
+.hero-term {{ --frame: clamp(26px, 4.4vw, 60px); position: relative; border-radius: 2px;
+              border: var(--frame) solid #9c7230; border-image: url({frame}) {frame_slice} / var(--frame) round;
+              box-shadow: 0 1px 2px rgb(0 0 0 / .3), 0 14px 24px -8px rgb(0 0 0 / .34), 0 44px 70px -26px rgb(0 0 0 / .42); }}
+.hero-term::after {{ content: ""; position: absolute; inset: 0; pointer-events: none;
+                     box-shadow: inset 0 0 0 1px rgb(0 0 0 / .4), inset 3px 4px 9px rgb(0 0 0 / .45); }}
 .b {{ color: var(--bold); font-weight: 700; }}
 .sel {{ background: var(--selection); }}
 .cursor {{ background: var(--cursor); color: var(--cursor-text); animation: blink 1.1s steps(1) infinite; }}
@@ -390,7 +404,10 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
   .lobby {{ grid-template-columns: 1fr; }}
   .lobby p {{ max-width: 46ch; }}
 }}
-@media (max-width: 520px) {{ .hero-term pre, .term pre {{ padding: 12px 14px 14px; }} }}
+@media (max-width: 520px) {{
+  .hero-term pre, .term pre {{ padding: 12px 14px 14px; }}
+  .hero-term pre {{ font-size: calc((100cqi - 28px) / 26.4); }}
+}}
 </style>
 </head>
 <body>
@@ -531,6 +548,7 @@ def build(out: Path) -> None:
     (out / "index.html").write_text(render(collections), encoding="utf-8")
     (out / ".nojekyll").write_text("")
     (out / OG_NAME).write_bytes(og_image(featured_works(collections)))
+    (out / FRAME_NAME).write_bytes(png(frame.SIZE, frame.SIZE, frame.rows()))
     with zipfile.ZipFile(out / ZIP_NAME, "w", zipfile.ZIP_DEFLATED) as zf:
         for c in collections:
             with zipfile.ZipFile(out / room_zip(c["slug"]), "w", zipfile.ZIP_DEFLATED) as room:

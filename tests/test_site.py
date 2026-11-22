@@ -4,7 +4,8 @@ import unittest
 import zipfile
 from pathlib import Path
 
-from tools.build_site import OG_NAME, OG_SIZE, ZIP_NAME, build, load, room_zip
+from tools import frame
+from tools.build_site import FRAME_NAME, OG_NAME, OG_SIZE, ZIP_NAME, build, load, room_zip
 
 
 class SiteTest(unittest.TestCase):
@@ -31,6 +32,9 @@ class SiteTest(unittest.TestCase):
             self.assertEqual(og[:8], b"\x89PNG\r\n\x1a\n")
             self.assertEqual(struct.unpack(">II", og[16:24]), OG_SIZE)
             self.assertIn(f'{OG_NAME}"', page)
+            gilt = (out / FRAME_NAME).read_bytes()
+            self.assertEqual(struct.unpack(">II", gilt[16:24]), (frame.SIZE, frame.SIZE))
+            self.assertIn(f"url({FRAME_NAME}) {frame.WIDTH} ", page)
 
 
 if __name__ == "__main__":
