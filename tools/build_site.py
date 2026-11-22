@@ -3,8 +3,8 @@
 
 Reads themes/*.json for colors and placards, each collection README for the
 wall text, and writes a static site: index.html, the .terminal profiles, a zip
-of every profile, a zip per collection, the share image, and the gilt frame
-around the hero terminal (tools/assets/frame.webp, a museum photograph).
+of every profile, a zip per collection, the share image, and the two gilt frames
+that take turns around the hero terminal (tools/assets/frame-*.webp, museum photographs).
 
     python3 tools/build_site.py --out _site
 """
@@ -28,13 +28,17 @@ REPO_URL = "https://github.com/BigCactusLabs/gallery-zero"
 ZIP_NAME = "gallery-zero.zip"
 OG_NAME = "og.png"
 
-# The hero's frame: a French swept frame of about 1750 in carved and gilded oak, from the
-# Metropolitan Museum of Art's Robert Lehman Collection (1975.1.2355). The Met's photograph
-# is CC0; tools/assets/frame.webp is that photograph cut out of its black backdrop.
-FRAME_NAME = "frame.webp"
-FRAME_SOURCE = "https://commons.wikimedia.org/wiki/File:Swept_frame_MET_86AP_331R3.jpg"
-FRAME_SIZE = (1295, 1541)           # the cut-out, before it was scaled for the web
-FRAME_SIGHT = (318, 379, 975, 1227)   # the opening, plus a few px tucked under the frame's lip
+# The hero's frames take turns as the palettes rotate. Both are CC0 photographs from the
+# Metropolitan Museum of Art, cut out of their backdrops: a French ogee frame of about 1720-30
+# from the Robert Lehman Collection (1975.1.2535), and the frame on Sébastien Bourdon's
+# "A Classical Landscape" (1985.90). "size" is the cut-out in tools/assets; "sight" is its
+# opening, plus a few px tucked under the frame's lip.
+FRAMES = [
+    {"file": "frame-ogee.webp", "size": (1600, 1167), "sight": (196, 197, 1405, 982),
+     "source": "https://commons.wikimedia.org/wiki/File:Ogee_frame_MET_SF-1975-1-2535.jpg"},
+    {"file": "frame-bourdon.webp", "size": (1600, 1277), "sight": (174, 174, 1426, 1107),
+     "source": "https://commons.wikimedia.org/wiki/File:A_Classical_Landscape_MET_LC-1985_90-1.jpg"},
+]
 
 # Hanging order on the site, matching the top-level README.
 COLLECTIONS = ("rothko", "de-amaral", "condo", "monet", "tanaka", "riley", "pelton", "demuth")
@@ -113,11 +117,8 @@ def style_vars(colors: dict) -> str:
     return ";".join(f"--{k.replace('_', '-')}:{colors[k]}" for k in keys)
 
 
-def session(collection: str, narrow: bool = False) -> str:
-    """A short shell session that uses every slot of the palette.
-
-    The narrow one, at most 29 columns, is for the upright hero terminal inside its frame.
-    """
+def session(collection: str) -> str:
+    """A short shell session that uses every slot of the palette."""
     c = collection
     span = lambda cls, text: f'<span class="{cls}">{text}</span>'
     swatch = lambda keys: "".join(f'<i data-k="{k}" style="background:var(--{k.replace("_", "-")})"></i>' for k in keys)
@@ -129,23 +130,6 @@ def session(collection: str, narrow: bool = False) -> str:
     glyphs = (f'{span("b", "phosphor on glass")} {span("c-bright-magenta", "✦")} {span("c-bright-cyan", "◐")} '
               f'{span("c-white", "░")}{span("c-bright-white", "▓")}')
     cursor = span("cursor", " ")
-    if narrow:
-        prompt = f'{span("c-blue dir", f"~/{c}")} {span("c-bright-black", "❯")} '
-        return "\n".join([
-            f'{prompt}ls -F',
-            "  ".join(files[:2]),
-            "  ".join(files[2:]),
-            f'{prompt}git diff --stat',
-            *diff,
-            f'{prompt}git branch',
-            f'{span("c-green", "*")} {span("c-magenta", "main")}',
-            '  varnish',
-            f'{prompt}cat notes.md',
-            glyphs,
-            span("sel", "after the painting"),
-            *chips,
-            f'{prompt}{cursor}',
-        ])
     prompt = f'{span("c-blue dir", f"~/{c}")} {span("c-magenta", "main")} {span("c-bright-black", "❯")} '
     return "\n".join([
         f'{prompt}ls -F',
@@ -159,12 +143,41 @@ def session(collection: str, narrow: bool = False) -> str:
     ])
 
 
-def window(work: dict, collection: str, extra_class: str = "", narrow: bool = False) -> str:
+def hang(frames: list[dict]) -> dict:
+    """Lay the frames over one easel, scaled so their openings share a top edge and a width.
+
+    Returns the template's easel values: the easel's proportions, the opening's place on it,
+    and each frame's box and opening height as CSS and markup.
+    """
+    boxes = []
+    for f in frames:
+        (w, h), (left, top, right, bottom) = f["size"], f["sight"]
+        k = 1 / (right - left)   # scale: the opening is 1 wide
+        boxes.append((-left * k, -top * k, w * k, h * k, (bottom - top) * k))
+    x0, y0 = min(b[0] for b in boxes), min(b[1] for b in boxes)
+    ew = max(b[0] + b[2] for b in boxes) - x0
+    eh = max(b[1] + b[3] for b in boxes) - y0
+    pct = lambda part, whole: f"{100 * part / whole:.3f}%"
+    css, imgs = [], []
+    for i, (f, (x, y, w, h, sight_h)) in enumerate(zip(frames, boxes)):
+        css.append(
+            f'.gilt .f{i} {{ left: {pct(x - x0, ew)}; top: {pct(y - y0, eh)}; width: {pct(w, ew)}; height: {pct(h, eh)}; }}\n'
+            f'.gilt[data-frame="{i}"] .f{i} {{ opacity: 1; }}\n'
+            f'.gilt[data-frame="{i}"] .hero-term {{ height: {pct(sight_h, eh)}; }}'
+        )
+        imgs.append(f'<img class="frame f{i}" src="{f["file"]}" width="{f["size"][0]}" height="{f["size"][1]}" alt="">')
+    return {
+        "easel_w": f"{ew:.4f}", "easel_h": f"{eh:.4f}", "sight_left": pct(-x0, ew), "sight_top": pct(-y0, eh),
+        "sight_w": pct(1, ew), "frames_css": "\n".join(css), "frames_html": "".join(imgs), "first_frame": frames[0]["file"],
+    }
+
+
+def window(work: dict, collection: str, extra_class: str = "") -> str:
     return (
         f'<div class="term {extra_class}" style="{style_vars(work["colors"])}">'
         f'<div class="bar"><span class="lights"><i></i><i></i><i></i></span>'
         f'<span class="placard">{html.escape(work["placard"])}</span></div>'
-        f'<pre aria-hidden="true">{session(collection, narrow)}</pre></div>'
+        f'<pre aria-hidden="true">{session(collection)}</pre></div>'
     )
 
 
@@ -255,17 +268,15 @@ def render(collections: list[dict]) -> str:
             f'<div class="works">{"".join(cards)}</div></section>'
         )
     first = featured[0]
-    (fw, fh), (left, top, right, bottom) = FRAME_SIZE, FRAME_SIGHT
-    pct = lambda part, whole: f"{100 * part / whole:.3f}%"
+    easel = hang(FRAMES)
     description = (f"{total} color themes for macOS Terminal, after paintings by Mark Rothko, Olga de Amaral, "
                    "George Condo, Claude Monet, Atsuko Tanaka, Bridget Riley, Agnes Pelton and Charles Demuth.")
     return TEMPLATE.format(
         description=html.escape(description), site=SITE_URL, repo=REPO_URL, zip=ZIP_NAME, total=total,
-        nav=nav, rooms="".join(rooms), hero=window(first, COLLECTIONS[0], "hero-term", narrow=True),
+        nav=nav, rooms="".join(rooms), hero=window(first, COLLECTIONS[0], "hero-term"),
         hero_name=html.escape(first["placard"]), hero_file=href(first["file"]), hero_data=hero_data,
         favicon=FAVICON, og=OG_NAME, og_w=OG_SIZE[0], og_h=OG_SIZE[1],
-        frame=FRAME_NAME, frame_source=FRAME_SOURCE, frame_w=fw, frame_h=fh,
-        sight_left=pct(left, fw), sight_top=pct(top, fh), sight_w=pct(right - left, fw), sight_h=pct(bottom - top, fh),
+        frame_count=len(FRAMES), ogee_source=FRAMES[0]["source"], bourdon_source=FRAMES[1]["source"], **easel,
     )
 
 
@@ -296,7 +307,7 @@ TEMPLATE = """<!doctype html>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:image/svg+xml,{favicon}">
-<link rel="preload" as="image" href="{frame}">
+<link rel="preload" as="image" href="{first_frame}">
 <style>
 :root {{
   --wall: #f3f3f2; --ink: #17171a; --muted: #5f5f66; --rule: #dcdcdc; --card: #ffffff;
@@ -333,7 +344,7 @@ h1 {{ font: 500 clamp(44px, 6.4vw, 84px)/0.98 var(--serif); letter-spacing: -0.0
 .btn.ghost:hover {{ background: var(--card); }}
 .lobby .install {{ margin: 24px 0 0; font-size: 14px; }}
 .install code {{ font: 13px var(--mono); }}
-.easel {{ margin: 0; justify-self: center; width: min(100%, max(320px, 62vh)); }}
+.easel {{ margin: 0; justify-self: center; width: min(100%, 700px); }}
 .easel figcaption {{ display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 18px; font-size: 14px; color: var(--muted); }}
 .easel figcaption a {{ color: var(--ink); font-weight: 600; text-decoration: none; }}
 .easel figcaption a:hover {{ text-decoration: underline; }}
@@ -406,20 +417,23 @@ code {{ font-family: var(--mono); font-size: .9em; }}
 /* The session's longest line is 43 characters, about 26.4em wide, so the type shrinks before the window clips it. */
 .term pre {{ margin: 0; padding: 14px 16px 16px; font: 12.5px/1.5 var(--mono); white-space: pre; overflow: hidden;
              font-size: min(12.5px, calc((100cqi - 32px) / 26.4)); }}
-/* The easel: an upright terminal behind a real frame. The terminal fills the frame's
-   opening and tucks under its lip; its type scales with the opening (29 columns). */
-.gilt {{ position: relative; aspect-ratio: {frame_w} / {frame_h}; }}
-.gilt .frame {{ position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; user-select: none;
+/* The easel: a terminal behind real frames that take turns. The frames are laid so their
+   openings share a top edge and a width; the terminal fills the opening of the one on show
+   and tucks under its lip, and its type scales with the opening. */
+.gilt {{ position: relative; aspect-ratio: {easel_w} / {easel_h}; }}
+.gilt .frame {{ position: absolute; pointer-events: none; user-select: none; opacity: 0; transition: opacity .7s;
                 filter: drop-shadow(0 1px 1px rgb(0 0 0 / .45)) drop-shadow(0 14px 16px rgb(0 0 0 / .32)); }}
-.hero-term {{ position: absolute; left: {sight_left}; top: {sight_top}; width: {sight_w}; height: {sight_h};
+.hero-term {{ position: absolute; left: {sight_left}; top: {sight_top}; width: {sight_w};
               border-radius: 0; box-shadow: none; }}
+.term.hero-term {{ transition-property: background-color, color, height; }}
+{frames_css}
 .hero-term .bar {{ display: none; }}
-.hero-term pre {{ height: 100%; padding: 8cqi 6cqi 0; font-size: calc(88cqi / 17.9); line-height: 1.56; }}
+.hero-term pre {{ height: 100%; padding: 4.2cqi 5cqi 0; font-size: calc(88cqi / 26.4); line-height: 1.46; }}
 .b {{ color: var(--bold); font-weight: 700; }}
 .sel {{ background: var(--selection); }}
 .cursor {{ background: var(--cursor); color: var(--cursor-text); animation: blink 1.1s steps(1) infinite; }}
 @keyframes blink {{ 50% {{ background: transparent; }} }}
-@media (prefers-reduced-motion: reduce) {{ .cursor {{ animation: none; }} .term, .term * {{ transition: none; }} }}
+@media (prefers-reduced-motion: reduce) {{ .cursor {{ animation: none; }} .term, .term *, .gilt .frame {{ transition: none; }} }}
 .chips {{ display: inline-flex; gap: 0; vertical-align: middle; }}
 .chips i {{ display: inline-block; width: 3ch; height: 1.2em; cursor: pointer; }}
 .chips i:hover {{ position: relative; box-shadow: 0 0 0 1.5px var(--foreground); }}
@@ -456,7 +470,7 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
       <p class="install">Double-click a <code>.terminal</code> file to add it to Terminal &rsaquo; Settings &rsaquo; Profiles. Click any swatch to copy its hex.</p>
     </div>
     <figure class="easel" id="easel">
-      <div class="gilt">{hero}<img class="frame" src="{frame}" width="{frame_w}" height="{frame_h}" alt=""></div>
+      <div class="gilt" id="gilt" data-frame="0">{hero}{frames_html}</div>
       <figcaption><a id="easel-file" href="{hero_file}" download>{hero_name}</a><span class="controls"><span class="dots" id="easel-dots"></span><button type="button" class="toggle" id="easel-toggle" aria-label="Pause rotation"><svg viewBox="0 0 12 12" aria-hidden="true"><path class="pause" d="M3 2h2.2v8H3zM6.8 2H9v8H6.8z"/><path class="play" d="M3.5 1.8 10 6l-6.5 4.2z"/></svg></button></span></figcaption>
     </figure>
   </section>
@@ -465,7 +479,7 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
 <div class="shell">{rooms}</div>
 </main>
 <footer><div class="shell"><span>Gallery Zero. Palettes sampled from images of each painting. Themes licensed <a href="{repo}/blob/main/LICENSE">CC BY 4.0</a>.
-The frame is French, about 1750, from the Robert Lehman Collection at The Met (<a href="{frame_source}">CC0</a>).</span>
+The frames are at The Met: a French ogee frame of about 1720&ndash;30 (<a href="{ogee_source}">CC0</a>) and the frame on Sébastien Bourdon&rsquo;s <cite>A Classical Landscape</cite> (<a href="{bourdon_source}">CC0</a>).</span>
 <span><a href="{repo}/blob/main/TECHNIQUES.md">How the profiles are built</a> · <a href="{repo}">Source</a></span></div></footer>
 <script>
 const works = {hero_data};
@@ -474,6 +488,7 @@ const link = document.getElementById('easel-file');
 const dots = document.getElementById('easel-dots');
 const toggle = document.getElementById('easel-toggle');
 const easel = document.getElementById('easel');
+const gilt = document.getElementById('gilt');
 const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const holds = new Set();
 let at = 0, timer, stopped = still;
@@ -484,6 +499,7 @@ function show(i) {{
   term.querySelector('.placard').textContent = w.placard;
   term.querySelectorAll('.dir').forEach(d => d.textContent = w.dir);
   link.textContent = w.placard; link.href = w.file;
+  gilt.dataset.frame = at % {frame_count};
   dots.querySelectorAll('button').forEach((b, j) => b.setAttribute('aria-current', j === at));
 }}
 // The rotation runs unless the visitor stopped it, or is hovering or tabbing through the easel.
@@ -581,7 +597,8 @@ def build(out: Path) -> None:
     (out / "index.html").write_text(render(collections), encoding="utf-8")
     (out / ".nojekyll").write_text("")
     (out / OG_NAME).write_bytes(og_image(featured_works(collections)))
-    shutil.copy2(ROOT / "tools" / "assets" / FRAME_NAME, out / FRAME_NAME)
+    for frame in FRAMES:
+        shutil.copy2(ROOT / "tools" / "assets" / frame["file"], out / frame["file"])
     with zipfile.ZipFile(out / ZIP_NAME, "w", zipfile.ZIP_DEFLATED) as zf:
         for c in collections:
             with zipfile.ZipFile(out / room_zip(c["slug"]), "w", zipfile.ZIP_DEFLATED) as room:
