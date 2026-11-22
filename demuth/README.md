@@ -2,7 +2,7 @@
 
 Seven profiles after Charles Demuth (1883–1935). Precisionist daylight, reconsidered as phosphor on glass.
 
-Seven studies in daylight. Demuth painted the factories, steeples and grain elevators of Lancaster, Pennsylvania, in flat planes cut by rays of light, and before that he let watercolor run across wet paper on the Provincetown dunes. This is the gallery's first room hung entirely on light grounds, made for working by day: dark ink on sky, smoke, ochre and blush.
+Seven studies in daylight. Demuth painted the factories, steeples and grain elevators of Lancaster, Pennsylvania, in flat planes cut by rays of light. Before that he let watercolor run across wet paper on the Provincetown dunes, and between the factories he painted flowers. This is the gallery's first room hung entirely on light grounds, made for working by day: dark ink on sky, smoke, ochre and leaf green.
 
 ---
 
@@ -42,11 +42,11 @@ A grain elevator raised to the scale of a pyramid, crossed by rays of light. The
 
 A feed-mill sign in yellow and ultramarine under a cloudless sky. The sky is the ground, the ultramarine of the lettering is the text, and the yellow of the sign marks the selection. After *Buildings, Lancaster*, 1930, at the Whitney.
 
-### After All
+### Calla Lilies
 
-<img src="../.github/swatches/after-all.svg" width="360" alt="After All palette" />
+<img src="../.github/swatches/calla-lilies.svg" width="360" alt="Calla Lilies palette" />
 
-His last factory picture: carmine walls, a teal signal, and two tall chimneys in pale yellow-green. A blush of the carmine is the ground. After *After All*, 1933.
+Two white lilies rising from a shell against deep navy, painted in memory of the performer Bert Savoy. The green of the leaves is the ground, the navy is the text, and the white of the lilies marks the selection. After *Calla Lilies (Bert Savoy)*, 1927.
 
 ---
 
@@ -71,7 +71,7 @@ open "Demuth — Provincetown Dunes.terminal"
 open "Demuth — Welcome to Our City.terminal"
 open "Demuth — My Egypt.terminal"
 open "Demuth — Buildings, Lancaster.terminal"
-open "Demuth — After All.terminal"
+open "Demuth — Calla Lilies.terminal"
 ```
 
 ---
