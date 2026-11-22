@@ -22,7 +22,7 @@ Three black stacks against white smoke in a steel town. Smoke-white ground, soot
 
 <img src="../.github/swatches/provincetown-dunes.svg" width="360" alt="Provincetown Dunes palette" />
 
-Watercolor let loose on wet paper: scarlet, magenta, violet, ultramarine and gold running down the dunes. The pink wash is the ground and the plum of the far ridge is the text. The loudest palette in the room. After *Provincetown Dunes*, 1914.
+Watercolor let loose on wet paper: scarlet, magenta, violet, ultramarine and gold running down the dunes. The pink wash is the ground and the plum of the far ridge is the text. After *Provincetown Dunes*, 1914.
 
 ### Welcome to Our City
 
