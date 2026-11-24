@@ -1,0 +1,18 @@
+# Riley — Nataraja
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#riley-nataraja
+
+[colors]
+foreground = "#efe4c7"
+background = "#04160e"
+cursor_bg = "#d49824"
+cursor_border = "#d49824"
+cursor_fg = "#04160e"
+selection_bg = "#2f3058"
+selection_fg = "none"
+ansi = ["#163b2c", "#ea6b5e", "#72ab42", "#c78b09", "#8a8fe1", "#cd76b0", "#599fd8", "#efe4c7"]
+brights = ["#476d5c", "#ffa47a", "#bbc949", "#e1b75c", "#b1b7fd", "#eea1d3", "#9bc1f1", "#fdf5df"]
+
+[metadata]
+name = "Riley — Nataraja"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#riley-nataraja"

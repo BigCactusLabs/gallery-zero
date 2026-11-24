@@ -1,0 +1,24 @@
+# Condo — The Fallen Butler
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#condo-the-fallen-butler
+palette = 0=#3c2b42
+palette = 1=#eb7e63
+palette = 2=#88b24b
+palette = 3=#c49a4a
+palette = 4=#7ba4d9
+palette = 5=#b590d0
+palette = 6=#74adb0
+palette = 7=#e3e1db
+palette = 8=#75657c
+palette = 9=#ffad8d
+palette = 10=#b7d176
+palette = 11=#e2bf7d
+palette = 12=#a3c7f6
+palette = 13=#d5b5ee
+palette = 14=#9ecfd1
+palette = 15=#f6f5f1
+background = #221227
+foreground = #e3e1db
+cursor-color = #efa187
+cursor-text = #221227
+selection-background = #452e4c
+selection-foreground = cell-foreground

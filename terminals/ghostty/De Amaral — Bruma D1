@@ -1,0 +1,24 @@
+# De Amaral — Bruma D1
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#de-amaral-bruma-d1
+palette = 0=#8aced9
+palette = 1=#332647
+palette = 2=#003d48
+palette = 3=#374757
+palette = 4=#051752
+palette = 5=#241a54
+palette = 6=#00435f
+palette = 7=#2c3751
+palette = 8=#1c565e
+palette = 9=#2a1547
+palette = 10=#00303a
+palette = 11=#233b54
+palette = 12=#010050
+palette = 13=#1c0054
+palette = 14=#00364f
+palette = 15=#050c1f
+background = #3eacbc
+foreground = #111e3b
+cursor-color = #152569
+cursor-text = #3eacbc
+selection-background = #82ccd7
+selection-foreground = cell-foreground

@@ -1,0 +1,18 @@
+# Riley — To a Summer's Day
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#riley-to-a-summers-day
+
+[colors]
+foreground = "#ede5e9"
+background = "#111119"
+cursor_bg = "#eda9ad"
+cursor_border = "#eda9ad"
+cursor_fg = "#111119"
+selection_bg = "#2f3147"
+selection_fg = "none"
+ansi = ["#313142", "#dc9da1", "#98ba9e", "#c7ad70", "#9ab1da", "#afa9dd", "#88bac6", "#ede5e9"]
+brights = ["#616174", "#f5bdc0", "#b9d7be", "#e2cb98", "#bacff3", "#ccc7f5", "#acd6e1", "#f9f3f4"]
+
+[metadata]
+name = "Riley — To a Summer's Day"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#riley-to-a-summers-day"

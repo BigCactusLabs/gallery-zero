@@ -1,0 +1,24 @@
+# Condo — Couple on Blue Striped Chair
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#condo-couple-on-blue-striped-chair
+palette = 0=#091b1f
+palette = 1=#af2208
+palette = 2=#207400
+palette = 3=#8c5007
+palette = 4=#0062ab
+palette = 5=#a22c60
+palette = 6=#006b85
+palette = 7=#bfd2b1
+palette = 8=#5d7778
+palette = 9=#a31900
+palette = 10=#1d6a00
+palette = 11=#814800
+palette = 12=#005a9d
+palette = 13=#a00658
+palette = 14=#00627a
+palette = 15=#d3e5c6
+background = #e5f5d9
+foreground = #091b1f
+cursor-color = #c13f29
+cursor-text = #e5f5d9
+selection-background = #bedda6
+selection-foreground = cell-foreground

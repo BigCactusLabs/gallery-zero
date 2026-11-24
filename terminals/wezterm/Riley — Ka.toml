@@ -1,0 +1,18 @@
+# Riley — Ka
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#riley-ka
+
+[colors]
+foreground = "#f7e6c7"
+background = "#09264a"
+cursor_bg = "#e7a226"
+cursor_border = "#e7a226"
+cursor_fg = "#09264a"
+selection_bg = "#004868"
+selection_fg = "none"
+ansi = ["#193d6b", "#fa8565", "#66c093", "#dd9d30", "#7cafe8", "#df8db5", "#51b9e0", "#b4e0ef"]
+brights = ["#3c7d9a", "#ffb6a5", "#93deb6", "#f2c36a", "#a5cffe", "#fab2d3", "#85d8f5", "#dff6ff"]
+
+[metadata]
+name = "Riley — Ka"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#riley-ka"

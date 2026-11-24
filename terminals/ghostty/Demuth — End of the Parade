@@ -1,0 +1,24 @@
+# Demuth — End of the Parade
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#demuth-end-of-the-parade
+palette = 0=#1e1d17
+palette = 1=#994f44
+palette = 2=#67654b
+palette = 3=#866426
+palette = 4=#4b6085
+palette = 5=#945964
+palette = 6=#5d6b7b
+palette = 7=#c5c9d1
+palette = 8=#71695d
+palette = 9=#973428
+palette = 10=#5a572e
+palette = 11=#775302
+palette = 12=#365184
+palette = 13=#903f52
+palette = 14=#455b73
+palette = 15=#d9dce3
+background = #e9edf4
+foreground = #1e1d17
+cursor-color = #a8483e
+cursor-text = #e9edf4
+selection-background = #d4d9e8
+selection-foreground = cell-foreground

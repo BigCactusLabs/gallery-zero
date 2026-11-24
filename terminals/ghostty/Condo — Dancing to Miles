@@ -1,0 +1,24 @@
+# Condo — Dancing to Miles
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#condo-dancing-to-miles
+palette = 0=#462220
+palette = 1=#e37e6a
+palette = 2=#a3a17d
+palette = 3=#c59455
+palette = 4=#9a9ac3
+palette = 5=#bf8da8
+palette = 6=#82a7a6
+palette = 7=#e5ddd1
+palette = 8=#7a5b50
+palette = 9=#ffad93
+palette = 10=#c8c6a7
+palette = 11=#e7bc87
+palette = 12=#c0c0e5
+palette = 13=#e1b5cd
+palette = 14=#accbcb
+palette = 15=#f7f1e8
+background = #240a0c
+foreground = #e5ddd1
+cursor-color = #e4896a
+cursor-text = #240a0c
+selection-background = #4b2722
+selection-foreground = cell-foreground

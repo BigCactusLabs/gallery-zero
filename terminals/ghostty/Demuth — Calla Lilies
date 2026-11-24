@@ -1,0 +1,24 @@
+# Demuth — Calla Lilies
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#demuth-calla-lilies
+palette = 0=#021226
+palette = 1=#d38f66
+palette = 2=#80b973
+palette = 3=#e1bd53
+palette = 4=#5992d7
+palette = 5=#999bd6
+palette = 6=#77c2af
+palette = 7=#cfcdb8
+palette = 8=#5e7791
+palette = 9=#ebaf85
+palette = 10=#aadc8b
+palette = 11=#f5da7a
+palette = 12=#7fb6ee
+palette = 13=#b7b8ed
+palette = 14=#99deca
+palette = 15=#f7f4e2
+background = #031d3a
+foreground = #e8e5cf
+cursor-color = #e0b83a
+cursor-text = #031d3a
+selection-background = #184470
+selection-foreground = cell-foreground

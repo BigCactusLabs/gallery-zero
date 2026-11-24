@@ -1,0 +1,24 @@
+# Pelton — Orbits
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#pelton-orbits
+palette = 0=#122237
+palette = 1=#e65d76
+palette = 2=#4fb772
+palette = 3=#e4a429
+palette = 4=#517df4
+palette = 5=#ac7cec
+palette = 6=#33c6d9
+palette = 7=#d1cee4
+palette = 8=#6f6b85
+palette = 9=#fa919a
+palette = 10=#82d79a
+palette = 11=#eee180
+palette = 12=#8bacfa
+palette = 13=#cca7fa
+palette = 14=#85e2ed
+palette = 15=#f5f2e2
+background = #020c18
+foreground = #d3d2e6
+cursor-color = #eee180
+cursor-text = #020c18
+selection-background = #172b4b
+selection-foreground = cell-foreground

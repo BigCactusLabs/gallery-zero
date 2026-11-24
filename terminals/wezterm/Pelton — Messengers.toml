@@ -1,0 +1,18 @@
+# Pelton — Messengers
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#pelton-messengers
+
+[colors]
+foreground = "#cadbe2"
+background = "#0b2737"
+cursor_bg = "#dfcb74"
+cursor_border = "#dfcb74"
+cursor_fg = "#0b2737"
+selection_bg = "#24475c"
+selection_fg = "none"
+ansi = ["#203b4d", "#d48871", "#74b3a2", "#ceb75e", "#6899e2", "#9f94d2", "#7bb4ce", "#c5d8de"]
+brights = ["#6c8492", "#eeac94", "#9dd1c0", "#eae19b", "#95bdf4", "#c0b5ea", "#a5d3e6", "#f6f5ee"]
+
+[metadata]
+name = "Pelton — Messengers"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#pelton-messengers"

@@ -1,0 +1,24 @@
+# Riley — Fall
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#riley-fall
+palette = 0=#31312c
+palette = 1=#96968f
+palette = 2=#aeaea7
+palette = 3=#d1d2c9
+palette = 4=#898a83
+palette = 5=#a2a29b
+palette = 6=#bebeb6
+palette = 7=#e8e9e0
+palette = 8=#63645e
+palette = 9=#bbbbb3
+palette = 10=#d5d5cd
+palette = 11=#efefe6
+palette = 12=#aeaea7
+palette = 13=#c8c8c0
+palette = 14=#e2e2d9
+palette = 15=#fcfdf3
+background = #161613
+foreground = #e8e9e0
+cursor-color = #e8e9e0
+cursor-text = #161613
+selection-background = #383834
+selection-foreground = cell-foreground

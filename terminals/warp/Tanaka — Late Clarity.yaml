@@ -1,0 +1,27 @@
+# Tanaka — Late Clarity
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#tanaka-late-clarity
+name: "Tanaka — Late Clarity"
+accent: "#1762b6"
+cursor: "#1762b6"
+background: "#f9f6f4"
+foreground: "#122955"
+details: lighter
+terminal_colors:
+  normal:
+    black: "#0e2043"
+    red: "#ac2f3b"
+    green: "#396f64"
+    yellow: "#826401"
+    blue: "#1762b6"
+    magenta: "#804f7c"
+    cyan: "#2b6b89"
+    white: "#d7cdc6"
+  bright:
+    black: "#687284"
+    red: "#e23726"
+    green: "#568c81"
+    yellow: "#cda609"
+    blue: "#2d86c8"
+    magenta: "#9f6c9a"
+    cyan: "#4a89a8"
+    white: "#fef9f5"

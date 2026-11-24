@@ -1,0 +1,35 @@
+# De Amaral — Cenit 2
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#de-amaral-cenit-2
+
+[colors.primary]
+background = "#290602"
+foreground = "#e4d0c1"
+bright_foreground = "#f8ece3"
+
+[colors.cursor]
+text = "#290602"
+cursor = "#ee5e23"
+
+[colors.selection]
+text = "CellForeground"
+background = "#561f14"
+
+[colors.normal]
+black = "#1a0201"
+red = "#d95737"
+green = "#bf965d"
+yellow = "#e1b767"
+blue = "#9f7661"
+magenta = "#cd7670"
+cyan = "#c8a690"
+white = "#d1b8a5"
+
+[colors.bright]
+black = "#785b55"
+red = "#ff5c33"
+green = "#dea757"
+yellow = "#ffca61"
+blue = "#bc866a"
+magenta = "#f37f78"
+cyan = "#e4b89b"
+white = "#f8ece3"

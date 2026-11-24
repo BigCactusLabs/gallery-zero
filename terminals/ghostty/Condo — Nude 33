@@ -1,0 +1,24 @@
+# Condo — Nude 33
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#condo-nude-33
+palette = 0=#18354d
+palette = 1=#eb8373
+palette = 2=#87b651
+palette = 3=#c1a057
+palette = 4=#55aee8
+palette = 5=#d688b4
+palette = 6=#5ab3c8
+palette = 7=#daccd6
+palette = 8=#776174
+palette = 9=#ffb19d
+palette = 10=#aed783
+palette = 11=#e1c487
+palette = 12=#81d3fd
+palette = 13=#edb2df
+palette = 14=#8cd5e6
+palette = 15=#f4ecf2
+background = #011a2d
+foreground = #cfe5f3
+cursor-color = #eba295
+cursor-text = #011a2d
+selection-background = #163c54
+selection-foreground = cell-foreground

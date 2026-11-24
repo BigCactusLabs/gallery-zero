@@ -1,0 +1,35 @@
+# Monet — Lumière Dorée
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#monet-lumiere-doree
+
+[colors.primary]
+background = "#fbe4ad"
+foreground = "#3f2d5b"
+bright_foreground = "#2d1b47"
+
+[colors.cursor]
+text = "#fbe4ad"
+cursor = "#7c44c3"
+
+[colors.selection]
+text = "CellForeground"
+background = "#dfbf70"
+
+[colors.normal]
+black = "#33244b"
+red = "#a23100"
+green = "#446b00"
+yellow = "#864f02"
+blue = "#4851b0"
+magenta = "#88358e"
+cyan = "#006b74"
+white = "#dec381"
+
+[colors.bright]
+black = "#756d86"
+red = "#bf4213"
+green = "#588021"
+yellow = "#a26001"
+blue = "#5a66c7"
+magenta = "#9e4aa4"
+cyan = "#13808a"
+white = "#fdfaf1"

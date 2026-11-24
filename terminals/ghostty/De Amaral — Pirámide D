@@ -1,0 +1,24 @@
+# De Amaral — Pirámide D
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#de-amaral-piramide-d
+palette = 0=#3d3021
+palette = 1=#ffcca1
+palette = 2=#f3d4a5
+palette = 3=#ffe7b0
+palette = 4=#ecd3b4
+palette = 5=#f2d0b8
+palette = 6=#ebe0cb
+palette = 7=#ebdcc2
+palette = 8=#dcc7af
+palette = 9=#ffd9b9
+palette = 10=#ffddaa
+palette = 11=#fff2d4
+palette = 12=#ffdbab
+palette = 13=#ffd9be
+palette = 14=#fae9ca
+palette = 15=#fffbf5
+background = #95621c
+foreground = #fffbf5
+cursor-color = #f7e2b8
+cursor-text = #95621c
+selection-background = #5d411f
+selection-foreground = cell-foreground

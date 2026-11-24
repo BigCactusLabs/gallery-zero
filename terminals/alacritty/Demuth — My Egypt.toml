@@ -1,0 +1,35 @@
+# Demuth — My Egypt
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#demuth-my-egypt
+
+[colors.primary]
+background = "#f7f3eb"
+foreground = "#1a1b1c"
+bright_foreground = "#0c0d0e"
+
+[colors.cursor]
+text = "#f7f3eb"
+cursor = "#a2401f"
+
+[colors.selection]
+text = "CellForeground"
+background = "#abddf3"
+
+[colors.normal]
+black = "#1a1b1c"
+red = "#e44919"
+green = "#648b1f"
+yellow = "#b07205"
+blue = "#0075d3"
+magenta = "#d65072"
+cyan = "#068ab0"
+white = "#d2cfc8"
+
+[colors.bright]
+black = "#656f77"
+red = "#cb3803"
+green = "#547904"
+yellow = "#986303"
+blue = "#0467b9"
+magenta = "#d70e5d"
+cyan = "#057799"
+white = "#e6e3db"

@@ -1,0 +1,35 @@
+# Pelton — Sea Change
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#pelton-sea-change
+
+[colors.primary]
+background = "#021c22"
+foreground = "#cde0d5"
+bright_foreground = "#e9f4d3"
+
+[colors.cursor]
+text = "#021c22"
+cursor = "#e3efba"
+
+[colors.selection]
+text = "CellForeground"
+background = "#083c47"
+
+[colors.normal]
+black = "#06343d"
+red = "#d37640"
+green = "#5bc19d"
+yellow = "#d0c967"
+blue = "#2692e1"
+magenta = "#7d88e6"
+cyan = "#48b8b9"
+white = "#cdddca"
+
+[colors.bright]
+black = "#4f777b"
+red = "#eb9c6a"
+green = "#91debc"
+yellow = "#e3efba"
+blue = "#66baf7"
+magenta = "#a6acf9"
+cyan = "#86d8d7"
+white = "#f3f7ec"

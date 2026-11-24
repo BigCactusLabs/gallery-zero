@@ -1,0 +1,35 @@
+# Pelton — Winter
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#pelton-winter
+
+[colors.primary]
+background = "#f0ebfc"
+foreground = "#383e58"
+bright_foreground = "#1a2135"
+
+[colors.cursor]
+text = "#f0ebfc"
+cursor = "#ab54a3"
+
+[colors.selection]
+text = "CellForeground"
+background = "#ecc6e7"
+
+[colors.normal]
+black = "#40465e"
+red = "#ae3e2e"
+green = "#187760"
+yellow = "#8e6115"
+blue = "#3262ac"
+magenta = "#9a3e92"
+cyan = "#187482"
+white = "#d7c6c4"
+
+[colors.bright]
+black = "#7a7f96"
+red = "#91281a"
+green = "#11604d"
+yellow = "#75500f"
+blue = "#1e4b8f"
+magenta = "#7f2978"
+cyan = "#115d68"
+white = "#f9f7fd"

@@ -1,0 +1,18 @@
+# Demuth — My Egypt
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#demuth-my-egypt
+
+[colors]
+foreground = "#1a1b1c"
+background = "#f7f3eb"
+cursor_bg = "#a2401f"
+cursor_border = "#a2401f"
+cursor_fg = "#f7f3eb"
+selection_bg = "#abddf3"
+selection_fg = "none"
+ansi = ["#1a1b1c", "#e44919", "#648b1f", "#b07205", "#0075d3", "#d65072", "#068ab0", "#d2cfc8"]
+brights = ["#656f77", "#cb3803", "#547904", "#986303", "#0467b9", "#d70e5d", "#057799", "#e6e3db"]
+
+[metadata]
+name = "Demuth — My Egypt"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#demuth-my-egypt"

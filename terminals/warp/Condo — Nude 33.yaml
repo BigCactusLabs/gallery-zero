@@ -1,0 +1,27 @@
+# Condo — Nude 33
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#condo-nude-33
+name: "Condo — Nude 33"
+accent: "#eba295"
+cursor: "#eba295"
+background: "#011a2d"
+foreground: "#cfe5f3"
+details: darker
+terminal_colors:
+  normal:
+    black: "#18354d"
+    red: "#eb8373"
+    green: "#87b651"
+    yellow: "#c1a057"
+    blue: "#55aee8"
+    magenta: "#d688b4"
+    cyan: "#5ab3c8"
+    white: "#daccd6"
+  bright:
+    black: "#776174"
+    red: "#ffb19d"
+    green: "#aed783"
+    yellow: "#e1c487"
+    blue: "#81d3fd"
+    magenta: "#edb2df"
+    cyan: "#8cd5e6"
+    white: "#f4ecf2"

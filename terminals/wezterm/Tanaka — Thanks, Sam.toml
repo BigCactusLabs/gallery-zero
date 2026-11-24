@@ -1,0 +1,18 @@
+# Tanaka — Thanks, Sam
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#tanaka-thanks-sam
+
+[colors]
+foreground = "#f4f2e9"
+background = "#0d216a"
+cursor_bg = "#ffd335"
+cursor_border = "#ffd335"
+cursor_fg = "#0d216a"
+selection_bg = "#901f17"
+selection_fg = "none"
+ansi = ["#060f3e", "#ff5b37", "#66b27c", "#f6ae2f", "#5f8df3", "#f46286", "#7cb7d6", "#cecbbc"]
+brights = ["#6f87b1", "#ff8a3f", "#8ed690", "#ffdd30", "#91b7fe", "#ff8d9d", "#b6daf1", "#f3f2ec"]
+
+[metadata]
+name = "Tanaka — Thanks, Sam"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#tanaka-thanks-sam"

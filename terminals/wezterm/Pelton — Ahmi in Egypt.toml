@@ -1,0 +1,18 @@
+# Pelton — Ahmi in Egypt
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#pelton-ahmi-in-egypt
+
+[colors]
+foreground = "#eec865"
+background = "#12163b"
+cursor_bg = "#eec865"
+cursor_border = "#eec865"
+cursor_fg = "#12163b"
+selection_bg = "#303166"
+selection_fg = "none"
+ansi = ["#1d1f48", "#f44f5d", "#37b085", "#e9a129", "#578ef8", "#c372db", "#2bb3b7", "#e2d6c2"]
+brights = ["#434784", "#fa8d87", "#6bd2a8", "#fccc72", "#8bb5fa", "#dd92f4", "#74d3d8", "#f6f1e7"]
+
+[metadata]
+name = "Pelton — Ahmi in Egypt"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#pelton-ahmi-in-egypt"

@@ -5,7 +5,10 @@ import unittest
 import zipfile
 from pathlib import Path
 
-from tools.build_site import FRAMES, INSTALL_CMD, OG_NAME, OG_SIZE, ZIP_NAME, build, load, room_zip
+from tools import ports
+from tools.build_site import (
+    FRAMES, INSTALL_CMD, OG_NAME, OG_SIZE, ZIP_NAME, all_zip, build, install_cmd, load, port_file, room_zip,
+)
 
 
 class SiteTest(unittest.TestCase):
@@ -40,6 +43,23 @@ class SiteTest(unittest.TestCase):
             self.assertIn(html.escape(INSTALL_CMD), page)
             self.assertNotIn("Double-click a", page)
             self.assertTrue((out / "install.sh").is_file())
+
+            # The terminal picker, and the same downloads for every port.
+            self.assertEqual(page.count('name="terminal"'), 1 + len(ports.PORTS))
+            self.assertIn("Ghostty, iTerm2, kitty, WezTerm, Alacritty and Warp", page)
+            self.assertIn("Object.hasOwn(TERMINALS, app)", page)  # ?terminal=__proto__ falls back
+            self.assertIn("~/.local/share/warp-terminal/themes", page)  # Warp's Linux folder
+            self.assertIn(html.escape(install_cmd("ghostty")), page.replace("\\/", "/"))
+            for port in ports.PORTS:
+                with zipfile.ZipFile(out / all_zip(port.app)) as zf:
+                    names = zf.namelist()
+                self.assertEqual(len(names), len(works), port.app)
+                self.assertTrue(all(n.startswith(f"gallery-zero-{port.app}/") for n in names), port.app)
+                for c in collections:
+                    with zipfile.ZipFile(out / room_zip(c["slug"], port.app)) as zf:
+                        self.assertEqual(len(zf.namelist()), len(c["works"]))
+                    for w in c["works"]:
+                        self.assertTrue((out / port_file(w, c["slug"], port.app)).is_file())
 
 
 if __name__ == "__main__":

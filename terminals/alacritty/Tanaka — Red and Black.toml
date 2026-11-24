@@ -1,0 +1,35 @@
+# Tanaka — Red and Black
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#tanaka-red-and-black
+
+[colors.primary]
+background = "#f8ecde"
+foreground = "#231714"
+bright_foreground = "#150a08"
+
+[colors.cursor]
+text = "#f8ecde"
+cursor = "#da3301"
+
+[colors.selection]
+text = "CellForeground"
+background = "#f4cdc6"
+
+[colors.normal]
+black = "#101a2d"
+red = "#ab0b01"
+green = "#516b56"
+yellow = "#896027"
+blue = "#3860ac"
+magenta = "#924958"
+cyan = "#4a6875"
+white = "#d5c4b1"
+
+[colors.bright]
+black = "#687284"
+red = "#db4501"
+green = "#708774"
+yellow = "#d0a260"
+blue = "#5581c1"
+magenta = "#b26678"
+cyan = "#678692"
+white = "#fef9f4"

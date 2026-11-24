@@ -11,13 +11,17 @@ import unicodedata
 import unittest
 from pathlib import Path
 
+from tools import ports
 from tools.profiles import (
+    check_port_names,
     RepositoryError,
+    _install_port,
     audit_theme,
     filter_collections,
     ProfileRecord,
     load_repository,
     main,
+    normalize_app,
     plan_terminal_install,
     swatch_svg,
     sync_colors_xml,
@@ -327,8 +331,32 @@ class ProfileVerificationTests(unittest.TestCase):
 ROOT = Path(__file__).resolve().parent.parent
 
 
+def fixture_repository(root: Path) -> dict:
+    """A one-theme repository whose profile, swatch and ports all match the spec."""
+    (root / "themes").mkdir()
+    (root / "fixture").mkdir()
+    theme = {**dark_theme(active=0.93, inactive=0.93, dynamic=True), "slug": "dark"}
+    spec = {"collection": "fixture", "artist": "Fixture", "themes": [theme]}
+    (root / "themes" / "fixture.json").write_text(json.dumps(spec))
+    (root / "fixture" / "Fixture — Dark.terminal").write_bytes(complete_profile_xml(theme))
+    swatch = root / ".github" / "swatches" / "dark.svg"
+    swatch.parent.mkdir(parents=True)
+    swatch.write_text(swatch_svg(theme["colors"]))
+    with contextlib.redirect_stdout(io.StringIO()):
+        main(["sync-ports", "--root", str(root)])
+    return theme
+
+
+def run_main(args: list[str]) -> tuple[int, str]:
+    report = io.StringIO()
+    with contextlib.redirect_stdout(report), contextlib.redirect_stderr(report):
+        code = main(args)
+    return code, report.getvalue()
+
+
 def fixture_record(name: str = "Fixture — Dark", collection: str = "fixture") -> ProfileRecord:
     theme = dark_theme(active=0.93, inactive=0.93, dynamic=True)
+    theme["slug"] = name.split(" — ", 1)[1].lower().replace(" ", "-")
     return ProfileRecord(
         name, theme, Path(f"themes/{collection}.json"), Path(f"{collection}/{name}.terminal")
     )
@@ -347,15 +375,8 @@ class SwatchTests(unittest.TestCase):
     def test_verify_reports_a_drifted_swatch(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "themes").mkdir()
-            (root / "fixture").mkdir()
-            theme = {**dark_theme(active=0.93, inactive=0.93, dynamic=True), "slug": "dark"}
-            spec = {"collection": "fixture", "artist": "Fixture", "themes": [theme]}
-            (root / "themes" / "fixture.json").write_text(json.dumps(spec))
-            (root / "fixture" / "Fixture — Dark.terminal").write_bytes(complete_profile_xml(theme))
+            theme = fixture_repository(root)
             swatch = root / ".github" / "swatches" / "dark.svg"
-            swatch.parent.mkdir(parents=True)
-            swatch.write_text(swatch_svg(theme["colors"]))
 
             with contextlib.redirect_stdout(io.StringIO()):
                 self.assertEqual(0, main(["verify", "--root", str(root)]))
@@ -364,6 +385,210 @@ class SwatchTests(unittest.TestCase):
             with contextlib.redirect_stdout(report):
                 self.assertEqual(1, main(["verify", "--root", str(root)]))
             self.assertIn("dark.svg: swatch differs from spec", report.getvalue())
+
+
+class PortSyncTests(unittest.TestCase):
+    def test_sync_writes_every_port_once(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            fixture_repository(root)
+            files = sorted(p.relative_to(root).as_posix() for p in (root / "terminals").rglob("*") if p.is_file())
+            self.assertEqual(
+                [
+                    "terminals/alacritty/Fixture — Dark.toml",
+                    "terminals/ghostty/Fixture — Dark",
+                    "terminals/iterm2/Fixture — Dark.itermcolors",
+                    "terminals/kitty/Fixture — Dark.conf",
+                    "terminals/warp/Fixture — Dark.yaml",
+                    "terminals/wezterm/Fixture — Dark.toml",
+                ],
+                files,
+            )
+            code, out = run_main(["sync-ports", "--root", str(root)])
+            self.assertEqual((0, "PORTS=6 UPDATED=0 REMOVED=0\n"), (code, out))
+
+    def test_verify_reports_drifted_missing_and_stray_ports(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            fixture_repository(root)
+            self.assertEqual(0, run_main(["verify", "--root", str(root)])[0])
+
+            kitty = root / "terminals" / "kitty" / "Fixture — Dark.conf"
+            kitty.write_text(kitty.read_text().replace("#5a3030", "#ff0000"))
+            (root / "terminals" / "warp" / "Fixture — Dark.yaml").unlink()
+            (root / "terminals" / "ghostty" / "Fixture — Retired").write_text("palette = 0=#000000\n")
+            code, out = run_main(["verify", "--root", str(root)])
+            self.assertEqual(1, code)
+            self.assertIn("Fixture — Dark.conf: port differs from spec", out)
+            self.assertIn("Fixture — Dark.yaml: missing port", out)
+            self.assertIn("Fixture — Retired: port without a spec theme", out)
+            self.assertIn("MISMATCHES=3", out)
+
+            code, out = run_main(["sync-ports", "--root", str(root)])
+            self.assertEqual((0, "PORTS=6 UPDATED=2 REMOVED=1\n"), (code, out))
+            self.assertEqual(0, run_main(["verify", "--root", str(root)])[0])
+
+
+class PortInstallTests(unittest.TestCase):
+    def install(self, app: str, records, home: Path, **options) -> tuple[int, str]:
+        report = io.StringIO()
+        options = {"dry_run": False, "prune": False, "platform": "linux"} | options
+        with contextlib.redirect_stdout(report), contextlib.redirect_stderr(report):
+            code = _install_port(app, records, env={"HOME": str(home)}, **options)
+        return code, report.getvalue()
+
+    def test_names_the_terminal_loosely(self) -> None:
+        self.assertEqual("terminal", normalize_app(None))
+        self.assertEqual("terminal", normalize_app("Terminal.app"))
+        self.assertEqual("iterm2", normalize_app("iTerm.app"))
+        self.assertEqual("iterm2", normalize_app("iTerm2"))
+        self.assertEqual("wezterm", normalize_app("WezTerm"))
+        with self.assertRaises(RepositoryError):
+            normalize_app("hyper")
+
+    def test_installs_changed_files_and_prunes_only_its_own_retired_works(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory)
+            themes = home / ".config" / "ghostty" / "themes"
+            code, out = self.install("ghostty", [fixture_record()], home, dry_run=True)
+            self.assertEqual(0, code)
+            self.assertIn("STALE=1", out)
+            self.assertFalse(themes.exists())
+
+            code, out = self.install("ghostty", [fixture_record()], home)
+            self.assertEqual(0, code)
+            self.assertIn("THEMES=1 STALE=0 RETIRED=0", out)
+            self.assertIn("theme = Fixture — Dark", out)
+            installed = themes / "Fixture — Dark"
+            self.assertEqual(ports.ghostty(ports.Work("Fixture — Dark", "fixture-dark", "Dark — Fixture", fixture_record().theme["colors"])), installed.read_text())
+
+            retired = ports.Work("Fixture — Retired", "fixture-retired", "Retired — Fixture", fixture_record().theme["colors"])
+            (themes / "Fixture — Retired").write_text(ports.ghostty(retired))
+            (themes / "Fixture — My own study").write_text("# mine\nbackground = #000000\n")
+            (themes / "Fixture — Cites the gallery").write_text(
+                f"# My own palette, inspired by {ports.AUTHOR}\n# {ports.SITE_URL}\nbackground = #010203\n"
+            )
+            (themes / "Fixture — My copy").write_text(ports.ghostty(retired))  # a port saved under another name
+            (themes / "Someone Else — Theirs").write_text("")
+            (themes / "my-theme").write_text("")
+            code, out = self.install("ghostty", [fixture_record()], home)
+            self.assertNotIn("install:", out)
+            self.assertIn("retired (keep; --prune deletes): Fixture — Retired", out)
+            self.assertIn("RETIRED=1", out)
+            self.assertTrue((themes / "Fixture — Retired").exists())
+
+            code, out = self.install("ghostty", [fixture_record()], home, prune=True)
+            self.assertIn("pruned: Fixture — Retired", out)
+            self.assertEqual(
+                ["Fixture — Cites the gallery", "Fixture — Dark", "Fixture — My copy", "Fixture — My own study", "Someone Else — Theirs", "my-theme"],
+                sorted(p.name for p in themes.iterdir()),
+            )
+
+    def test_iterm2_gets_one_dynamic_profiles_file_per_collection(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory)
+            records = [fixture_record(), fixture_record("Other — Light", "other")]
+            self.assertEqual(2, self.install("iterm2", records, home)[0])  # not on Linux
+
+            code, out = self.install("iterm2", records, home, platform="darwin")
+            self.assertEqual(0, code)
+            self.assertIn("Choose one in iTerm2", out)
+            folder = home / "Library" / "Application Support" / "iTerm2" / "DynamicProfiles"
+            self.assertEqual(
+                ["Gallery Zero — Fixture.json", "Gallery Zero — Other.json"],
+                sorted(p.name for p in folder.iterdir()),
+            )
+            profile = json.loads((folder / "Gallery Zero — Fixture.json").read_text())["Profiles"][0]
+            self.assertEqual("Fixture — Dark", profile["Name"])
+            self.assertEqual(["Gallery Zero", "Fixture"], profile["Tags"])
+            self.assertAlmostEqual(0x5A / 255, profile["Ansi 1 Color"]["Red Component"], places=5)
+            self.assertIn("THEMES=2 STALE=0", self.install("iterm2", records, home, platform="darwin")[1])
+
+    def test_iterm2_keeps_retired_profiles_until_pruned(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory)
+            both = [fixture_record(), fixture_record("Fixture — Gone")]
+            path = home / "Library" / "Application Support" / "iTerm2" / "DynamicProfiles" / "Gallery Zero — Fixture.json"
+
+            def names() -> list[str]:
+                return [profile["Name"] for profile in json.loads(path.read_text())["Profiles"]]
+
+            self.assertEqual(0, self.install("iterm2", both, home, platform="darwin")[0])
+            self.assertEqual(["Fixture — Dark", "Fixture — Gone"], names())
+
+            code, out = self.install("iterm2", both[:1], home, platform="darwin")
+            self.assertEqual(0, code)
+            self.assertNotIn("install:", out)
+            self.assertIn("retired (keep; --prune deletes): Fixture — Gone", out)
+            self.assertIn("STALE=0 RETIRED=1", out)
+            self.assertEqual(["Fixture — Dark", "Fixture — Gone"], names())
+
+            code, out = self.install("iterm2", both[:1], home, platform="darwin", prune=True)
+            self.assertEqual(0, code)
+            self.assertIn("pruned: Fixture — Gone", out)
+            self.assertIn("STALE=0 RETIRED=0", out)
+            self.assertEqual(["Fixture — Dark"], names())
+
+    def test_iterm2_knows_its_profiles_by_guid_not_name(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory)
+            both = [fixture_record(), fixture_record("Fixture — Gone")]
+            path = home / "Library" / "Application Support" / "iTerm2" / "DynamicProfiles" / "Gallery Zero — Fixture.json"
+
+            def profiles() -> list[dict]:
+                return json.loads(path.read_text())["Profiles"]
+
+            def rename(index: int, name: str) -> None:
+                data = json.loads(path.read_text())
+                data["Profiles"][index]["Name"] = name
+                path.write_text(json.dumps(data))
+
+            self.assertEqual(0, self.install("iterm2", both, home, platform="darwin")[0])
+            guids = [profile["Guid"] for profile in profiles()]
+
+            # A current work's profile renamed by hand is still that work's: rewritten, not kept twice.
+            rename(0, "My renamed fixture")
+            code, out = self.install("iterm2", both, home, platform="darwin")
+            self.assertEqual(0, code)
+            self.assertIn("STALE=0 RETIRED=0", out)
+            self.assertEqual(guids, [profile["Guid"] for profile in profiles()])
+            self.assertEqual(["Fixture — Dark", "Fixture — Gone"], [profile["Name"] for profile in profiles()])
+
+            # A retired work's profile renamed to a current work's name is still kept until --prune.
+            rename(1, "Fixture — Dark")
+            code, out = self.install("iterm2", both[:1], home, platform="darwin")
+            self.assertEqual(0, code)
+            self.assertIn("STALE=0 RETIRED=1", out)
+            self.assertEqual(guids, [profile["Guid"] for profile in profiles()])
+
+    def test_iterm2_reads_a_damaged_profiles_file_as_empty(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory)
+            path = home / "Library" / "Application Support" / "iTerm2" / "DynamicProfiles" / "Gallery Zero — Fixture.json"
+            path.parent.mkdir(parents=True)
+            for damaged in ('{"Profiles": null}', '{"Profiles": 5}', "[]", "not json"):
+                path.write_text(damaged)
+                code, out = self.install("iterm2", [fixture_record()], home, platform="darwin", dry_run=True)
+                self.assertEqual(0, code, damaged)
+                self.assertIn("STALE=1 RETIRED=0", out)
+                self.assertEqual(damaged, path.read_text())
+
+    def test_refuses_works_whose_port_files_would_collide(self) -> None:
+        check_port_names([fixture_record(), fixture_record("Fixture — Light")])
+        with self.assertRaisesRegex(RepositoryError, "Ghostty file 'Fixture — A B'"):
+            check_port_names([fixture_record("Fixture — A, B"), fixture_record("Fixture — A B")])
+        with self.assertRaisesRegex(RepositoryError, "Fixture — Dusk and Fixture — DUSK"):  # macOS disks ignore case
+            check_port_names([fixture_record("Fixture — Dusk"), fixture_record("Fixture — DUSK")])
+
+    def test_theme_folders_follow_each_terminal(self) -> None:
+        home = {"HOME": "/h"}
+        self.assertEqual(Path("/h/.config/ghostty/themes"), ports.theme_dir("ghostty", home, "darwin"))
+        self.assertEqual(Path("/x/ghostty/themes"), ports.theme_dir("ghostty", home | {"XDG_CONFIG_HOME": "/x"}, "linux"))
+        self.assertEqual(Path("/k/themes"), ports.theme_dir("kitty", home | {"KITTY_CONFIG_DIRECTORY": "/k"}, "linux"))
+        self.assertEqual(Path("/h/.config/wezterm/colors"), ports.theme_dir("wezterm", home, "linux"))
+        self.assertEqual(Path("/h/.config/alacritty/themes"), ports.theme_dir("alacritty", home, "linux"))
+        self.assertEqual(Path("/h/.warp/themes"), ports.theme_dir("warp", home, "darwin"))
+        self.assertEqual(Path("/h/.local/share/warp-terminal/themes"), ports.theme_dir("warp", home, "linux"))
 
 
 class TerminalInstallPlanTests(unittest.TestCase):
@@ -464,6 +689,7 @@ class InstallScriptTests(unittest.TestCase):
             archive_path = tmp / "gallery-zero.tar.gz"
             with tarfile.open(archive_path, "w:gz") as tf:
                 tf.add(ROOT / "tools" / "profiles.py", arcname="gallery-zero-main/tools/profiles.py")
+                tf.add(ROOT / "tools" / "ports.py", arcname="gallery-zero-main/tools/ports.py")
                 tf.add(ROOT / "themes", arcname="gallery-zero-main/themes")
                 for folder in ("condo", "de-amaral", "demuth", "monet", "pelton", "riley", "rothko", "tanaka"):
                     tf.add(ROOT / folder, arcname=f"gallery-zero-main/{folder}")
@@ -493,6 +719,20 @@ class InstallScriptTests(unittest.TestCase):
             check=True,
         )
         self.assertIn("PROFILES=14 ", run.stdout)
+
+    def test_terminal_flag_installs_ports_on_any_platform(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            env = {"PATH": os.environ["PATH"], "HOME": directory}
+            run = subprocess.run(
+                ["sh", str(ROOT / "install.sh"), "--terminal", "Ghostty", "--dry-run", "rothko"],
+                capture_output=True, text=True, env=env, check=True,
+            )
+            self.assertIn("THEMES=7 STALE=7 RETIRED=0", run.stdout)
+            self.assertEqual([], list(Path(directory).iterdir()))
+
+            missing = subprocess.run(["sh", str(ROOT / "install.sh"), "-t"], capture_output=True, text=True)
+            self.assertEqual(2, missing.returncode)
+            self.assertIn("requires a terminal name", missing.stderr)
 
 
 if __name__ == "__main__":

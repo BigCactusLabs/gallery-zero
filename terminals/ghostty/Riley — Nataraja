@@ -1,0 +1,24 @@
+# Riley — Nataraja
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#riley-nataraja
+palette = 0=#163b2c
+palette = 1=#ea6b5e
+palette = 2=#72ab42
+palette = 3=#c78b09
+palette = 4=#8a8fe1
+palette = 5=#cd76b0
+palette = 6=#599fd8
+palette = 7=#efe4c7
+palette = 8=#476d5c
+palette = 9=#ffa47a
+palette = 10=#bbc949
+palette = 11=#e1b75c
+palette = 12=#b1b7fd
+palette = 13=#eea1d3
+palette = 14=#9bc1f1
+palette = 15=#fdf5df
+background = #04160e
+foreground = #efe4c7
+cursor-color = #d49824
+cursor-text = #04160e
+selection-background = #2f3058
+selection-foreground = cell-foreground

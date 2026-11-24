@@ -1,0 +1,24 @@
+# Tanaka — Thanks, Sam
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#tanaka-thanks-sam
+palette = 0=#060f3e
+palette = 1=#ff5b37
+palette = 2=#66b27c
+palette = 3=#f6ae2f
+palette = 4=#5f8df3
+palette = 5=#f46286
+palette = 6=#7cb7d6
+palette = 7=#cecbbc
+palette = 8=#6f87b1
+palette = 9=#ff8a3f
+palette = 10=#8ed690
+palette = 11=#ffdd30
+palette = 12=#91b7fe
+palette = 13=#ff8d9d
+palette = 14=#b6daf1
+palette = 15=#f3f2ec
+background = #0d216a
+foreground = #f4f2e9
+cursor-color = #ffd335
+cursor-text = #0d216a
+selection-background = #901f17
+selection-foreground = cell-foreground

@@ -1,0 +1,24 @@
+# Rothko — No. 4
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#rothko-no-4
+palette = 0=#08030a
+palette = 1=#af6f8e
+palette = 2=#af96a3
+palette = 3=#ccb7be
+palette = 4=#85749a
+palette = 5=#ae82a3
+palette = 6=#b3aaba
+palette = 7=#c9b8c2
+palette = 8=#685b6b
+palette = 9=#cf7aa4
+palette = 10=#c9a7b9
+palette = 11=#e5cad3
+palette = 12=#9b84b7
+palette = 13=#ca90bd
+palette = 14=#c9bdd3
+palette = 15=#f4ecf1
+background = #130915
+foreground = #ddd0d8
+cursor-color = #c0789b
+cursor-text = #130915
+selection-background = #37223c
+selection-foreground = cell-foreground

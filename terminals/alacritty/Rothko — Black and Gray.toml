@@ -1,0 +1,35 @@
+# Rothko — Black and Gray
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#rothko-black-and-gray
+
+[colors.primary]
+background = "#2e2922"
+foreground = "#d1d4da"
+bright_foreground = "#edeef2"
+
+[colors.cursor]
+text = "#2e2922"
+cursor = "#7c94b7"
+
+[colors.selection]
+text = "CellForeground"
+background = "#574a33"
+
+[colors.normal]
+black = "#221f19"
+red = "#ab8b75"
+green = "#a09e99"
+yellow = "#c5bcae"
+blue = "#7f94b1"
+magenta = "#8e929b"
+cyan = "#a0b0c1"
+white = "#babec5"
+
+[colors.bright]
+black = "#807b73"
+red = "#c79c80"
+green = "#b4b2ab"
+yellow = "#dcd1be"
+blue = "#8da8cf"
+magenta = "#a1a6b2"
+cyan = "#b0c5db"
+white = "#edeef2"

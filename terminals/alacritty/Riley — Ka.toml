@@ -1,0 +1,35 @@
+# Riley — Ka
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#riley-ka
+
+[colors.primary]
+background = "#09264a"
+foreground = "#f7e6c7"
+bright_foreground = "#fff8ea"
+
+[colors.cursor]
+text = "#09264a"
+cursor = "#e7a226"
+
+[colors.selection]
+text = "CellForeground"
+background = "#004868"
+
+[colors.normal]
+black = "#193d6b"
+red = "#fa8565"
+green = "#66c093"
+yellow = "#dd9d30"
+blue = "#7cafe8"
+magenta = "#df8db5"
+cyan = "#51b9e0"
+white = "#b4e0ef"
+
+[colors.bright]
+black = "#3c7d9a"
+red = "#ffb6a5"
+green = "#93deb6"
+yellow = "#f2c36a"
+blue = "#a5cffe"
+magenta = "#fab2d3"
+cyan = "#85d8f5"
+white = "#dff6ff"

@@ -1,0 +1,18 @@
+# Monet — Soleil Couchant
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#monet-soleil-couchant
+
+[colors]
+foreground = "#dcdab1"
+background = "#0a1844"
+cursor_bg = "#f18156"
+cursor_border = "#f18156"
+cursor_fg = "#0a1844"
+selection_bg = "#334628"
+selection_fg = "none"
+ansi = ["#071027", "#e4734f", "#95b162", "#caa647", "#54a2cd", "#c987a6", "#60afa5", "#c7c6a9"]
+brights = ["#677493", "#f99e65", "#c8ce89", "#e2d284", "#81cae1", "#eaafb7", "#93d0ba", "#f3efd9"]
+
+[metadata]
+name = "Monet — Soleil Couchant"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#monet-soleil-couchant"

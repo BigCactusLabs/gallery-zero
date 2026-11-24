@@ -1,0 +1,24 @@
+# Monet — Crépuscule
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#monet-crepuscule
+palette = 0=#110a22
+palette = 1=#e66e68
+palette = 2=#a6a266
+palette = 3=#d8953d
+palette = 4=#8693d6
+palette = 5=#c67bb6
+palette = 6=#7b9bc3
+palette = 7=#d5bfb3
+palette = 8=#836f8c
+palette = 9=#ff996a
+palette = 10=#bcc490
+palette = 11=#efcc83
+palette = 12=#c1b4ec
+palette = 13=#f2a3c1
+palette = 14=#9bc4e1
+palette = 15=#f8ece1
+background = #340321
+foreground = #d7d0e4
+cursor-color = #fd9057
+cursor-text = #340321
+selection-background = #632d25
+selection-foreground = cell-foreground

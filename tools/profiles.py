@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Synchronize and validate Gallery Zero macOS Terminal profiles."""
+"""Synchronize, validate and install Gallery Zero themes.
+
+The specs in themes/ drive the macOS Terminal profiles, their swatches, and the
+ports to other terminals in terminals/ (see ports.py).
+"""
 
 from __future__ import annotations
 
@@ -7,6 +11,7 @@ import argparse
 from dataclasses import dataclass
 import json
 import math
+import os
 import plistlib
 import subprocess
 import sys
@@ -14,7 +19,12 @@ import tempfile
 import time
 import unicodedata
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any, Mapping, Sequence
+
+if __package__:
+    from . import ports
+else:  # run as a script, with tools/ on sys.path
+    import ports
 
 
 ANSI_KEYS = (
@@ -72,6 +82,11 @@ COLOR_KEYS = {
     "cursor_text": "CursorTextColor",
     "selection": "SelectionColor",
 }
+
+
+PORTS_DIR = ports.PORTS_DIR
+TERMINAL_APPS = ("terminal",) + tuple(port.app for port in ports.PORTS)
+APP_ALIASES = {"apple-terminal": "terminal", "macos": "terminal", "iterm": "iterm2"}
 
 
 class RepositoryError(ValueError):
@@ -368,6 +383,50 @@ def swatch_path(root: Path, theme: dict[str, Any]) -> Path:
     return root / ".github" / "swatches" / f"{theme['slug']}.svg"
 
 
+def work_of(record: ProfileRecord) -> ports.Work:
+    return ports.Work(
+        name=record.name,
+        anchor=f"{record.collection}-{record.theme['slug']}",
+        title=record.theme["depth"]["window_title"],
+        colors=record.theme["colors"],
+    )
+
+
+def port_files(root: Path, records: Sequence[ProfileRecord]) -> dict[str, tuple[Path, str]]:
+    """Every port file the specs call for, keyed by NFC path, with its contents."""
+    expected: dict[str, tuple[Path, str]] = {}
+    for port in ports.PORTS:
+        for record in records:
+            work = work_of(record)
+            path = root / PORTS_DIR / port.app / port.filename(work)
+            expected[_nfc(str(path))] = (path, port.render(work))
+    return expected
+
+
+def check_port_names(records: Sequence[ProfileRecord]) -> None:
+    """Refuse two works that would share a port file, where one would overwrite the other.
+
+    Ghostty drops some punctuation from names, and macOS disks ignore case.
+    """
+    for port in ports.PORTS:
+        owners: dict[str, str] = {}
+        for record in records:
+            filename = port.filename(work_of(record))
+            other = owners.setdefault(_nfc(filename).casefold(), record.name)
+            if other != record.name:
+                raise RepositoryError(
+                    f"{other} and {record.name} would share the {port.label} file {filename!r}"
+                )
+
+
+def stray_ports(root: Path, expected: Mapping[str, tuple[Path, str]]) -> list[Path]:
+    return sorted(
+        path
+        for path in (root / PORTS_DIR).glob("*/*")
+        if path.is_file() and not path.name.startswith(".") and _nfc(str(path)) not in expected
+    )
+
+
 def load_repository(root: Path) -> list[ProfileRecord]:
     records: list[ProfileRecord] = []
     expected_artifacts: set[str] = set()
@@ -396,6 +455,7 @@ def load_repository(root: Path) -> list[ProfileRecord]:
         raise RepositoryError(f"unexpected artifact: {unexpected[0].relative_to(root)}")
     if not records:
         raise RepositoryError("no themes found")
+    check_port_names(records)
     return records
 
 
@@ -436,6 +496,21 @@ def _sync_swatches(root: Path, records: Sequence[ProfileRecord]) -> int:
     return 0
 
 
+def _sync_ports(root: Path, records: Sequence[ProfileRecord]) -> int:
+    expected = port_files(root, records)
+    updated = 0
+    for path, content in expected.values():
+        if not path.is_file() or path.read_text(encoding="utf-8") != content:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(content, encoding="utf-8")
+            updated += 1
+    stray = stray_ports(root, expected)
+    for path in stray:  # terminals/ is generated, so a file no spec calls for is retired
+        path.unlink()
+    print(f"PORTS={len(expected)} UPDATED={updated} REMOVED={len(stray)}")
+    return 0
+
+
 def _verify(root: Path, records: Sequence[ProfileRecord]) -> int:
     mismatches = 0
     for record in records:
@@ -451,7 +526,18 @@ def _verify(root: Path, records: Sequence[ProfileRecord]) -> int:
         ):
             print(f"{record.artifact_path}: {issue}")
             mismatches += 1
-    print(f"PROFILES={len(records)} MISMATCHES={mismatches}")
+    expected = port_files(root, records)
+    for path, content in expected.values():
+        if not path.is_file():
+            print(f"{path.relative_to(root)}: missing port (run sync-ports)")
+            mismatches += 1
+        elif path.read_text(encoding="utf-8") != content:
+            print(f"{path.relative_to(root)}: port differs from spec (run sync-ports)")
+            mismatches += 1
+    for path in stray_ports(root, expected):
+        print(f"{path.relative_to(root)}: port without a spec theme (run sync-ports)")
+        mismatches += 1
+    print(f"PROFILES={len(records)} PORTS={len(expected)} MISMATCHES={mismatches}")
     return int(bool(mismatches))
 
 
@@ -666,6 +752,139 @@ def _install_terminal(records: Sequence[ProfileRecord], *, dry_run: bool, prune:
     return int(bool(stale_after))
 
 
+def normalize_app(raw: str | None) -> str:
+    """Map an installer --terminal value ("Ghostty", "iTerm.app", ...) to an app key."""
+    if not raw:
+        return "terminal"
+    key = "".join(raw.lower().split())
+    if key.endswith(".app"):
+        key = key[: -len(".app")]
+    key = APP_ALIASES.get(key, key)
+    if key not in TERMINAL_APPS:
+        raise RepositoryError(f"unknown terminal: {raw} (available: {', '.join(TERMINAL_APPS)})")
+    return key
+
+
+def _dynamic_profiles(path: Path) -> list[dict[str, Any]]:
+    """The profiles in an installed Dynamic Profiles file; none if it is missing or unreadable."""
+    try:
+        profiles = json.loads(path.read_text(encoding="utf-8")).get("Profiles", [])
+    except (OSError, ValueError, AttributeError):
+        return []
+    if not isinstance(profiles, list):
+        return []
+    return [profile for profile in profiles if isinstance(profile, dict)]
+
+
+def _is_port_file(port: ports.Port, path: Path) -> bool:
+    """Whether an installed file is one the gallery wrote: it opens with the exact header
+    sync-ports writes, naming the work this file's name comes from."""
+    try:
+        with path.open("rb") as handle:
+            head = handle.read(1024).decode("utf-8", "replace")
+    except OSError:
+        return False
+    name = ports.header_name(port.app, head)
+    return name is not None and _nfc(port.filename_of(name)) == _nfc(path.name)
+
+
+def plan_port_install(
+    app: str, records: Sequence[ProfileRecord], directory: Path, *, prune: bool = False
+) -> tuple[list[tuple[str, Path, str]], list[tuple[str, Path | None]]]:
+    """Return (files to write, as (label, path, contents); retired works, as (name, file)).
+
+    A retired work is one the gallery installed that has since left it. Only
+    --prune removes it: for iTerm2 by rewriting its collection's file without
+    it (so there is no file to delete), elsewhere by deleting its file.
+    """
+    if app == "iterm2":
+        # One Dynamic Profiles file per collection.
+        groups: dict[str, list[ProfileRecord]] = {}
+        for record in records:
+            groups.setdefault(record.collection, []).append(record)
+        writes: list[tuple[str, Path, str]] = []
+        gone: list[tuple[str, Path | None]] = []
+        for group in groups.values():
+            works = [work_of(record) for record in group]
+            path = directory / f"{ports.AUTHOR} — {works[0].artist}.json"
+            # iTerm2 knows a profile by its Guid; names can repeat or be edited.
+            seen = {ports.iterm_guid(work) for work in works}
+            kept = []
+            for profile in _dynamic_profiles(path):
+                guid = str(profile.get("Guid", ""))
+                if guid not in seen:  # a retired work's profile, once
+                    seen.add(guid)
+                    kept.append(profile)
+            gone += [(_nfc(str(p.get("Name", ""))), None) for p in kept]
+            content = ports.iterm_dynamic_profiles(works, keep=() if prune else kept)
+            if not path.is_file() or path.read_text(encoding="utf-8") != content:
+                writes.append((f"{path.name} ({len(works)} profiles)", path, content))
+        return writes, gone
+    port = ports.BY_APP[app]
+    writes, wanted = [], set()
+    for record in records:
+        work = work_of(record)
+        path = directory / port.filename(work)
+        wanted.add(_nfc(path.name))
+        content = port.render(work)
+        if not path.is_file() or path.read_text(encoding="utf-8") != content:
+            writes.append((record.name, path, content))
+    artists = {record.name.split(" — ", 1)[0] for record in records}
+    installed = sorted(directory.iterdir()) if directory.is_dir() else []
+    retired: list[tuple[str, Path | None]] = [
+        (_nfc(path.name), path)
+        for path in installed
+        if path.is_file()
+        and path.name.endswith(port.extension)
+        and " — " in path.name
+        and _nfc(path.name).split(" — ", 1)[0] in artists
+        and _nfc(path.name) not in wanted
+        and _is_port_file(port, path)  # a theme of the user's own, named after an artist, stays
+    ]
+    return writes, retired
+
+
+def _install_port(
+    app: str,
+    records: Sequence[ProfileRecord],
+    *,
+    dry_run: bool,
+    prune: bool,
+    env: Mapping[str, str],
+    platform: str,
+) -> int:
+    if app == "iterm2" and platform != "darwin":
+        print("error: iTerm2 is macOS-only", file=sys.stderr)
+        return 2
+    directory = ports.theme_dir(app, env, platform)
+    writes, retired = plan_port_install(app, records, directory, prune=prune)
+    for label, _, _ in writes:
+        print(f"install: {label}")
+    for name, _ in retired:
+        print(f"{'prune' if prune else 'retired (keep; --prune deletes)'}: {name}")
+    if dry_run:
+        print(f"THEMES={len(records)} STALE={len(writes)} RETIRED={len(retired)} DIR={directory}")
+        return 0
+    if writes:
+        directory.mkdir(parents=True, exist_ok=True)
+    for _, path, content in writes:
+        path.write_text(content, encoding="utf-8")
+    if prune:
+        for name, path in retired:
+            if path is not None:
+                path.unlink()
+            print(f"pruned: {name}")
+    stale_after, retired_after = plan_port_install(app, records, directory, prune=prune)
+    print(f"THEMES={len(records)} STALE={len(stale_after)} RETIRED={len(retired_after)} DIR={directory}")
+    if records:
+        home = str(Path(env.get("HOME") or Path.home()))
+        shown = str(directory)
+        if shown.startswith(home + "/"):
+            shown = "~" + shown[len(home):]
+        print(ports.how_to_use(app, work_of(records[0]), shown))
+    return int(bool(stale_after))
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -674,6 +893,7 @@ def _parser() -> argparse.ArgumentParser:
             "sync-colors",
             "sync-depth",
             "sync-swatches",
+            "sync-ports",
             "verify",
             "audit-contrast",
             "install-terminal",
@@ -687,6 +907,15 @@ def _parser() -> argparse.ArgumentParser:
         dest="collections",
         metavar="NAME",
         help="install-terminal: install only the named collection(s), e.g. --collection rothko,demuth (repeatable)",
+    )
+    parser.add_argument(
+        "--terminal",
+        "-t",
+        metavar="APP",
+        help=(
+            "install-terminal: the terminal to install into: terminal (macOS Terminal.app, "
+            "the default), ghostty, iterm2, kitty, wezterm, alacritty or warp"
+        ),
     )
     parser.add_argument(
         "--list",
@@ -726,16 +955,28 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _sync_depth(records)
     if arguments.command == "sync-swatches":
         return _sync_swatches(arguments.root.resolve(), records)
+    if arguments.command == "sync-ports":
+        return _sync_ports(arguments.root.resolve(), records)
     if arguments.command == "verify":
         return _verify(arguments.root.resolve(), records)
     if arguments.command == "install-terminal":
         if arguments.list:
             return _list_collections(records)
         try:
+            app = normalize_app(arguments.terminal)
             selected = filter_collections(records, arguments.collections)
         except RepositoryError as error:
             print(f"error: {error}", file=sys.stderr)
             return 2
+        if app != "terminal":
+            return _install_port(
+                app,
+                selected,
+                dry_run=arguments.dry_run,
+                prune=arguments.prune,
+                env=os.environ,
+                platform=sys.platform,
+            )
         return _install_terminal(selected, dry_run=arguments.dry_run, prune=arguments.prune)
     return _audit_contrast(records)
 

@@ -1,0 +1,27 @@
+# Riley — Late Morning
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#riley-late-morning
+name: "Riley — Late Morning"
+accent: "#d33d29"
+cursor: "#d33d29"
+background: "#f0f1e9"
+foreground: "#17202b"
+details: lighter
+terminal_colors:
+  normal:
+    black: "#242f3d"
+    red: "#b91600"
+    green: "#21771a"
+    yellow: "#825b00"
+    blue: "#3d5abd"
+    magenta: "#973f6f"
+    cyan: "#006f84"
+    white: "#c4c5bd"
+  bright:
+    black: "#6c7278"
+    red: "#aa1400"
+    green: "#086f00"
+    yellow: "#775300"
+    blue: "#304cc0"
+    magenta: "#932d68"
+    cyan: "#006679"
+    white: "#deded9"

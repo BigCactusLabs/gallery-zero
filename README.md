@@ -1,6 +1,6 @@
 # Gallery Zero
 
-56 free color themes for macOS Terminal, drawn from the work of eight artists. Import any profile in Terminal → Settings → Profiles, or install all 56 from the command line.
+56 free color themes for macOS Terminal, Ghostty, iTerm2, kitty, WezTerm, Alacritty and Warp, drawn from the work of eight artists. Install all 56 from the command line, or download them one at a time from the gallery.
 
 [![Two terminal previews in museum frames. Rothko’s Four Darks in Red sets pale rose text on oxblood. Demuth’s My Egypt sets brick orange and sky blue on ivory.](.github/gallery-preview.jpg)](https://bigcactuslabs.github.io/gallery-zero/)
 
@@ -16,9 +16,12 @@ curl -fsSL https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/ins
 
 # Or install only specific packs (condo, de-amaral, demuth, monet, pelton, riley, rothko, tanaka):
 curl -fsSL https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/install.sh | sh -s -- rothko demuth
+
+# Or install into another terminal (ghostty, iterm2, kitty, wezterm, alacritty, warp):
+curl -fsSL https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/install.sh | sh -s -- --terminal ghostty
 ```
 
-Keeps your current font, default, and startup profile, and cleans up after itself. Inspect [`install.sh`](install.sh) first, or see [Acquisitions](#acquisitions) for manual import via **Terminal → Settings → Profiles**.
+In Terminal.app it keeps your current font, default, and startup profile. Elsewhere it copies the themes into the terminal's theme folder (see [Other terminals](#other-terminals)). Either way it cleans up after itself. Inspect [`install.sh`](install.sh) first, or see [Acquisitions](#acquisitions) for manual import via **Terminal → Settings → Profiles**.
 
 ---
 
@@ -136,7 +139,7 @@ A grain elevator raised to the scale of a pyramid, crossed by rays of light. The
 
 ## Acquisitions
 
-Download one from [the gallery site](https://bigcactuslabs.github.io/gallery-zero/), or all 56 as [one zip](https://bigcactuslabs.github.io/gallery-zero/gallery-zero.zip).
+Download one from [the gallery site](https://bigcactuslabs.github.io/gallery-zero/), or all 56 as [one zip](https://bigcactuslabs.github.io/gallery-zero/gallery-zero.zip). Pick your terminal at the top of the site and every download follows it.
 
 **In Terminal Settings (recommended for browser downloads):** Open **Terminal → Settings** (`⌘,`) **→ Profiles**, then drag any `.terminal` file into the profiles list — or click the **⋯** button at the bottom of the list and choose **Import…**. Select it and click **Default** if you like.
 
@@ -172,6 +175,28 @@ open "riley/Riley — Red with Red 1.terminal"
 open "pelton/Pelton — Ahmi in Egypt.terminal"
 open "demuth/Demuth — My Egypt.terminal"
 ```
+
+## Other terminals
+
+The same 56 palettes hang in six more terminals. Add `--terminal` to the installer, or download the files from the gallery site or [`terminals/`](terminals/):
+
+| Terminal | `--terminal` | Installs to | Then |
+| --- | --- | --- | --- |
+| [Ghostty](https://ghostty.org) | `ghostty` | `~/.config/ghostty/themes` | Set `theme = Rothko — Four Darks in Red` in your config. |
+| [iTerm2](https://iterm2.com) | `iterm2` | One [Dynamic Profiles](https://iterm2.com/documentation-dynamic-profiles.html) file per collection | Pick a profile tagged *Gallery Zero* in **Settings → Profiles**. |
+| [kitty](https://sw.kovidgoyal.net/kitty/) | `kitty` | `~/.config/kitty/themes` | Run `kitten themes`. They are listed under *User*. |
+| [WezTerm](https://wezterm.org) | `wezterm` | `~/.config/wezterm/colors` | Set `config.color_scheme = "Rothko — Four Darks in Red"`. |
+| [Alacritty](https://alacritty.org) | `alacritty` | `~/.config/alacritty/themes` | Add the file's path to `import` under `[general]` in `alacritty.toml`. |
+| [Warp](https://www.warp.dev) | `warp` | `~/.warp/themes` (Linux: `~/.local/share/warp-terminal/themes`) | Choose it in **Settings → Appearance → Themes**. |
+
+```sh
+# Just the Rothko and Demuth rooms, into kitty:
+curl -fsSL https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/install.sh | sh -s -- --terminal kitty rothko demuth
+```
+
+The installer honours `XDG_CONFIG_HOME` and `KITTY_CONFIG_DIRECTORY`, and runs on Linux for every terminal except Terminal.app and iTerm2. Running it again updates only the themes that changed. `--prune` removes Gallery Zero themes that have left the gallery. It deletes only a file that opens with the exact header the gallery writes for the work it is named after, so a theme of your own stays even when it shares an artist's name or credits the gallery.
+
+The ports carry the palette: the sixteen ANSI colors, background, foreground, cursor and, except in Warp, whose themes have no such key, selection. Terminal.app's glass, window size and title stay in the `.terminal` profiles. Terminal.app leaves selected text in its own color, and so do Ghostty, kitty, WezTerm, Alacritty and the installed iTerm2 profiles. Those profiles also switch off iTerm2's separate light and dark colors, which iTerm2 turns on by default and which would hide the palette. Ghostty reads a comma in a theme name as a light/dark pair, so two works drop theirs there: *Tanaka — Thanks Sam* and *Demuth — Buildings Lancaster*. For iTerm2's own import, [`terminals/iterm2/`](terminals/iterm2/) holds `.itermcolors` presets for **Settings → Profiles → Colors → Color Presets… → Import…**.
 
 ## Conservation Notes
 

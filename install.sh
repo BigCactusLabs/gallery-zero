@@ -1,9 +1,11 @@
 #!/usr/bin/env sh
-# Install Gallery Zero color themes into macOS Terminal.app without Gatekeeper quarantine.
+# Install Gallery Zero color themes into macOS Terminal.app (without Gatekeeper
+# quarantine), or into Ghostty, iTerm2, kitty, WezTerm, Alacritty or Warp.
 #
 # Usage:
 #   curl -fsSL https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/install.sh | sh
 #   curl -fsSL https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/install.sh | sh -s -- rothko demuth
+#   curl -fsSL https://raw.githubusercontent.com/BigCactusLabs/gallery-zero/main/install.sh | sh -s -- --terminal ghostty
 #   ./install.sh --list
 set -eu
 
@@ -12,23 +14,26 @@ REF="${GALLERY_ZERO_REF:-main}"
 
 usage() {
   cat <<'EOF'
-Gallery Zero — install macOS Terminal color themes
+Gallery Zero — install terminal color themes
 
 Usage:
   install.sh [OPTIONS] [COLLECTION...]
 
 Examples:
-  install.sh                      Install all 56 themes (all 8 collections)
+  install.sh                      Install all 56 themes into macOS Terminal.app
   install.sh rothko demuth        Install only the Rothko and Demuth collections
   install.sh "De Amaral" monet    Names are case- and space-insensitive
+  install.sh -t ghostty           Install all 56 into Ghostty (or iterm2, kitty, wezterm, alacritty, warp)
   install.sh --dry-run rothko     Preview what would be installed
   install.sh --list               List available collections
 
 Options:
+  -t, --terminal APP              Where to install: terminal (macOS Terminal.app, the default),
+                                  ghostty, iterm2, kitty, wezterm, alacritty or warp
   -c, --collection, --pack NAME   Install only the named collection(s) (repeatable or comma-separated)
   -l, --list                      List available collections and exit
-      --dry-run                   Show what would be installed without touching Terminal.app
-      --prune                     Also remove retired Gallery Zero profiles from selected collections
+      --dry-run                   Show what would be installed without changing anything
+      --prune                     Also remove retired Gallery Zero themes from selected collections
   -h, --help                      Show this help
 EOF
 }
@@ -57,6 +62,7 @@ find_python3() {
 
 # Parse options and convert bare collection names into --collection flags.
 list_only=0
+terminal=""
 n=$#
 i=0
 while [ "$i" -lt "$n" ]; do
@@ -88,6 +94,20 @@ while [ "$i" -lt "$n" ]; do
     --collection=*|--pack=*)
       set -- "$@" --collection "${arg#*=}"
       ;;
+    -t|--terminal)
+      if [ "$i" -ge "$n" ]; then
+        printf 'error: %s requires a terminal name\n' "$arg" >&2
+        exit 2
+      fi
+      terminal=$1
+      shift
+      i=$((i + 1))
+      set -- "$@" --terminal "$terminal"
+      ;;
+    --terminal=*)
+      terminal=${arg#*=}
+      set -- "$@" --terminal "$terminal"
+      ;;
     -*)
       printf 'error: unknown option: %s (try --help)\n' "$arg" >&2
       exit 2
@@ -98,8 +118,15 @@ while [ "$i" -lt "$n" ]; do
   esac
 done
 
-if [ "$list_only" -eq 0 ] && [ "$(uname -s)" != "Darwin" ]; then
-  printf 'error: Gallery Zero profiles are for macOS Terminal.app\n' >&2
+# Terminal.app and iTerm2 are macOS-only; the other terminals also run on Linux,
+# and profiles.py rejects a name it does not know. Normalize as profiles.py does.
+app_key=$(printf '%s' "$terminal" | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
+case "${app_key%.app}" in
+  ''|terminal|apple-terminal|macos|iterm|iterm2) needs_mac=1 ;;
+  *) needs_mac=0 ;;
+esac
+if [ "$list_only" -eq 0 ] && [ "$needs_mac" -eq 1 ] && [ "$(uname -s)" != "Darwin" ]; then
+  printf 'error: Terminal.app and iTerm2 are macOS-only. On Linux, add --terminal ghostty, kitty, wezterm, alacritty or warp.\n' >&2
   exit 2
 fi
 

@@ -1,0 +1,24 @@
+# Rothko — Untitled 1957
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#rothko-untitled-1957
+palette = 0=#022214
+palette = 1=#7c9781
+palette = 2=#3bb974
+palette = 3=#a7c8aa
+palette = 4=#44a080
+palette = 5=#769f6d
+palette = 6=#87bbaa
+palette = 7=#b1c3b7
+palette = 8=#637f6f
+palette = 9=#89ae90
+palette = 10=#00d47b
+palette = 11=#b4e0b9
+palette = 12=#31ba91
+palette = 13=#80b774
+palette = 14=#8dd4bd
+palette = 15=#e8f1eb
+background = #012f1c
+foreground = #cad8cf
+cursor-color = #00ae64
+cursor-text = #012f1c
+selection-background = #0c5537
+selection-foreground = cell-foreground

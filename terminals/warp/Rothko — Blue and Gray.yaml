@@ -1,0 +1,27 @@
+# Rothko — Blue and Gray
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#rothko-blue-and-gray
+name: "Rothko — Blue and Gray"
+accent: "#8682f0"
+cursor: "#8682f0"
+background: "#131032"
+foreground: "#ded2c7"
+details: darker
+terminal_colors:
+  normal:
+    black: "#0a0821"
+    red: "#8a7bb7"
+    green: "#a59c99"
+    yellow: "#ccbaab"
+    blue: "#7376da"
+    magenta: "#9e89a8"
+    cyan: "#9fafcb"
+    white: "#cabaad"
+  bright:
+    black: "#60617a"
+    red: "#9f8ada"
+    green: "#bcafab"
+    yellow: "#e6ceb9"
+    blue: "#8486ff"
+    magenta: "#b69ac2"
+    cyan: "#aec4ea"
+    white: "#f5ede6"

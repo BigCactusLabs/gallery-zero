@@ -1,0 +1,35 @@
+# Pelton — Tall Ginger
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#pelton-tall-ginger
+
+[colors.primary]
+background = "#351216"
+foreground = "#f4cdc7"
+bright_foreground = "#fee5de"
+
+[colors.cursor]
+text = "#351216"
+cursor = "#f69370"
+
+[colors.selection]
+text = "CellForeground"
+background = "#5e2b2f"
+
+[colors.normal]
+black = "#462529"
+red = "#e3645c"
+green = "#4b9b50"
+yellow = "#e1b75c"
+blue = "#779bc9"
+magenta = "#e276a0"
+cyan = "#77b39e"
+white = "#e4cbc4"
+
+[colors.bright]
+black = "#8b6e57"
+red = "#f69370"
+green = "#96ce9d"
+yellow = "#f4d895"
+blue = "#9dbde7"
+magenta = "#f7a0bf"
+cyan = "#a1d4c1"
+white = "#fcf3ee"

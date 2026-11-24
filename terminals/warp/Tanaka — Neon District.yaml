@@ -1,0 +1,27 @@
+# Tanaka — Neon District
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#tanaka-neon-district
+name: "Tanaka — Neon District"
+accent: "#ff0098"
+cursor: "#ff0098"
+background: "#f5f5f5"
+foreground: "#1a1a1e"
+details: lighter
+terminal_colors:
+  normal:
+    black: "#1a1a1e"
+    red: "#ef021b"
+    green: "#00a22b"
+    yellow: "#eba002"
+    blue: "#0039fe"
+    magenta: "#d101cb"
+    cyan: "#00a1cb"
+    white: "#c0c0c8"
+  bright:
+    black: "#505058"
+    red: "#ff5200"
+    green: "#23ff00"
+    yellow: "#feff01"
+    blue: "#0c82ff"
+    magenta: "#fd03ff"
+    cyan: "#04feff"
+    white: "#e0e0e8"

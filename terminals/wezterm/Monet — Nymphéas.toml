@@ -1,0 +1,18 @@
+# Monet — Nymphéas
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#monet-nympheas
+
+[colors]
+foreground = "#ddcee1"
+background = "#052942"
+cursor_bg = "#f6a9cd"
+cursor_border = "#f6a9cd"
+cursor_fg = "#052942"
+selection_bg = "#13466b"
+selection_fg = "none"
+ansi = ["#0c1331", "#ce7e84", "#2eb27a", "#a59a56", "#639be1", "#c077d1", "#56a7b0", "#adc1cf"]
+brights = ["#4a79a0", "#efa8ac", "#72d5a3", "#c9bf86", "#91c1ff", "#e2a2f1", "#88cbd3", "#e0edf8"]
+
+[metadata]
+name = "Monet — Nymphéas"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#monet-nympheas"
