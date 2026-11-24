@@ -17,9 +17,7 @@ import html
 import json
 import re
 import shutil
-import struct
 import zipfile
-import zlib
 from pathlib import Path
 from urllib.parse import quote
 
@@ -251,46 +249,10 @@ def cli_label(app: str) -> str:
     return "Or install from your shell (add <code>rothko demuth</code> for specific packs):"
 
 
-def png(width: int, height: int, rows: list[bytes]) -> bytes:
-    """Encode 8-bit RGB rows as a PNG, so the share image needs only the stdlib."""
-    def chunk(tag: bytes, data: bytes) -> bytes:
-        return struct.pack(">I", len(data)) + tag + data + struct.pack(">I", zlib.crc32(tag + data))
-    raw = b"".join(b"\x00" + row for row in rows)
-    return (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0))
-            + chunk(b"IDAT", zlib.compress(raw, 9)) + chunk(b"IEND", b""))
-
-
-OG_SIZE = (1200, 630)
-
-
-def og_image(featured: list[dict]) -> bytes:
-    """The share card: one panel per collection, its featured palette laid out like a swatch."""
-    width, height = OG_SIZE
-    panel = width // len(featured)
-    chip_w, chip_h, gap = 42, 50, 16
-    left = (panel - 2 * chip_w) // 2
-    top = (height - (chip_h + gap + 8 * chip_h)) // 2
-    grid = top + chip_h + gap
-    rgb = lambda value: bytes.fromhex(value.lstrip("#")[:6])
-    rows = []
-    for y in range(height):
-        if top <= y < top + chip_h:
-            pair = ("foreground", "foreground")
-        elif 0 <= (y - grid) // chip_h < 8:
-            slot = (y - grid) // chip_h
-            pair = (ANSI[slot], ANSI[slot + 8])
-        else:
-            pair = ()
-        row = bytearray()
-        for w in featured:
-            cells = bytearray(rgb(w["colors"]["background"]) * panel)
-            for i, key in enumerate(pair):
-                x = left + i * chip_w
-                cells[x * 3:(x + chip_w) * 3] = rgb(w["colors"][key]) * chip_w
-            row += cells
-        row += row[-3:] * (width - len(row) // 3)
-        rows.append(bytes(row))
-    return png(width, height, rows)
+# The share card is the repository's social preview too (GitHub: Settings > General >
+# Social preview). Its source is a render of the lobby's own terminal windows.
+OG_SOURCE = ROOT / ".github" / "social-preview.png"
+OG_SIZE = (2560, 1280)
 
 
 def render(collections: list[dict]) -> str:
@@ -379,7 +341,7 @@ TEMPLATE = """<!doctype html>
 <meta property="og:image" content="{site}{og}">
 <meta property="og:image:width" content="{og_w}">
 <meta property="og:image:height" content="{og_h}">
-<meta property="og:image:alt" content="The palettes of eight Gallery Zero themes, one for each painter.">
+<meta property="og:image:alt" content="Gallery Zero: eight terminal windows, each in a theme after a different painter, stacked beside the title.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:image/svg+xml,{favicon}">
@@ -751,7 +713,7 @@ def build(out: Path) -> None:
     out.mkdir(parents=True)
     (out / "index.html").write_text(render(collections), encoding="utf-8")
     (out / ".nojekyll").write_text("")
-    (out / OG_NAME).write_bytes(og_image(featured_works(collections)))
+    shutil.copy2(OG_SOURCE, out / OG_NAME)
     shutil.copy2(ROOT / "install.sh", out / "install.sh")
     for frame in FRAMES:
         shutil.copy2(ROOT / "tools" / "assets" / frame["file"], out / frame["file"])
