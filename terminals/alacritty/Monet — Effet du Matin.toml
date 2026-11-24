@@ -1,0 +1,35 @@
+# Monet — Effet du Matin
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#monet-effet-du-matin
+
+[colors.primary]
+background = "#26264d"
+foreground = "#e9d4bc"
+bright_foreground = "#f4e9dd"
+
+[colors.cursor]
+text = "#26264d"
+cursor = "#f2cd6f"
+
+[colors.selection]
+text = "CellForeground"
+background = "#414076"
+
+[colors.normal]
+black = "#161136"
+red = "#cf8073"
+green = "#7da47e"
+yellow = "#bf9002"
+blue = "#7192f4"
+magenta = "#bf7fb9"
+cyan = "#61a2c0"
+white = "#cbbba9"
+
+[colors.bright]
+black = "#6d6fa2"
+red = "#f0aa9d"
+green = "#a7c8a7"
+yellow = "#e3b753"
+blue = "#a2bcff"
+magenta = "#e1a8db"
+cyan = "#90c7e1"
+white = "#f4e9dd"

@@ -1,0 +1,35 @@
+# De Amaral — Lienzo B
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#de-amaral-lienzo-b
+
+[colors.primary]
+background = "#824717"
+foreground = "#feeddb"
+bright_foreground = "#fff9f3"
+
+[colors.cursor]
+text = "#824717"
+cursor = "#fbe0c1"
+
+[colors.selection]
+text = "CellForeground"
+background = "#4a2a12"
+
+[colors.normal]
+black = "#2a1b11"
+red = "#f6a88d"
+green = "#edc5a2"
+yellow = "#fddcae"
+blue = "#ccae94"
+magenta = "#e6bcb2"
+cyan = "#e4d5c3"
+white = "#efdac3"
+
+[colors.bright]
+black = "#c6ab99"
+red = "#ffb297"
+green = "#ffcc9d"
+yellow = "#ffe8c8"
+blue = "#e1b48b"
+magenta = "#fec0b0"
+cyan = "#f5ddc1"
+white = "#fff9f3"

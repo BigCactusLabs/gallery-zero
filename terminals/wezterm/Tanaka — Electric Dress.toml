@@ -1,0 +1,18 @@
+# Tanaka — Electric Dress
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#tanaka-electric-dress
+
+[colors]
+foreground = "#eeebdf"
+background = "#0e0f14"
+cursor_bg = "#fb4b19"
+cursor_border = "#fb4b19"
+cursor_fg = "#0e0f14"
+selection_bg = "#522217"
+selection_fg = "#eeebdf"
+ansi = ["#050608", "#ff2e30", "#36b92b", "#fca601", "#4475f6", "#fb3a7f", "#03c3c3", "#cdcac3"]
+brights = ["#73747c", "#fe7802", "#6de850", "#fdf708", "#6d9ffe", "#a670f3", "#60eae2", "#f7f5ec"]
+
+[metadata]
+name = "Tanaka — Electric Dress"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#tanaka-electric-dress"

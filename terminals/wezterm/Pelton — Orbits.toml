@@ -1,0 +1,18 @@
+# Pelton — Orbits
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#pelton-orbits
+
+[colors]
+foreground = "#d3d2e6"
+background = "#020c18"
+cursor_bg = "#eee180"
+cursor_border = "#eee180"
+cursor_fg = "#020c18"
+selection_bg = "#172b4b"
+selection_fg = "#d3d2e6"
+ansi = ["#122237", "#e65d76", "#4fb772", "#e4a429", "#517df4", "#ac7cec", "#33c6d9", "#d1cee4"]
+brights = ["#6f6b85", "#fa919a", "#82d79a", "#eee180", "#8bacfa", "#cca7fa", "#85e2ed", "#f5f2e2"]
+
+[metadata]
+name = "Pelton — Orbits"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#pelton-orbits"

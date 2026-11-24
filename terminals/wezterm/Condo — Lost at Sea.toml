@@ -1,0 +1,18 @@
+# Condo — Lost at Sea
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#condo-lost-at-sea
+
+[colors]
+foreground = "#eae8e1"
+background = "#1c272b"
+cursor_bg = "#f0764f"
+cursor_border = "#f0764f"
+cursor_fg = "#1c272b"
+selection_bg = "#2b4764"
+selection_fg = "#eae8e1"
+ansi = ["#364247", "#fe825c", "#7cbd89", "#c7a92a", "#7caaff", "#b99bde", "#41c1ba", "#eae8e1"]
+brights = ["#68777d", "#ffb797", "#a3dbad", "#f5c076", "#abcdff", "#dfbbef", "#82ded2", "#faf8f2"]
+
+[metadata]
+name = "Condo — Lost at Sea"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#condo-lost-at-sea"

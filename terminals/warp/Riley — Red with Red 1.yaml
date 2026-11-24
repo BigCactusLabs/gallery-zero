@@ -1,0 +1,27 @@
+# Riley — Red with Red 1
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#riley-red-with-red-1
+name: "Riley — Red with Red 1"
+accent: "#001437"
+cursor: "#001437"
+background: "#f97d9e"
+foreground: "#001437"
+details: lighter
+terminal_colors:
+  normal:
+    black: "#001437"
+    red: "#951600"
+    green: "#005724"
+    yellow: "#694200"
+    blue: "#003fb7"
+    magenta: "#890085"
+    cyan: "#005261"
+    white: "#fee3e9"
+  bright:
+    black: "#174a92"
+    red: "#7f3300"
+    green: "#295400"
+    yellow: "#614700"
+    blue: "#3d00e9"
+    magenta: "#7d00a1"
+    cyan: "#005458"
+    white: "#fff8f9"

@@ -1,0 +1,35 @@
+# Pelton — The Fountains
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#pelton-the-fountains
+
+[colors.primary]
+background = "#f5eeca"
+foreground = "#2a4246"
+bright_foreground = "#0c292d"
+
+[colors.cursor]
+text = "#f5eeca"
+cursor = "#15699e"
+
+[colors.selection]
+text = "CellForeground"
+background = "#bbd7da"
+
+[colors.normal]
+black = "#384c4e"
+red = "#a93f53"
+green = "#53741c"
+yellow = "#806715"
+blue = "#15699e"
+magenta = "#7b52a4"
+cyan = "#177479"
+white = "#cac3b7"
+
+[colors.bright]
+black = "#6c7f7f"
+red = "#8c2a3f"
+green = "#415d0e"
+yellow = "#6b550f"
+blue = "#0e527c"
+magenta = "#633d88"
+cyan = "#115e62"
+white = "#f9f5e5"

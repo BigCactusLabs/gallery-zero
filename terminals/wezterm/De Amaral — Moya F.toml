@@ -1,0 +1,18 @@
+# De Amaral — Moya F
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#de-amaral-moya-f
+
+[colors]
+foreground = "#cad9cb"
+background = "#001501"
+cursor_bg = "#47ab44"
+cursor_border = "#47ab44"
+cursor_fg = "#001501"
+selection_bg = "#0d3812"
+selection_fg = "#cad9cb"
+ansi = ["#000a00", "#749156", "#5ab757", "#abc7a2", "#438c60", "#899789", "#8fbb97", "#b1c4b2"]
+brights = ["#536753", "#81a857", "#4fd24d", "#badfad", "#3ea56a", "#9aac9b", "#98d4a4", "#e8f1e9"]
+
+[metadata]
+name = "De Amaral — Moya F"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#de-amaral-moya-f"

@@ -1,0 +1,35 @@
+# Rothko — Blue Divided by Blue
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#rothko-blue-divided-by-blue
+
+[colors.primary]
+background = "#1b647b"
+foreground = "#e4f1f5"
+bright_foreground = "#f4fcfe"
+
+[colors.cursor]
+text = "#1b647b"
+cursor = "#b5e7fe"
+
+[colors.selection]
+text = "CellForeground"
+background = "#003f50"
+
+[colors.normal]
+black = "#003c4d"
+red = "#7dcaeb"
+green = "#7bdad9"
+yellow = "#d7f3f6"
+blue = "#8cc3fc"
+magenta = "#b5cbf3"
+cyan = "#a4dce8"
+white = "#d0e2e6"
+
+[colors.bright]
+black = "#9abac7"
+red = "#a5d1e5"
+green = "#aadedd"
+yellow = "#e5f6f8"
+blue = "#accdef"
+magenta = "#c9d6ee"
+cyan = "#c2e3ea"
+white = "#f4fcfe"

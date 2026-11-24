@@ -1,0 +1,18 @@
+# Tanaka — Gate of Hell
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#tanaka-gate-of-hell
+
+[colors]
+foreground = "#f0dec9"
+background = "#2c0a0c"
+cursor_bg = "#ff9044"
+cursor_border = "#ff9044"
+cursor_fg = "#2c0a0c"
+selection_bg = "#6f1916"
+selection_fg = "#f0dec9"
+ansi = ["#150405", "#ed4b43", "#a3b738", "#f09c17", "#9a76d4", "#df4e92", "#69aed5", "#d3c0b1"]
+brights = ["#967069", "#ff843f", "#ced447", "#fad957", "#c09aeb", "#f383bb", "#98d1ec", "#fbf1dc"]
+
+[metadata]
+name = "Tanaka — Gate of Hell"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#tanaka-gate-of-hell"

@@ -1,0 +1,24 @@
+# Rothko — Untitled 1969
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#rothko-untitled-1969
+palette = 0=#010101
+palette = 1=#a57785
+palette = 2=#9e9e9e
+palette = 3=#c5bbba
+palette = 4=#797986
+palette = 5=#a38a97
+palette = 6=#adadb3
+palette = 7=#c1bcbd
+palette = 8=#5e5b5c
+palette = 9=#c28698
+palette = 10=#b2b2b2
+palette = 11=#ddcfce
+palette = 12=#8c8c9d
+palette = 13=#bc9bad
+palette = 14=#c1c1c9
+palette = 15=#f0eeee
+background = #060505
+foreground = #d7d3d4
+cursor-color = #b78090
+cursor-text = #060505
+selection-background = #2b1b22
+selection-foreground = cell-foreground

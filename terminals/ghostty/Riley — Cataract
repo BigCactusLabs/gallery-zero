@@ -1,0 +1,24 @@
+# Riley — Cataract
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#riley-cataract
+palette = 0=#2c343a
+palette = 1=#f66140
+palette = 2=#68a796
+palette = 3=#b49168
+palette = 4=#7e9cb5
+palette = 5=#b98993
+palette = 6=#00abc0
+palette = 7=#e2e1db
+palette = 8=#626a71
+palette = 9=#ffa28c
+palette = 10=#96cbbb
+palette = 11=#d7b895
+palette = 12=#a7c2d7
+palette = 13=#dcb1b9
+palette = 14=#66cfe1
+palette = 15=#f6f5f1
+background = #111417
+foreground = #e2e1db
+cursor-color = #e14d2c
+cursor-text = #111417
+selection-background = #0a3a41
+selection-foreground = cell-foreground

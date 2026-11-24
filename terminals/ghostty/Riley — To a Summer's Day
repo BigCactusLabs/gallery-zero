@@ -1,0 +1,24 @@
+# Riley — To a Summer's Day
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#riley-to-a-summers-day
+palette = 0=#313142
+palette = 1=#dc9da1
+palette = 2=#98ba9e
+palette = 3=#c7ad70
+palette = 4=#9ab1da
+palette = 5=#afa9dd
+palette = 6=#88bac6
+palette = 7=#ede5e9
+palette = 8=#616174
+palette = 9=#f5bdc0
+palette = 10=#b9d7be
+palette = 11=#e2cb98
+palette = 12=#bacff3
+palette = 13=#ccc7f5
+palette = 14=#acd6e1
+palette = 15=#f9f3f4
+background = #111119
+foreground = #ede5e9
+cursor-color = #eda9ad
+cursor-text = #111119
+selection-background = #2f3147
+selection-foreground = cell-foreground

@@ -1,0 +1,24 @@
+# Tanaka — Late Clarity
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#tanaka-late-clarity
+palette = 0=#0e2043
+palette = 1=#ac2f3b
+palette = 2=#396f64
+palette = 3=#826401
+palette = 4=#1762b6
+palette = 5=#804f7c
+palette = 6=#2b6b89
+palette = 7=#d7cdc6
+palette = 8=#687284
+palette = 9=#e23726
+palette = 10=#568c81
+palette = 11=#cda609
+palette = 12=#2d86c8
+palette = 13=#9f6c9a
+palette = 14=#4a89a8
+palette = 15=#fef9f5
+background = #f9f6f4
+foreground = #122955
+cursor-color = #1762b6
+cursor-text = #f9f6f4
+selection-background = #f8e8ab
+selection-foreground = cell-foreground

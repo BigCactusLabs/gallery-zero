@@ -1,0 +1,35 @@
+# Rothko — Untitled 1969
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#rothko-untitled-1969
+
+[colors.primary]
+background = "#060505"
+foreground = "#d7d3d4"
+bright_foreground = "#f0eeee"
+
+[colors.cursor]
+text = "#060505"
+cursor = "#b78090"
+
+[colors.selection]
+text = "CellForeground"
+background = "#2b1b22"
+
+[colors.normal]
+black = "#010101"
+red = "#a57785"
+green = "#9e9e9e"
+yellow = "#c5bbba"
+blue = "#797986"
+magenta = "#a38a97"
+cyan = "#adadb3"
+white = "#c1bcbd"
+
+[colors.bright]
+black = "#5e5b5c"
+red = "#c28698"
+green = "#b2b2b2"
+yellow = "#ddcfce"
+blue = "#8c8c9d"
+magenta = "#bc9bad"
+cyan = "#c1c1c9"
+white = "#f0eeee"

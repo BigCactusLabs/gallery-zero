@@ -1,0 +1,18 @@
+# Pelton — The Fountains
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#pelton-the-fountains
+
+[colors]
+foreground = "#2a4246"
+background = "#f5eeca"
+cursor_bg = "#15699e"
+cursor_border = "#15699e"
+cursor_fg = "#f5eeca"
+selection_bg = "#bbd7da"
+selection_fg = "#2a4246"
+ansi = ["#384c4e", "#a93f53", "#53741c", "#806715", "#15699e", "#7b52a4", "#177479", "#cac3b7"]
+brights = ["#6c7f7f", "#8c2a3f", "#415d0e", "#6b550f", "#0e527c", "#633d88", "#115e62", "#f9f5e5"]
+
+[metadata]
+name = "Pelton — The Fountains"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#pelton-the-fountains"

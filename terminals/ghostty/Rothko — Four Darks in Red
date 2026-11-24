@@ -1,0 +1,24 @@
+# Rothko — Four Darks in Red
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#rothko-four-darks-in-red
+palette = 0=#240b08
+palette = 1=#e15a50
+palette = 2=#a79d91
+palette = 3=#e8af96
+palette = 4=#a77971
+palette = 5=#c8787b
+palette = 6=#cca2a0
+palette = 7=#cdb9b1
+palette = 8=#836560
+palette = 9=#ff685d
+palette = 10=#beb1a2
+palette = 11=#ffc3a9
+palette = 12=#c5887d
+palette = 13=#ec8287
+palette = 14=#eab3b0
+palette = 15=#f6ece8
+background = #34120f
+foreground = #e1d0cb
+cursor-color = #f0574e
+cursor-text = #34120f
+selection-background = #622c26
+selection-foreground = cell-foreground

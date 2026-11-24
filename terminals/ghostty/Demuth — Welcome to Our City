@@ -1,0 +1,24 @@
+# Demuth — Welcome to Our City
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#demuth-welcome-to-our-city
+palette = 0=#251f0f
+palette = 1=#ab2913
+palette = 2=#65581c
+palette = 3=#7f5001
+palette = 4=#5d321e
+palette = 5=#822c2b
+palette = 6=#6c584e
+palette = 7=#c8b183
+palette = 8=#6c5945
+palette = 9=#951701
+palette = 10=#574803
+palette = 11=#6b4202
+palette = 12=#5a2101
+palette = 13=#800214
+palette = 14=#634636
+palette = 15=#ddc492
+background = #eed49f
+foreground = #251f0f
+cursor-color = #b54226
+cursor-text = #eed49f
+selection-background = #dbb879
+selection-foreground = cell-foreground

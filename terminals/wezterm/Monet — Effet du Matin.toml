@@ -1,0 +1,18 @@
+# Monet — Effet du Matin
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#monet-effet-du-matin
+
+[colors]
+foreground = "#e9d4bc"
+background = "#26264d"
+cursor_bg = "#f2cd6f"
+cursor_border = "#f2cd6f"
+cursor_fg = "#26264d"
+selection_bg = "#414076"
+selection_fg = "#e9d4bc"
+ansi = ["#161136", "#cf8073", "#7da47e", "#bf9002", "#7192f4", "#bf7fb9", "#61a2c0", "#cbbba9"]
+brights = ["#6d6fa2", "#f0aa9d", "#a7c8a7", "#e3b753", "#a2bcff", "#e1a8db", "#90c7e1", "#f4e9dd"]
+
+[metadata]
+name = "Monet — Effet du Matin"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#monet-effet-du-matin"

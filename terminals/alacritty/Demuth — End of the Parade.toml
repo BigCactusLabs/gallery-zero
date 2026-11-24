@@ -1,0 +1,35 @@
+# Demuth — End of the Parade
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#demuth-end-of-the-parade
+
+[colors.primary]
+background = "#e9edf4"
+foreground = "#1e1d17"
+bright_foreground = "#12110c"
+
+[colors.cursor]
+text = "#e9edf4"
+cursor = "#a8483e"
+
+[colors.selection]
+text = "CellForeground"
+background = "#d4d9e8"
+
+[colors.normal]
+black = "#1e1d17"
+red = "#994f44"
+green = "#67654b"
+yellow = "#866426"
+blue = "#4b6085"
+magenta = "#945964"
+cyan = "#5d6b7b"
+white = "#c5c9d1"
+
+[colors.bright]
+black = "#71695d"
+red = "#973428"
+green = "#5a572e"
+yellow = "#775302"
+blue = "#365184"
+magenta = "#903f52"
+cyan = "#455b73"
+white = "#d9dce3"

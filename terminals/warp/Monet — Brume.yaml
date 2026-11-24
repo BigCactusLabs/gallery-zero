@@ -1,0 +1,27 @@
+# Monet — Brume
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#monet-brume
+name: "Monet — Brume"
+accent: "#f77c56"
+cursor: "#f77c56"
+background: "#31413b"
+foreground: "#e0dacc"
+details: darker
+terminal_colors:
+  normal:
+    black: "#202f2c"
+    red: "#ff8d6a"
+    green: "#9bbba1"
+    yellow: "#ccab7f"
+    blue: "#8db8ce"
+    magenta: "#d5a2a1"
+    cyan: "#8dbcb8"
+    white: "#c7c5b6"
+  bright:
+    black: "#7e8a80"
+    red: "#ffbba6"
+    green: "#bbd6bf"
+    yellow: "#e5c9a3"
+    blue: "#afd4e7"
+    magenta: "#eec1c0"
+    cyan: "#afd7d4"
+    white: "#f1efe4"

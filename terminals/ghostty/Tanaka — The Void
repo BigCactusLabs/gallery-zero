@@ -1,0 +1,24 @@
+# Tanaka — The Void
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#tanaka-the-void
+palette = 0=#310c10
+palette = 1=#f66d67
+palette = 2=#63b376
+palette = 3=#d18e35
+palette = 4=#6ea1e2
+palette = 5=#d87da2
+palette = 6=#5cadb6
+palette = 7=#d6c4b4
+palette = 8=#5e8aa2
+palette = 9=#ffa697
+palette = 10=#8cd59b
+palette = 11=#efb656
+palette = 12=#94c6f9
+palette = 13=#f3a6ca
+palette = 14=#89cfd3
+palette = 15=#f9f0e8
+background = #0f3243
+foreground = #edded0
+cursor-color = #e24942
+cursor-text = #0f3243
+selection-background = #652a2e
+selection-foreground = cell-foreground

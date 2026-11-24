@@ -1,0 +1,18 @@
+# Demuth — Sail in Two Movements
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#demuth-sail-in-two-movements
+
+[colors]
+foreground = "#1d1d49"
+background = "#d4dafc"
+cursor_bg = "#8a2f5c"
+cursor_border = "#8a2f5c"
+cursor_fg = "#d4dafc"
+selection_bg = "#b7c0f5"
+selection_fg = "#1d1d49"
+ansi = ["#1d1d49", "#833c67", "#506076", "#605797", "#1d43a2", "#77497f", "#2a6394", "#b2b7d5"]
+brights = ["#5b5e71", "#801e5f", "#385170", "#514297", "#032bb0", "#71307b", "#01528b", "#c4caea"]
+
+[metadata]
+name = "Demuth — Sail in Two Movements"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#demuth-sail-in-two-movements"

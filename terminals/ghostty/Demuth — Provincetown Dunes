@@ -1,0 +1,24 @@
+# Demuth — Provincetown Dunes
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#demuth-provincetown-dunes
+palette = 0=#3d1a52
+palette = 1=#cb1325
+palette = 2=#6c6332
+palette = 3=#915d01
+palette = 4=#1d4fd3
+palette = 5=#aa3791
+palette = 6=#7057bb
+palette = 7=#dac0c3
+palette = 8=#746278
+palette = 9=#b0041c
+palette = 10=#5f5402
+palette = 11=#7b4e01
+palette = 12=#0032df
+palette = 13=#a10186
+palette = 14=#663ac1
+palette = 15=#ecd4d7
+background = #fde4e7
+foreground = #3d1a52
+cursor-color = #d33c36
+cursor-text = #fde4e7
+selection-background = #efc2da
+selection-foreground = cell-foreground

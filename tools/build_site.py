@@ -2,9 +2,10 @@
 """Build the Gallery Zero website (GitHub Pages) from the theme specs and READMEs.
 
 Reads themes/*.json for colors and placards, each collection README for the
-wall text, and writes a static site: index.html, the .terminal profiles, a zip
-of every profile, a zip per collection, the share image, and the four gilt frames
-that take turns around the hero terminal (tools/assets/frame-*.webp).
+wall text, and writes a static site: index.html, the .terminal profiles and the
+ports to other terminals (terminals/<app>/), a zip of every theme and a zip per
+collection for each terminal, the share image, and the four gilt frames that take
+turns around the hero terminal (tools/assets/frame-*.webp).
 
     python3 tools/build_site.py --out _site
 """
@@ -21,6 +22,11 @@ import zipfile
 import zlib
 from pathlib import Path
 from urllib.parse import quote
+
+if __package__:
+    from . import ports
+else:  # run as a script, with tools/ on sys.path
+    import ports
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE_URL = "https://bigcactuslabs.github.io/gallery-zero/"
@@ -103,6 +109,7 @@ def load() -> list[dict]:
             path = profile_path(slug, name)
             works.append({
                 "name": name,
+                "profile": f'{spec["artist"]} — {name}',  # the Terminal.app profile name, which the ports share
                 "slug": theme["slug"],
                 "colors": theme["colors"],
                 "placard": theme["depth"].get("window_title", name),
@@ -194,8 +201,53 @@ def featured_works(collections: list[dict]) -> list[dict]:
     return [next(w for w in c["works"] if w["name"] == pick) for c, pick in zip(collections, picks, strict=True)]
 
 
-def room_zip(slug: str) -> str:
-    return f"gallery-zero-{slug}.zip"
+def room_zip(slug: str, app: str = "terminal") -> str:
+    return f"gallery-zero-{slug}.zip" if app == "terminal" else f"gallery-zero-{slug}-{app}.zip"
+
+
+def all_zip(app: str = "terminal") -> str:
+    return ZIP_NAME if app == "terminal" else f"gallery-zero-{app}.zip"
+
+
+def port_work(work: dict, collection: str) -> ports.Work:
+    return ports.Work(work["profile"], f'{collection}-{work["slug"]}', work["placard"], work["colors"])
+
+
+def port_file(work: dict, collection: str, app: str) -> str:
+    return f"{ports.PORTS_DIR}/{app}/{ports.BY_APP[app].filename(port_work(work, collection))}"
+
+
+# The lobby's terminal picker: how to install a downloaded file, and the shell command.
+# The first entry is the default. The text is trusted HTML.
+INSTALL_HELP = {
+    "terminal": "Drag a <code>.terminal</code> file into Terminal &rsaquo; Settings &rsaquo; Profiles "
+                "(or use <strong>&hellip; &rsaquo; Import&hellip;</strong>) &mdash; macOS blocks "
+                "double-clicking browser downloads.",
+    "ghostty": "Put a file in <code>~/.config/ghostty/themes</code>, then name it in your Ghostty "
+               "config: <code>theme = Rothko — Four Darks in Red</code>.",
+    "iterm2": "In iTerm2 &rsaquo; Settings &rsaquo; Profiles &rsaquo; Colors, open "
+              "<strong>Color Presets&hellip; &rsaquo; Import&hellip;</strong> and pick an "
+              "<code>.itermcolors</code> file.",
+    "kitty": "Put a file in <code>~/.config/kitty/themes</code>, then choose it with "
+             "<code>kitten themes</code>.",
+    "wezterm": "Put a file in <code>~/.config/wezterm/colors</code>, then set "
+               "<code>config.color_scheme</code> to its name in <code>wezterm.lua</code>.",
+    "alacritty": "Put a file in <code>~/.config/alacritty/themes</code>, then list its path in "
+                 "<code>import</code> under <code>[general]</code> in <code>alacritty.toml</code>.",
+    "warp": "Put a file in <code>~/.warp/themes</code>, then choose it in Warp &rsaquo; Settings "
+            "&rsaquo; Appearance &rsaquo; Themes.",
+}
+TERMINAL_LABELS = {"terminal": "Terminal"} | {port.app: port.label for port in ports.PORTS}
+
+
+def install_cmd(app: str) -> str:
+    return INSTALL_CMD if app == "terminal" else f"{INSTALL_CMD} -s -- --terminal {app}"
+
+
+def cli_label(app: str) -> str:
+    if app == "terminal":
+        return "Or install from Terminal (add <code>-s -- rothko demuth</code> for specific packs):"
+    return "Or install from your shell (add <code>rothko demuth</code> for specific packs):"
 
 
 def png(width: int, height: int, rows: list[bytes]) -> bytes:
@@ -245,7 +297,7 @@ def render(collections: list[dict]) -> str:
     featured = featured_works(collections)
     hero_data = json.dumps([
         {"vars": {f"--{k.replace('_', '-')}": w["colors"][k] for k in ANSI + EXTRA},
-         "placard": w["placard"], "file": href(w["file"]), "name": w["name"], "dir": "~/" + c}
+         "placard": w["placard"], "file": href(w["file"]), "name": w["name"], "profile": w["profile"], "dir": "~/" + c}
         for w, c in zip(featured, COLLECTIONS)
     ], ensure_ascii=False)
     nav = "".join(f'<a href="#{c["slug"]}">{html.escape(c["artist"])}</a>' for c in collections)
@@ -260,7 +312,8 @@ def render(collections: list[dict]) -> str:
                 f'<article class="work{" feature" if w is pick else ""}" id="{wid}">'
                 f'{window(w, c["slug"])}'
                 f'<div class="caption"><div class="label"><h3><a href="#{wid}">{name}</a></h3>'
-                f'<a class="dl" href="{href(w["file"])}" download>Download<span class="vh"> {name}</span></a></div>'
+                f'<a class="dl" href="{href(w["file"])}" data-file="{href(w["file"])}" data-name="{html.escape(w["profile"])}" download>'
+                f'Download<span class="vh"> {name}</span></a></div>'
                 f'<p>{inline_md(w["text"])}</p></div></article>'
             )
         intro = "".join(f"<p>{inline_md(p)}</p>" for p in c["intro"])
@@ -269,18 +322,32 @@ def render(collections: list[dict]) -> str:
             f'<section class="room" id="{c["slug"]}" aria-labelledby="{c["slug"]}-h">'
             f'<header class="wall"><h2 id="{c["slug"]}-h">{artist}</h2>'
             f'<p class="lede">{inline_md(c["lede"])}</p>{intro}'
-            f'<p class="links"><a class="dl" href="{room_zip(c["slug"])}" download>Download all {len(c["works"])}'
+            f'<p class="links"><a class="dl" href="{room_zip(c["slug"])}" data-room="{c["slug"]}" download>Download all {len(c["works"])}'
             f'<span class="vh"> {artist} themes</span></a>'
             f'<a class="src" href="{REPO_URL}/tree/main/{c["slug"]}">Collection notes on GitHub</a></p></header>'
             f'<div class="works">{"".join(cards)}</div></section>'
         )
     first = featured[0]
     easel = hang(FRAMES)
-    description = (f"{total} color themes for macOS Terminal, after paintings by Mark Rothko, Olga de Amaral, "
-                   "George Condo, Claude Monet, Atsuko Tanaka, Bridget Riley, Agnes Pelton and Charles Demuth.")
+    labels = list(TERMINAL_LABELS.values())
+    description = (f"{total} color themes for macOS {', '.join(labels[:-1])} and {labels[-1]}, after paintings by "
+                   "Mark Rothko, Olga de Amaral, George Condo, Claude Monet, Atsuko Tanaka, Bridget Riley, "
+                   "Agnes Pelton and Charles Demuth.")
+    terminals = {
+        app: {"label": label, "ext": ports.BY_APP[app].extension if app in ports.BY_APP else ".terminal",
+              "unsafe": ports.BY_APP[app].unsafe if app in ports.BY_APP else "",
+              "help": INSTALL_HELP[app], "cliLabel": cli_label(app), "cmd": install_cmd(app)}
+        for app, label in TERMINAL_LABELS.items()
+    }
+    pills = "".join(
+        f'<label><input type="radio" name="terminal" value="{app}"{" checked" if i == 0 else ""}>'
+        f'<span>{html.escape(label)}</span></label>'
+        for i, (app, label) in enumerate(TERMINAL_LABELS.items())
+    )
     return TEMPLATE.format(
         description=html.escape(description), site=SITE_URL, repo=REPO_URL, zip=ZIP_NAME, total=total,
-        install_cmd=html.escape(INSTALL_CMD),
+        install_cmd=html.escape(INSTALL_CMD), install_help=INSTALL_HELP["terminal"], cli_label=cli_label("terminal"),
+        pills=pills, terminals=json.dumps(terminals, ensure_ascii=False).replace("</", "<\\/"),
         nav=nav, rooms="".join(rooms), hero=window(first, COLLECTIONS[0], "hero-term"),
         hero_name=html.escape(first["placard"]), hero_file=href(first["file"]), hero_data=hero_data,
         favicon=FAVICON, og=OG_NAME, og_w=OG_SIZE[0], og_h=OG_SIZE[1],
@@ -301,7 +368,7 @@ TEMPLATE = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gallery Zero · Color themes for macOS Terminal, after eight painters</title>
+<title>Gallery Zero · Terminal color themes after eight painters</title>
 <meta name="description" content="{description}">
 <link rel="canonical" href="{site}">
 <meta property="og:type" content="website">
@@ -349,8 +416,19 @@ h1 {{ font: 500 clamp(44px, 6.4vw, 84px)/0.98 var(--serif); letter-spacing: -0.0
 .btn.primary {{ background: var(--ink); color: var(--wall); }}
 .btn.ghost {{ box-shadow: inset 0 0 0 1px var(--rule); }}
 .btn.ghost:hover {{ background: var(--card); }}
-.lobby .install {{ margin: 24px 0 0; font-size: 14px; max-width: 44ch; }}
-.install code {{ font: 13px var(--mono); }}
+.picker {{ border: 0; padding: 0; margin: -8px 0 24px; min-width: 0; }}
+.picker[hidden] {{ display: none; }}
+.picker legend {{ padding: 0; margin-bottom: 8px; font-size: 13px; color: var(--muted); }}
+.pills {{ display: flex; flex-wrap: wrap; gap: 2px; margin-left: -8px; }}
+.pills label {{ position: relative; }}
+.pills input {{ position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }}
+.pills span {{ display: block; padding: 4px 8px; border-radius: 999px; font-size: 13.5px; font-weight: 500; color: var(--muted);
+               transition: color .15s, background-color .15s; }}
+.pills label:hover span {{ color: var(--ink); background: var(--card); }}
+.pills input:checked + span {{ background: var(--ink); color: var(--wall); }}
+.pills input:focus-visible + span {{ outline: 2px solid var(--ink); outline-offset: 2px; }}
+.lobby .install {{ margin: 24px 0 0; font-size: 14px; max-width: none; }}
+.install code {{ font: 13px var(--mono); white-space: nowrap; }}
 .cli {{ margin-top: 16px; max-width: 44ch; }}
 .cli-label {{ display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }}
 .cmd {{ display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 10px;
@@ -479,15 +557,25 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
   <section class="lobby">
     <div>
       <h1>Gallery Zero</h1>
-      <p>{total} color themes for macOS Terminal. Each one takes the colors of a single painting and maps them onto the sixteen ANSI slots.</p>
+      <p>{total} color themes for your terminal. Each one takes the colors of a single painting and maps them onto the sixteen ANSI slots.</p>
+      <fieldset class="picker" id="picker" hidden><legend>Your terminal</legend><div class="pills">{pills}</div></fieldset>
+      <script>
+      // Pick the terminal before the first paint: ?terminal=, then the last choice, then a guess.
+      const TERMINALS = {terminals};
+      let app = (new URLSearchParams(location.search).get('terminal') || '').toLowerCase().replace(/^iterm$/, 'iterm2');
+      if (!TERMINALS[app]) {{ try {{ app = localStorage.getItem('gallery-zero-terminal'); }} catch {{}} }}
+      if (!TERMINALS[app]) app = /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent) ? 'ghostty' : 'terminal';
+      document.getElementById('picker').hidden = false;
+      document.querySelector('#picker input[value="' + app + '"]').checked = true;
+      </script>
       <div class="actions">
-        <a class="btn primary" href="{zip}" download>Download all {total}</a>
+        <a class="btn primary" id="dl-all" href="{zip}" download>Download all {total}</a>
         <a class="btn ghost" href="{repo}">View on GitHub</a>
       </div>
-      <p class="install">Drag a <code>.terminal</code> file into Terminal &rsaquo; Settings &rsaquo; Profiles (or use <strong>&hellip; &rsaquo; Import&hellip;</strong>) &mdash; macOS blocks double-clicking browser downloads. Click any swatch to copy its hex.</p>
+      <p class="install"><span id="install-help">{install_help}</span> Click any swatch to copy its hex.</p>
       <div class="cli">
-        <span class="cli-label">Or install from Terminal (add <code>-s -- rothko demuth</code> for specific packs):</span>
-        <div class="cmd"><code>{install_cmd}</code><button type="button" class="copy-btn" data-copy="{install_cmd}">Copy</button></div>
+        <span class="cli-label" id="cli-label">{cli_label}</span>
+        <div class="cmd"><code id="install-cmd">{install_cmd}</code><button type="button" class="copy-btn" id="install-copy" data-copy="{install_cmd}">Copy</button></div>
       </div>
     </div>
     <figure class="easel" id="easel">
@@ -512,6 +600,12 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
 Two of the frames are generated images. The other two are at The Met: a French ogee frame of about 1720&ndash;30 (<a href="{ogee_source}">CC0</a>) and the frame on Sébastien Bourdon&rsquo;s <cite>A Classical Landscape</cite> (<a href="{bourdon_source}">CC0</a>).</span>
 <span><a href="{repo}/blob/main/TECHNIQUES.md">How the profiles are built</a> · <a href="{repo}">Source</a></span></div></footer>
 <script>
+// A work's file for the picked terminal; port names drop the characters that terminal can't take.
+function fileOf(name, terminalFile) {{
+  if (app === 'terminal') return terminalFile;
+  const t = TERMINALS[app];
+  return 'terminals/' + app + '/' + encodeURIComponent([...name].filter(ch => !t.unsafe.includes(ch)).join('') + t.ext);
+}}
 const works = {hero_data};
 const term = document.querySelector('.hero-term');
 const link = document.getElementById('easel-file');
@@ -528,7 +622,7 @@ function show(i) {{
   for (const [k, v] of Object.entries(w.vars)) term.style.setProperty(k, v);
   term.querySelector('.placard').textContent = w.placard;
   term.querySelectorAll('.dir').forEach(d => d.textContent = w.dir);
-  link.textContent = w.placard; link.href = w.file;
+  link.textContent = w.placard; link.href = fileOf(w.profile, w.file);
   gilt.dataset.frame = frameOrder[at % frameOrder.length];
   dots.querySelectorAll('button').forEach((b, j) => b.setAttribute('aria-current', j === at));
 }}
@@ -556,6 +650,26 @@ toggle.onclick = () => {{
   run();
 }};
 show(0); run();
+
+function pick(next, remember) {{
+  app = next;
+  const t = TERMINALS[app], suffix = app === 'terminal' ? '' : '-' + app;
+  document.querySelectorAll('a.dl[data-name]').forEach(a => a.href = fileOf(a.dataset.name, a.dataset.file));
+  document.querySelectorAll('a.dl[data-room]').forEach(a => a.href = 'gallery-zero-' + a.dataset.room + suffix + '.zip');
+  document.getElementById('dl-all').href = 'gallery-zero' + suffix + '.zip';
+  document.getElementById('install-help').innerHTML = t.help;
+  document.getElementById('cli-label').innerHTML = t.cliLabel;
+  document.getElementById('install-cmd').textContent = t.cmd;
+  document.getElementById('install-copy').dataset.copy = t.cmd;
+  link.href = fileOf(works[at].profile, works[at].file);
+  if (!remember) return;
+  try {{ localStorage.setItem('gallery-zero-terminal', app); }} catch {{}}
+  const url = new URL(location.href);
+  app === 'terminal' ? url.searchParams.delete('terminal') : url.searchParams.set('terminal', app);
+  history.replaceState(history.state, '', url);
+}}
+document.getElementById('picker').addEventListener('change', e => pick(e.target.value, true));
+pick(app, false);
 
 const strip = document.querySelector('.index .shell');
 const links = [...strip.querySelectorAll('a')];
@@ -650,6 +764,19 @@ def build(out: Path) -> None:
                     shutil.copy2(src, dest)
                     for archive in (zf, room):
                         archive.write(src, f"gallery-zero/{w['file']}")
+    # Each port gets the same downloads, flat in one folder to drop into the terminal's themes folder.
+    for port in ports.PORTS:
+        folder = f"gallery-zero-{port.app}"
+        with zipfile.ZipFile(out / all_zip(port.app), "w", zipfile.ZIP_DEFLATED) as zf:
+            for c in collections:
+                with zipfile.ZipFile(out / room_zip(c["slug"], port.app), "w", zipfile.ZIP_DEFLATED) as room:
+                    for w in c["works"]:
+                        rel = port_file(w, c["slug"], port.app)
+                        src, dest = ROOT / rel, out / rel
+                        dest.parent.mkdir(parents=True, exist_ok=True)
+                        shutil.copy2(src, dest)
+                        for archive in (zf, room):
+                            archive.write(src, f"{folder}/{src.name}")
 
 
 def main() -> None:

@@ -1,0 +1,27 @@
+# Riley — Cataract
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#riley-cataract
+name: "Riley — Cataract"
+accent: "#e14d2c"
+cursor: "#e14d2c"
+background: "#111417"
+foreground: "#e2e1db"
+details: darker
+terminal_colors:
+  normal:
+    black: "#2c343a"
+    red: "#f66140"
+    green: "#68a796"
+    yellow: "#b49168"
+    blue: "#7e9cb5"
+    magenta: "#b98993"
+    cyan: "#00abc0"
+    white: "#e2e1db"
+  bright:
+    black: "#626a71"
+    red: "#ffa28c"
+    green: "#96cbbb"
+    yellow: "#d7b895"
+    blue: "#a7c2d7"
+    magenta: "#dcb1b9"
+    cyan: "#66cfe1"
+    white: "#f6f5f1"

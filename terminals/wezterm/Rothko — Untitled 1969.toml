@@ -1,0 +1,18 @@
+# Rothko — Untitled 1969
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#rothko-untitled-1969
+
+[colors]
+foreground = "#d7d3d4"
+background = "#060505"
+cursor_bg = "#b78090"
+cursor_border = "#b78090"
+cursor_fg = "#060505"
+selection_bg = "#2b1b22"
+selection_fg = "#d7d3d4"
+ansi = ["#010101", "#a57785", "#9e9e9e", "#c5bbba", "#797986", "#a38a97", "#adadb3", "#c1bcbd"]
+brights = ["#5e5b5c", "#c28698", "#b2b2b2", "#ddcfce", "#8c8c9d", "#bc9bad", "#c1c1c9", "#f0eeee"]
+
+[metadata]
+name = "Rothko — Untitled 1969"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#rothko-untitled-1969"

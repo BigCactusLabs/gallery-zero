@@ -1,0 +1,27 @@
+# Condo — Green and Purple Head
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#condo-green-and-purple-head
+name: "Condo — Green and Purple Head"
+accent: "#6abd4b"
+cursor: "#6abd4b"
+background: "#270c3e"
+foreground: "#eae3db"
+details: darker
+terminal_colors:
+  normal:
+    black: "#442761"
+    red: "#f87453"
+    green: "#67b948"
+    yellow: "#bf9e3d"
+    blue: "#949ae5"
+    magenta: "#bc87e2"
+    cyan: "#49b98f"
+    white: "#eae3db"
+  bright:
+    black: "#72649e"
+    red: "#ffae89"
+    green: "#a1d862"
+    yellow: "#dec274"
+    blue: "#b3c0ff"
+    magenta: "#e7aaf5"
+    cyan: "#6ddcc0"
+    white: "#f9f4ee"

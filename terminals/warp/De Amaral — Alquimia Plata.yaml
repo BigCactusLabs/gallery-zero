@@ -1,0 +1,27 @@
+# De Amaral — Alquimia Plata
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#de-amaral-alquimia-plata
+name: "De Amaral — Alquimia Plata"
+accent: "#b38c15"
+cursor: "#b38c15"
+background: "#1e1b06"
+foreground: "#d8d4c6"
+details: darker
+terminal_colors:
+  normal:
+    black: "#131103"
+    red: "#a67e44"
+    green: "#93a958"
+    yellow: "#d9ba70"
+    blue: "#748c67"
+    magenta: "#94928a"
+    cyan: "#afb18d"
+    white: "#c3beab"
+  bright:
+    black: "#6d6a53"
+    red: "#c48e3c"
+    green: "#a3c050"
+    yellow: "#f6cd66"
+    blue: "#82a271"
+    magenta: "#a9a69b"
+    cyan: "#c4c796"
+    white: "#f1efe6"

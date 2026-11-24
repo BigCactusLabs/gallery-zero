@@ -1,0 +1,35 @@
+# Tanaka — Gate of Hell
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#tanaka-gate-of-hell
+
+[colors.primary]
+background = "#2c0a0c"
+foreground = "#f0dec9"
+bright_foreground = "#fef0d4"
+
+[colors.cursor]
+text = "#2c0a0c"
+cursor = "#ff9044"
+
+[colors.selection]
+text = "CellForeground"
+background = "#6f1916"
+
+[colors.normal]
+black = "#150405"
+red = "#ed4b43"
+green = "#a3b738"
+yellow = "#f09c17"
+blue = "#9a76d4"
+magenta = "#df4e92"
+cyan = "#69aed5"
+white = "#d3c0b1"
+
+[colors.bright]
+black = "#967069"
+red = "#ff843f"
+green = "#ced447"
+yellow = "#fad957"
+blue = "#c09aeb"
+magenta = "#f383bb"
+cyan = "#98d1ec"
+white = "#fbf1dc"

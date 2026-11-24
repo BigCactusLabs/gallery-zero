@@ -1,0 +1,27 @@
+# Monet — Plein Soleil
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#monet-plein-soleil
+name: "Monet — Plein Soleil"
+accent: "#c44a21"
+cursor: "#c44a21"
+background: "#ebe9dc"
+foreground: "#3d3f2e"
+details: lighter
+terminal_colors:
+  normal:
+    black: "#2e2f22"
+    red: "#ad411c"
+    green: "#556930"
+    yellow: "#9d7b2a"
+    blue: "#3b6692"
+    magenta: "#8e4c5c"
+    cyan: "#387076"
+    white: "#d3d1c4"
+  bright:
+    black: "#646554"
+    red: "#cc572a"
+    green: "#798848"
+    yellow: "#bfa14c"
+    blue: "#5985aa"
+    magenta: "#ae6979"
+    cyan: "#5d9096"
+    white: "#f7f5ec"

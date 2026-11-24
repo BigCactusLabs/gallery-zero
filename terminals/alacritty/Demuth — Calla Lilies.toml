@@ -1,0 +1,35 @@
+# Demuth — Calla Lilies
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#demuth-calla-lilies
+
+[colors.primary]
+background = "#031d3a"
+foreground = "#e8e5cf"
+bright_foreground = "#f7f4e2"
+
+[colors.cursor]
+text = "#031d3a"
+cursor = "#e0b83a"
+
+[colors.selection]
+text = "CellForeground"
+background = "#184470"
+
+[colors.normal]
+black = "#021226"
+red = "#d38f66"
+green = "#80b973"
+yellow = "#e1bd53"
+blue = "#5992d7"
+magenta = "#999bd6"
+cyan = "#77c2af"
+white = "#cfcdb8"
+
+[colors.bright]
+black = "#5e7791"
+red = "#ebaf85"
+green = "#aadc8b"
+yellow = "#f5da7a"
+blue = "#7fb6ee"
+magenta = "#b7b8ed"
+cyan = "#99deca"
+white = "#f7f4e2"

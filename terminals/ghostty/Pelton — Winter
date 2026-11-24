@@ -1,0 +1,24 @@
+# Pelton — Winter
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#pelton-winter
+palette = 0=#40465e
+palette = 1=#ae3e2e
+palette = 2=#187760
+palette = 3=#8e6115
+palette = 4=#3262ac
+palette = 5=#9a3e92
+palette = 6=#187482
+palette = 7=#d7c6c4
+palette = 8=#7a7f96
+palette = 9=#91281a
+palette = 10=#11604d
+palette = 11=#75500f
+palette = 12=#1e4b8f
+palette = 13=#7f2978
+palette = 14=#115d68
+palette = 15=#f9f7fd
+background = #f0ebfc
+foreground = #383e58
+cursor-color = #ab54a3
+cursor-text = #f0ebfc
+selection-background = #ecc6e7
+selection-foreground = cell-foreground

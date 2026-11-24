@@ -1,0 +1,18 @@
+# Rothko — Four Darks in Red
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#rothko-four-darks-in-red
+
+[colors]
+foreground = "#e1d0cb"
+background = "#34120f"
+cursor_bg = "#f0574e"
+cursor_border = "#f0574e"
+cursor_fg = "#34120f"
+selection_bg = "#622c26"
+selection_fg = "#e1d0cb"
+ansi = ["#240b08", "#e15a50", "#a79d91", "#e8af96", "#a77971", "#c8787b", "#cca2a0", "#cdb9b1"]
+brights = ["#836560", "#ff685d", "#beb1a2", "#ffc3a9", "#c5887d", "#ec8287", "#eab3b0", "#f6ece8"]
+
+[metadata]
+name = "Rothko — Four Darks in Red"
+author = "Gallery Zero"
+origin_url = "https://bigcactuslabs.github.io/gallery-zero/#rothko-four-darks-in-red"

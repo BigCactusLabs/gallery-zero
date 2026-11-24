@@ -1,0 +1,24 @@
+# De Amaral — Nébula 8
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#de-amaral-nebula-8
+palette = 0=#000607
+palette = 1=#88877c
+palette = 2=#63b376
+palette = 3=#b8c77c
+palette = 4=#1d85b0
+palette = 5=#7a9b8e
+palette = 6=#53c1c7
+palette = 7=#adc4be
+palette = 8=#516365
+palette = 9=#9d9b8d
+palette = 10=#5dce7b
+palette = 11=#cbdf78
+palette = 12=#009ad0
+palette = 13=#86b1a1
+palette = 14=#31dbe4
+palette = 15=#e6f1ef
+background = #020f11
+foreground = #c7d9d5
+cursor-color = #00a6ad
+cursor-text = #020f11
+selection-background = #023135
+selection-foreground = cell-foreground

@@ -1,0 +1,24 @@
+# Condo — Untitled 1983
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#condo-untitled-1983
+palette = 0=#363021
+palette = 1=#f57055
+palette = 2=#93a958
+palette = 3=#e18528
+palette = 4=#919bca
+palette = 5=#e27a8c
+palette = 6=#7aa9a8
+palette = 7=#f0dfc0
+palette = 8=#686350
+palette = 9=#ffa889
+palette = 10=#bfc97c
+palette = 11=#f5b25a
+palette = 12=#b5bfe8
+palette = 13=#faa3c4
+palette = 14=#a2cac9
+palette = 15=#fff4e0
+background = #141005
+foreground = #f0dfc0
+cursor-color = #f2823b
+cursor-text = #141005
+selection-background = #4a241c
+selection-foreground = cell-foreground

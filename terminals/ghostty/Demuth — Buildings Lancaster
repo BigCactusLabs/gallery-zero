@@ -1,0 +1,24 @@
+# Demuth — Buildings, Lancaster
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#demuth-buildings-lancaster
+palette = 0=#2d232a
+palette = 1=#b70120
+palette = 2=#5e5418
+palette = 3=#755704
+palette = 4=#00459b
+palette = 5=#711b2b
+palette = 6=#04628b
+palette = 7=#83bad3
+palette = 8=#4f5d6c
+palette = 9=#99011a
+palette = 10=#504600
+palette = 11=#614804
+palette = 12=#003983
+palette = 13=#69001f
+palette = 14=#025174
+palette = 15=#93cee9
+background = #a0dffb
+foreground = #0e2f86
+cursor-color = #c73a33
+cursor-text = #a0dffb
+selection-background = #f8dd7d
+selection-foreground = cell-foreground

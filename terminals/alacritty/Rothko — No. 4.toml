@@ -1,0 +1,35 @@
+# Rothko — No. 4
+# Gallery Zero · CC BY 4.0 · https://bigcactuslabs.github.io/gallery-zero/#rothko-no-4
+
+[colors.primary]
+background = "#130915"
+foreground = "#ddd0d8"
+bright_foreground = "#f4ecf1"
+
+[colors.cursor]
+text = "#130915"
+cursor = "#c0789b"
+
+[colors.selection]
+text = "CellForeground"
+background = "#37223c"
+
+[colors.normal]
+black = "#08030a"
+red = "#af6f8e"
+green = "#af96a3"
+yellow = "#ccb7be"
+blue = "#85749a"
+magenta = "#ae82a3"
+cyan = "#b3aaba"
+white = "#c9b8c2"
+
+[colors.bright]
+black = "#685b6b"
+red = "#cf7aa4"
+green = "#c9a7b9"
+yellow = "#e5cad3"
+blue = "#9b84b7"
+magenta = "#ca90bd"
+cyan = "#c9bdd3"
+white = "#f4ecf1"
