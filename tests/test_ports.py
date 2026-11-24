@@ -56,6 +56,7 @@ class PortRenderTests(unittest.TestCase):
             self.assertEqual([work.colors[s] for s in ports.SLOTS[:8]], scheme["colors"]["ansi"])
             self.assertEqual([work.colors[s] for s in ports.SLOTS[8:]], scheme["colors"]["brights"])
             self.assertEqual(work.name, scheme["metadata"]["name"])
+            self.assertEqual("none", scheme["colors"]["selection_fg"])  # keeps each cell's color
 
     def test_alacritty(self) -> None:
         for work in WORKS:
@@ -90,6 +91,25 @@ class PortRenderTests(unittest.TestCase):
         profiles = json.loads(ports.iterm_dynamic_profiles(WORKS))["Profiles"]
         self.assertEqual(len(WORKS), len({p["Guid"] for p in profiles}))
         self.assertEqual(ports.iterm_guid(WORKS[0]), profiles[0]["Guid"])
+
+    def test_dynamic_profiles_override_the_default_profiles_color_modes(self) -> None:
+        # iTerm2's stock default profile keeps separate light and dark colors,
+        # which would hide the unsuffixed colors these profiles carry.
+        for profile in json.loads(ports.iterm_dynamic_profiles(WORKS))["Profiles"]:
+            self.assertIs(False, profile["Use Separate Colors for Light and Dark Mode"])
+            self.assertIs(False, profile["Use Selected Text Color"])
+            self.assertFalse([key for key in profile if key.endswith((" (Light)", " (Dark)"))])
+
+    def test_every_port_opens_with_the_gallery_header(self) -> None:
+        for port in ports.PORTS:
+            for work in WORKS:
+                self.assertTrue(ports.is_port(port.render(work)[:1024]), f"{port.app} {work.name}")
+        self.assertFalse(ports.is_port("# Rothko — My own study\nbackground = #000000\n"))
+
+    def test_the_alacritty_hint_is_valid_toml(self) -> None:
+        hint = ports.how_to_use("alacritty", WORKS[0], "~/.config/alacritty/themes")
+        config = tomllib.loads(hint.split("\n", 1)[1])
+        self.assertEqual([f"~/.config/alacritty/themes/{WORKS[0].name}.toml"], config["general"]["import"])
 
 
 class PortNameTests(unittest.TestCase):

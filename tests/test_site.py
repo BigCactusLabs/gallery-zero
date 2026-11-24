@@ -47,6 +47,8 @@ class SiteTest(unittest.TestCase):
             # The terminal picker, and the same downloads for every port.
             self.assertEqual(page.count('name="terminal"'), 1 + len(ports.PORTS))
             self.assertIn("Ghostty, iTerm2, kitty, WezTerm, Alacritty and Warp", page)
+            self.assertIn("Object.hasOwn(TERMINALS, app)", page)  # ?terminal=__proto__ falls back
+            self.assertIn("~/.local/share/warp-terminal/themes", page)  # Warp's Linux folder
             self.assertIn(html.escape(install_cmd("ghostty")), page.replace("\\/", "/"))
             for port in ports.PORTS:
                 with zipfile.ZipFile(out / all_zip(port.app)) as zf:

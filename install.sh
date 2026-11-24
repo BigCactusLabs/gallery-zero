@@ -118,10 +118,12 @@ while [ "$i" -lt "$n" ]; do
   esac
 done
 
-# Terminal.app and iTerm2 are macOS-only; the other terminals also run on Linux.
-case "$(printf '%s' "$terminal" | tr '[:upper:]' '[:lower:]')" in
-  ghostty*|kitty*|wezterm*|alacritty*|warp*) needs_mac=0 ;;
-  *) needs_mac=1 ;;
+# Terminal.app and iTerm2 are macOS-only; the other terminals also run on Linux,
+# and profiles.py rejects a name it does not know. Normalize as profiles.py does.
+app_key=$(printf '%s' "$terminal" | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
+case "${app_key%.app}" in
+  ''|terminal|apple-terminal|macos|iterm|iterm2) needs_mac=1 ;;
+  *) needs_mac=0 ;;
 esac
 if [ "$list_only" -eq 0 ] && [ "$needs_mac" -eq 1 ] && [ "$(uname -s)" != "Darwin" ]; then
   printf 'error: Terminal.app and iTerm2 are macOS-only. On Linux, add --terminal ghostty, kitty, wezterm, alacritty or warp.\n' >&2

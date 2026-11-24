@@ -234,7 +234,8 @@ INSTALL_HELP = {
                "<code>config.color_scheme</code> to its name in <code>wezterm.lua</code>.",
     "alacritty": "Put a file in <code>~/.config/alacritty/themes</code>, then list its path in "
                  "<code>import</code> under <code>[general]</code> in <code>alacritty.toml</code>.",
-    "warp": "Put a file in <code>~/.warp/themes</code>, then choose it in Warp &rsaquo; Settings "
+    "warp": "Put a file in <code>~/.warp/themes</code> (Linux: <code>~/.local/share/warp-terminal/themes</code>), "
+            "then choose it in Warp &rsaquo; Settings "
             "&rsaquo; Appearance &rsaquo; Themes.",
 }
 TERMINAL_LABELS = {"terminal": "Terminal"} | {port.app: port.label for port in ports.PORTS}
@@ -563,8 +564,8 @@ footer .shell {{ display: flex; flex-wrap: wrap; justify-content: space-between;
       // Pick the terminal before the first paint: ?terminal=, then the last choice, then a guess.
       const TERMINALS = {terminals};
       let app = (new URLSearchParams(location.search).get('terminal') || '').toLowerCase().replace(/^iterm$/, 'iterm2');
-      if (!TERMINALS[app]) {{ try {{ app = localStorage.getItem('gallery-zero-terminal'); }} catch {{}} }}
-      if (!TERMINALS[app]) app = /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent) ? 'ghostty' : 'terminal';
+      if (!Object.hasOwn(TERMINALS, app)) {{ try {{ app = localStorage.getItem('gallery-zero-terminal'); }} catch {{}} }}
+      if (!Object.hasOwn(TERMINALS, app)) app = /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent) ? 'ghostty' : 'terminal';
       document.getElementById('picker').hidden = false;
       document.querySelector('#picker input[value="' + app + '"]').checked = true;
       </script>

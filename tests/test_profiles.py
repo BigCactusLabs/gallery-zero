@@ -13,6 +13,7 @@ from pathlib import Path
 
 from tools import ports
 from tools.profiles import (
+    check_port_names,
     RepositoryError,
     _install_port,
     audit_theme,
@@ -461,18 +462,21 @@ class PortInstallTests(unittest.TestCase):
             installed = themes / "Fixture — Dark"
             self.assertEqual(ports.ghostty(ports.Work("Fixture — Dark", "fixture-dark", "Dark — Fixture", fixture_record().theme["colors"])), installed.read_text())
 
-            (themes / "Fixture — Retired").write_text("")
+            retired = ports.Work("Fixture — Retired", "fixture-retired", "Retired — Fixture", fixture_record().theme["colors"])
+            (themes / "Fixture — Retired").write_text(ports.ghostty(retired))
+            (themes / "Fixture — My own study").write_text("# mine\nbackground = #000000\n")
             (themes / "Someone Else — Theirs").write_text("")
             (themes / "my-theme").write_text("")
             code, out = self.install("ghostty", [fixture_record()], home)
             self.assertNotIn("install:", out)
             self.assertIn("retired (keep; --prune deletes): Fixture — Retired", out)
+            self.assertNotIn("My own study", out)
             self.assertTrue((themes / "Fixture — Retired").exists())
 
             code, out = self.install("ghostty", [fixture_record()], home, prune=True)
             self.assertIn("pruned: Fixture — Retired", out)
             self.assertEqual(
-                ["Fixture — Dark", "Someone Else — Theirs", "my-theme"],
+                ["Fixture — Dark", "Fixture — My own study", "Someone Else — Theirs", "my-theme"],
                 sorted(p.name for p in themes.iterdir()),
             )
 
@@ -495,6 +499,38 @@ class PortInstallTests(unittest.TestCase):
             self.assertEqual(["Gallery Zero", "Fixture"], profile["Tags"])
             self.assertAlmostEqual(0x5A / 255, profile["Ansi 1 Color"]["Red Component"], places=5)
             self.assertIn("THEMES=2 STALE=0", self.install("iterm2", records, home, platform="darwin")[1])
+
+    def test_iterm2_keeps_retired_profiles_until_pruned(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory)
+            both = [fixture_record(), fixture_record("Fixture — Gone")]
+            path = home / "Library" / "Application Support" / "iTerm2" / "DynamicProfiles" / "Gallery Zero — Fixture.json"
+
+            def names() -> list[str]:
+                return [profile["Name"] for profile in json.loads(path.read_text())["Profiles"]]
+
+            self.assertEqual(0, self.install("iterm2", both, home, platform="darwin")[0])
+            self.assertEqual(["Fixture — Dark", "Fixture — Gone"], names())
+
+            code, out = self.install("iterm2", both[:1], home, platform="darwin")
+            self.assertEqual(0, code)
+            self.assertNotIn("install:", out)
+            self.assertIn("retired (keep; --prune deletes): Fixture — Gone", out)
+            self.assertIn("STALE=0 RETIRED=1", out)
+            self.assertEqual(["Fixture — Dark", "Fixture — Gone"], names())
+
+            code, out = self.install("iterm2", both[:1], home, platform="darwin", prune=True)
+            self.assertEqual(0, code)
+            self.assertIn("pruned: Fixture — Gone", out)
+            self.assertIn("STALE=0 RETIRED=0", out)
+            self.assertEqual(["Fixture — Dark"], names())
+
+    def test_refuses_works_whose_port_files_would_collide(self) -> None:
+        check_port_names([fixture_record(), fixture_record("Fixture — Light")])
+        with self.assertRaisesRegex(RepositoryError, "Ghostty file 'Fixture — A B'"):
+            check_port_names([fixture_record("Fixture — A, B"), fixture_record("Fixture — A B")])
+        with self.assertRaisesRegex(RepositoryError, "Fixture — Dusk and Fixture — DUSK"):  # macOS disks ignore case
+            check_port_names([fixture_record("Fixture — Dusk"), fixture_record("Fixture — DUSK")])
 
     def test_theme_folders_follow_each_terminal(self) -> None:
         home = {"HOME": "/h"}

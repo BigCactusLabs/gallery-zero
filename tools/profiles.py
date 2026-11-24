@@ -403,6 +403,22 @@ def port_files(root: Path, records: Sequence[ProfileRecord]) -> dict[str, tuple[
     return expected
 
 
+def check_port_names(records: Sequence[ProfileRecord]) -> None:
+    """Refuse two works that would share a port file, where one would overwrite the other.
+
+    Ghostty drops some punctuation from names, and macOS disks ignore case.
+    """
+    for port in ports.PORTS:
+        owners: dict[str, str] = {}
+        for record in records:
+            filename = port.filename(work_of(record))
+            other = owners.setdefault(_nfc(filename).casefold(), record.name)
+            if other != record.name:
+                raise RepositoryError(
+                    f"{other} and {record.name} would share the {port.label} file {filename!r}"
+                )
+
+
 def stray_ports(root: Path, expected: Mapping[str, tuple[Path, str]]) -> list[Path]:
     return sorted(
         path
@@ -439,6 +455,7 @@ def load_repository(root: Path) -> list[ProfileRecord]:
         raise RepositoryError(f"unexpected artifact: {unexpected[0].relative_to(root)}")
     if not records:
         raise RepositoryError("no themes found")
+    check_port_names(records)
     return records
 
 
@@ -748,24 +765,50 @@ def normalize_app(raw: str | None) -> str:
     return key
 
 
+def _dynamic_profiles(path: Path) -> list[dict[str, Any]]:
+    """The profiles in an installed Dynamic Profiles file; none if it is missing or unreadable."""
+    try:
+        profiles = json.loads(path.read_text(encoding="utf-8")).get("Profiles", [])
+    except (OSError, ValueError, AttributeError):
+        return []
+    return [profile for profile in profiles if isinstance(profile, dict)]
+
+
+def _is_port_file(path: Path) -> bool:
+    try:
+        with path.open("rb") as handle:
+            head = handle.read(1024)
+    except OSError:
+        return False
+    return ports.is_port(head.decode("utf-8", "replace"))
+
+
 def plan_port_install(
-    app: str, records: Sequence[ProfileRecord], directory: Path
-) -> tuple[list[tuple[str, Path, str]], list[Path]]:
-    """Return (files to write, as (label, path, contents); installed files to prune)."""
+    app: str, records: Sequence[ProfileRecord], directory: Path, *, prune: bool = False
+) -> tuple[list[tuple[str, Path, str]], list[tuple[str, Path | None]]]:
+    """Return (files to write, as (label, path, contents); retired works, as (name, file)).
+
+    A retired work is one the gallery installed that has since left it. Only
+    --prune removes it: for iTerm2 by rewriting its collection's file without
+    it (so there is no file to delete), elsewhere by deleting its file.
+    """
     if app == "iterm2":
-        # One Dynamic Profiles file per collection. Rewriting a collection's
-        # file retires its old works, so there is nothing separate to prune.
+        # One Dynamic Profiles file per collection.
         groups: dict[str, list[ProfileRecord]] = {}
         for record in records:
             groups.setdefault(record.collection, []).append(record)
-        writes = []
+        writes: list[tuple[str, Path, str]] = []
+        gone: list[tuple[str, Path | None]] = []
         for group in groups.values():
             works = [work_of(record) for record in group]
             path = directory / f"{ports.AUTHOR} — {works[0].artist}.json"
-            content = ports.iterm_dynamic_profiles(works)
+            current = {_nfc(work.name) for work in works}
+            kept = [p for p in _dynamic_profiles(path) if _nfc(str(p.get("Name", ""))) not in current]
+            gone += [(_nfc(str(p.get("Name", ""))), None) for p in kept]
+            content = ports.iterm_dynamic_profiles(works, keep=() if prune else kept)
             if not path.is_file() or path.read_text(encoding="utf-8") != content:
                 writes.append((f"{path.name} ({len(works)} profiles)", path, content))
-        return writes, []
+        return writes, gone
     port = ports.BY_APP[app]
     writes, wanted = [], set()
     for record in records:
@@ -777,14 +820,15 @@ def plan_port_install(
             writes.append((record.name, path, content))
     artists = {record.name.split(" — ", 1)[0] for record in records}
     installed = sorted(directory.iterdir()) if directory.is_dir() else []
-    retired = [
-        path
+    retired: list[tuple[str, Path | None]] = [
+        (_nfc(path.name), path)
         for path in installed
         if path.is_file()
         and path.name.endswith(port.extension)
         and " — " in path.name
         and _nfc(path.name).split(" — ", 1)[0] in artists
         and _nfc(path.name) not in wanted
+        and _is_port_file(path)  # a theme of the user's own, named after an artist, stays
     ]
     return writes, retired
 
@@ -802,11 +846,11 @@ def _install_port(
         print("error: iTerm2 is macOS-only", file=sys.stderr)
         return 2
     directory = ports.theme_dir(app, env, platform)
-    writes, retired = plan_port_install(app, records, directory)
+    writes, retired = plan_port_install(app, records, directory, prune=prune)
     for label, _, _ in writes:
         print(f"install: {label}")
-    for path in retired:
-        print(f"{'prune' if prune else 'retired (keep; --prune deletes)'}: {_nfc(path.name)}")
+    for name, _ in retired:
+        print(f"{'prune' if prune else 'retired (keep; --prune deletes)'}: {name}")
     if dry_run:
         print(f"THEMES={len(records)} STALE={len(writes)} RETIRED={len(retired)} DIR={directory}")
         return 0
@@ -815,10 +859,11 @@ def _install_port(
     for _, path, content in writes:
         path.write_text(content, encoding="utf-8")
     if prune:
-        for path in retired:
-            path.unlink()
-            print(f"pruned: {_nfc(path.name)}")
-    stale_after, retired_after = plan_port_install(app, records, directory)
+        for name, path in retired:
+            if path is not None:
+                path.unlink()
+            print(f"pruned: {name}")
+    stale_after, retired_after = plan_port_install(app, records, directory, prune=prune)
     print(f"THEMES={len(records)} STALE={len(stale_after)} RETIRED={len(retired_after)} DIR={directory}")
     if records:
         home = str(Path(env.get("HOME") or Path.home()))

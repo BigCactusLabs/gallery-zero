@@ -6,9 +6,10 @@ regenerated and compared: `profiles.py sync-ports` writes them under
 terminals/<app>/ and `profiles.py verify` checks them. Ports carry colors only.
 The glass, window size and title of a Terminal.app profile stay in Terminal.app.
 
-Terminal.app leaves selected text in its own color. Ghostty, kitty and Alacritty
-can do the same, so their ports keep each cell's color under the selection.
-iTerm2 and WezTerm take a single selected-text color; they get the foreground.
+Terminal.app leaves selected text in its own color, and so does every port whose
+format can say so: Ghostty, kitty, WezTerm, Alacritty and iTerm2's Dynamic
+Profiles. An .itermcolors preset holds colors only, so its selected-text color is
+the foreground, and Warp's themes have no selection color at all.
 """
 
 from __future__ import annotations
@@ -124,7 +125,7 @@ def wezterm(work: Work) -> str:
         f"cursor_border = {_q(c['cursor'])}",
         f"cursor_fg = {_q(c['cursor_text'])}",
         f"selection_bg = {_q(c['selection'])}",
-        f"selection_fg = {_q(c['foreground'])}",
+        'selection_fg = "none"',  # transparent, so each cell keeps its own color
         f"ansi = {array(SLOTS[:8])}",
         f"brights = {array(SLOTS[8:])}",
         "",
@@ -208,17 +209,32 @@ def iterm_guid(work: Work) -> str:
     return str(uuid.uuid5(GUID_NAMESPACE, work.name)).upper()
 
 
-def iterm_dynamic_profiles(works: Sequence[Work]) -> str:
+# A Dynamic Profile inherits every key it leaves out from the user's default profile.
+# iTerm2's own default keeps separate light and dark colors, which would hide these
+# unsuffixed colors, so each profile turns that off. Selected text keeps its color.
+ITERM_PROFILE_FLAGS = {
+    "Use Separate Colors for Light and Dark Mode": False,
+    "Use Selected Text Color": False,
+}
+
+
+def iterm_dynamic_profiles(works: Sequence[Work], keep: Sequence[Mapping[str, object]] = ()) -> str:
     """An iTerm2 Dynamic Profiles file: one sparse profile per work.
 
     Anything a profile leaves out (font, window size, keys) comes from the
     user's default profile, as the Terminal.app installer keeps the user's font.
+    `keep` carries installed profiles of retired works through unchanged.
     """
     profiles = [
-        {"Name": w.name, "Guid": iterm_guid(w), "Tags": [AUTHOR, w.artist], **iterm_colors(w)}
+        {"Name": w.name, "Guid": iterm_guid(w), "Tags": [AUTHOR, w.artist], **ITERM_PROFILE_FLAGS, **iterm_colors(w)}
         for w in works
     ]
-    return json.dumps({"Profiles": profiles}, ensure_ascii=False, indent=2, sort_keys=False) + "\n"
+    return json.dumps({"Profiles": profiles + list(keep)}, ensure_ascii=False, indent=2, sort_keys=False) + "\n"
+
+
+def is_port(head: str) -> bool:
+    """Whether a theme file's opening text is a Gallery Zero header. --prune deletes no other file."""
+    return AUTHOR in head and SITE_URL in head
 
 
 @dataclass(frozen=True)
@@ -273,7 +289,7 @@ def theme_dir(app: str, env: Mapping[str, str], platform: str) -> Path:
 
 
 def how_to_use(app: str, example: Work, directory: str) -> str:
-    """One line telling the user how to switch to a theme they just installed."""
+    """How to switch to a theme the installer just wrote."""
     if app == "ghostty":
         return f"Set it in your Ghostty config: theme = {BY_APP[app].theme_name(example)}  (preview: ghostty +list-themes)"
     if app == "kitty":
@@ -281,7 +297,8 @@ def how_to_use(app: str, example: Work, directory: str) -> str:
     if app == "wezterm":
         return f'Set it in wezterm.lua: config.color_scheme = "{example.name}"'
     if app == "alacritty":
-        return f'Add it to alacritty.toml: [general] import = ["{directory}/{BY_APP[app].filename(example)}"]'
+        path = f"{directory}/{BY_APP[app].filename(example)}"
+        return f"Add it to alacritty.toml:\n\n[general]\nimport = [{_q(path)}]"
     if app == "warp":
         return "Choose one in Warp: Settings > Appearance > Themes"
     if app == "iterm2":

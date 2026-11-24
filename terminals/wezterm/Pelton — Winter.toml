@@ -8,7 +8,7 @@ cursor_bg = "#ab54a3"
 cursor_border = "#ab54a3"
 cursor_fg = "#f0ebfc"
 selection_bg = "#ecc6e7"
-selection_fg = "#383e58"
+selection_fg = "none"
 ansi = ["#40465e", "#ae3e2e", "#187760", "#8e6115", "#3262ac", "#9a3e92", "#187482", "#d7c6c4"]
 brights = ["#7a7f96", "#91281a", "#11604d", "#75500f", "#1e4b8f", "#7f2978", "#115d68", "#f9f7fd"]
 
