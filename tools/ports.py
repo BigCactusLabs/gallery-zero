@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import json
 import plistlib
+import re
 import uuid
 from dataclasses import dataclass
 from pathlib import Path
@@ -232,9 +233,38 @@ def iterm_dynamic_profiles(works: Sequence[Work], keep: Sequence[Mapping[str, ob
     return json.dumps({"Profiles": profiles + list(keep)}, ensure_ascii=False, indent=2, sort_keys=False) + "\n"
 
 
-def is_port(head: str) -> bool:
-    """Whether a theme file's opening text is a Gallery Zero header. --prune deletes no other file."""
-    return AUTHOR in head and SITE_URL in head
+def _is_work_url(text: str) -> bool:
+    return re.fullmatch(re.escape(SITE_URL) + r"#[a-z0-9-]+", text) is not None
+
+
+def header_name(app: str, head: str) -> str | None:
+    """The work a file names, if it opens with exactly the header sync-ports writes for app.
+
+    install-terminal --prune deletes a file only when this names the work the file's
+    name comes from, so a theme of the user's own stays even when it cites the
+    gallery. iTerm2 installs Dynamic Profiles rather than files, so it has none here.
+    """
+    lines = head.split("\n")
+    if app == "iterm2":
+        return None
+    if app == "kitty":
+        if len(lines) < 5:
+            return None
+        vim, name, author, license_, upstream = lines[:5]
+        ours = (
+            vim == "# vim:ft=kitty"
+            and name.startswith("## name: ")
+            and author == f"## author: {AUTHOR}"
+            and license_ == f"## license: {LICENSE}"
+            and _is_work_url(upstream.removeprefix("## upstream: "))
+        )
+        return name.removeprefix("## name: ") if ours else None
+    if len(lines) < 2:
+        return None
+    title, credit = lines[:2]
+    prefix = f"# {AUTHOR} · {LICENSE} · "
+    ours = title.startswith("# ") and credit.startswith(prefix) and _is_work_url(credit.removeprefix(prefix))
+    return title.removeprefix("# ") if ours else None
 
 
 @dataclass(frozen=True)
@@ -246,10 +276,17 @@ class Port:
     unsafe: str = ""  # characters dropped from the work's name to make the theme name
 
     def theme_name(self, work: Work) -> str:
-        return "".join(ch for ch in work.name if ch not in self.unsafe)
+        return self._clean(work.name)
 
     def filename(self, work: Work) -> str:
-        return f"{self.theme_name(work)}{self.extension}"
+        return self.filename_of(work.name)
+
+    def filename_of(self, name: str) -> str:
+        """The file the work of this name is ported to."""
+        return f"{self._clean(name)}{self.extension}"
+
+    def _clean(self, name: str) -> str:
+        return "".join(ch for ch in name if ch not in self.unsafe)
 
 
 PORTS = (

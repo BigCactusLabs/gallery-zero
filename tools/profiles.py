@@ -771,16 +771,21 @@ def _dynamic_profiles(path: Path) -> list[dict[str, Any]]:
         profiles = json.loads(path.read_text(encoding="utf-8")).get("Profiles", [])
     except (OSError, ValueError, AttributeError):
         return []
+    if not isinstance(profiles, list):
+        return []
     return [profile for profile in profiles if isinstance(profile, dict)]
 
 
-def _is_port_file(path: Path) -> bool:
+def _is_port_file(port: ports.Port, path: Path) -> bool:
+    """Whether an installed file is one the gallery wrote: it opens with the exact header
+    sync-ports writes, naming the work this file's name comes from."""
     try:
         with path.open("rb") as handle:
-            head = handle.read(1024)
+            head = handle.read(1024).decode("utf-8", "replace")
     except OSError:
         return False
-    return ports.is_port(head.decode("utf-8", "replace"))
+    name = ports.header_name(port.app, head)
+    return name is not None and _nfc(port.filename_of(name)) == _nfc(path.name)
 
 
 def plan_port_install(
@@ -802,8 +807,14 @@ def plan_port_install(
         for group in groups.values():
             works = [work_of(record) for record in group]
             path = directory / f"{ports.AUTHOR} — {works[0].artist}.json"
-            current = {_nfc(work.name) for work in works}
-            kept = [p for p in _dynamic_profiles(path) if _nfc(str(p.get("Name", ""))) not in current]
+            # iTerm2 knows a profile by its Guid; names can repeat or be edited.
+            seen = {ports.iterm_guid(work) for work in works}
+            kept = []
+            for profile in _dynamic_profiles(path):
+                guid = str(profile.get("Guid", ""))
+                if guid not in seen:  # a retired work's profile, once
+                    seen.add(guid)
+                    kept.append(profile)
             gone += [(_nfc(str(p.get("Name", ""))), None) for p in kept]
             content = ports.iterm_dynamic_profiles(works, keep=() if prune else kept)
             if not path.is_file() or path.read_text(encoding="utf-8") != content:
@@ -828,7 +839,7 @@ def plan_port_install(
         and " — " in path.name
         and _nfc(path.name).split(" — ", 1)[0] in artists
         and _nfc(path.name) not in wanted
-        and _is_port_file(path)  # a theme of the user's own, named after an artist, stays
+        and _is_port_file(port, path)  # a theme of the user's own, named after an artist, stays
     ]
     return writes, retired
 

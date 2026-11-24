@@ -465,18 +465,22 @@ class PortInstallTests(unittest.TestCase):
             retired = ports.Work("Fixture — Retired", "fixture-retired", "Retired — Fixture", fixture_record().theme["colors"])
             (themes / "Fixture — Retired").write_text(ports.ghostty(retired))
             (themes / "Fixture — My own study").write_text("# mine\nbackground = #000000\n")
+            (themes / "Fixture — Cites the gallery").write_text(
+                f"# My own palette, inspired by {ports.AUTHOR}\n# {ports.SITE_URL}\nbackground = #010203\n"
+            )
+            (themes / "Fixture — My copy").write_text(ports.ghostty(retired))  # a port saved under another name
             (themes / "Someone Else — Theirs").write_text("")
             (themes / "my-theme").write_text("")
             code, out = self.install("ghostty", [fixture_record()], home)
             self.assertNotIn("install:", out)
             self.assertIn("retired (keep; --prune deletes): Fixture — Retired", out)
-            self.assertNotIn("My own study", out)
+            self.assertIn("RETIRED=1", out)
             self.assertTrue((themes / "Fixture — Retired").exists())
 
             code, out = self.install("ghostty", [fixture_record()], home, prune=True)
             self.assertIn("pruned: Fixture — Retired", out)
             self.assertEqual(
-                ["Fixture — Dark", "Fixture — My own study", "Someone Else — Theirs", "my-theme"],
+                ["Fixture — Cites the gallery", "Fixture — Dark", "Fixture — My copy", "Fixture — My own study", "Someone Else — Theirs", "my-theme"],
                 sorted(p.name for p in themes.iterdir()),
             )
 
@@ -524,6 +528,50 @@ class PortInstallTests(unittest.TestCase):
             self.assertIn("pruned: Fixture — Gone", out)
             self.assertIn("STALE=0 RETIRED=0", out)
             self.assertEqual(["Fixture — Dark"], names())
+
+    def test_iterm2_knows_its_profiles_by_guid_not_name(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory)
+            both = [fixture_record(), fixture_record("Fixture — Gone")]
+            path = home / "Library" / "Application Support" / "iTerm2" / "DynamicProfiles" / "Gallery Zero — Fixture.json"
+
+            def profiles() -> list[dict]:
+                return json.loads(path.read_text())["Profiles"]
+
+            def rename(index: int, name: str) -> None:
+                data = json.loads(path.read_text())
+                data["Profiles"][index]["Name"] = name
+                path.write_text(json.dumps(data))
+
+            self.assertEqual(0, self.install("iterm2", both, home, platform="darwin")[0])
+            guids = [profile["Guid"] for profile in profiles()]
+
+            # A current work's profile renamed by hand is still that work's: rewritten, not kept twice.
+            rename(0, "My renamed fixture")
+            code, out = self.install("iterm2", both, home, platform="darwin")
+            self.assertEqual(0, code)
+            self.assertIn("STALE=0 RETIRED=0", out)
+            self.assertEqual(guids, [profile["Guid"] for profile in profiles()])
+            self.assertEqual(["Fixture — Dark", "Fixture — Gone"], [profile["Name"] for profile in profiles()])
+
+            # A retired work's profile renamed to a current work's name is still kept until --prune.
+            rename(1, "Fixture — Dark")
+            code, out = self.install("iterm2", both[:1], home, platform="darwin")
+            self.assertEqual(0, code)
+            self.assertIn("STALE=0 RETIRED=1", out)
+            self.assertEqual(guids, [profile["Guid"] for profile in profiles()])
+
+    def test_iterm2_reads_a_damaged_profiles_file_as_empty(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory)
+            path = home / "Library" / "Application Support" / "iTerm2" / "DynamicProfiles" / "Gallery Zero — Fixture.json"
+            path.parent.mkdir(parents=True)
+            for damaged in ('{"Profiles": null}', '{"Profiles": 5}', "[]", "not json"):
+                path.write_text(damaged)
+                code, out = self.install("iterm2", [fixture_record()], home, platform="darwin", dry_run=True)
+                self.assertEqual(0, code, damaged)
+                self.assertIn("STALE=1 RETIRED=0", out)
+                self.assertEqual(damaged, path.read_text())
 
     def test_refuses_works_whose_port_files_would_collide(self) -> None:
         check_port_names([fixture_record(), fixture_record("Fixture — Light")])

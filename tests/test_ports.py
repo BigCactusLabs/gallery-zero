@@ -100,11 +100,17 @@ class PortRenderTests(unittest.TestCase):
             self.assertIs(False, profile["Use Selected Text Color"])
             self.assertFalse([key for key in profile if key.endswith((" (Light)", " (Dark)"))])
 
-    def test_every_port_opens_with_the_gallery_header(self) -> None:
+    def test_the_installer_knows_a_port_by_its_exact_header(self) -> None:
         for port in ports.PORTS:
+            if port.app == "iterm2":  # installed as Dynamic Profiles, not files
+                continue
             for work in WORKS:
-                self.assertTrue(ports.is_port(port.render(work)[:1024]), f"{port.app} {work.name}")
-        self.assertFalse(ports.is_port("# Rothko — My own study\nbackground = #000000\n"))
+                self.assertEqual(work.name, ports.header_name(port.app, port.render(work)[:1024]), f"{port.app} {work.name}")
+            # A theme of the user's own that cites the gallery is not a port.
+            cites = f"# My own palette, inspired by {ports.AUTHOR}\n# {ports.SITE_URL}\nbackground = #010203\n"
+            self.assertIsNone(ports.header_name(port.app, cites), port.app)
+            self.assertIsNone(ports.header_name(port.app, "# Rothko — My own study\nbackground = #000000\n"), port.app)
+        self.assertIsNone(ports.header_name("ghostty", ports.kitty(WORKS[0])))  # each port's own header only
 
     def test_the_alacritty_hint_is_valid_toml(self) -> None:
         hint = ports.how_to_use("alacritty", WORKS[0], "~/.config/alacritty/themes")
